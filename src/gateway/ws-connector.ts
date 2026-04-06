@@ -82,6 +82,7 @@ export class WebSocketConnector {
   private eventHandler: ((event: unknown) => void) | null = null;
   private errorHandler: ((error: Error) => void) | null = null;
   private disconnectHandler: ((reason: string) => void) | null = null;
+  private authSuccessHandler: ((userId: number) => void) | null = null;
 
   // Resolved config values
   private readonly heartbeatInterval: number;
@@ -130,6 +131,11 @@ export class WebSocketConnector {
     this.disconnectHandler = handler;
   }
 
+  /** Register a handler fired once after successful authentication, receiving the agent user ID. */
+  onAuthSuccess(handler: (userId: number) => void): void {
+    this.authSuccessHandler = handler;
+  }
+
   /**
    * Connect to the Nexus Gateway WebSocket endpoint.
    *
@@ -142,7 +148,12 @@ export class WebSocketConnector {
 
     // Discover gateway URL if not cached.
     if (!this.gatewayUrl) {
-      this.gatewayUrl = await this.nexusClient.discoverGatewayUrl();
+      if (this.config.gatewayUrl) {
+        // Use explicit override from config.
+        this.gatewayUrl = this.config.gatewayUrl;
+      } else {
+        this.gatewayUrl = await this.nexusClient.discoverGatewayUrl();
+      }
     }
 
     await this.establishConnection();
@@ -276,6 +287,10 @@ export class WebSocketConnector {
       this.authenticated = true;
       this.reconnectAttempt = 0;
       this.startHeartbeat();
+      // Expose the authenticated agent user ID so callers don't need it in config.
+      if (frame.payload.value.userId) {
+        this.authSuccessHandler?.(frame.payload.value.userId);
+      }
     } else {
       // Auth failure is non-recoverable — stop reconnection.
       this.stopping = true;

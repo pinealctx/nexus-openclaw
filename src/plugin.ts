@@ -21,6 +21,7 @@ import type { StreamSession } from "./types.js";
 
 interface AccountRuntime {
   config: NexusAccountConfig;
+  agentUserId: number;
   normalizer: MessageNormalizer;
   outbound: NexusOutboundAdapter;
   stream: NexusStreamAdapter;
@@ -137,6 +138,7 @@ export function register(api: {
     const client = createNexusClient(config);
     accounts.set(accountId, {
       config,
+      agentUserId: 0,
       normalizer: new MessageNormalizer(client),
       outbound: new NexusOutboundAdapter(client),
       stream: new NexusStreamAdapter(client),
@@ -145,12 +147,17 @@ export function register(api: {
 
   gatewayManager = new GatewayManager(resolveAccount);
 
+  gatewayManager.onAuthSuccess((accountId: string, userId: number) => {
+    const rt = accounts.get(accountId);
+    if (rt) rt.agentUserId = userId;
+  });
+
   if (api.dispatch) {
     const dispatch = api.dispatch;
     gatewayManager.onEvent(async (accountId: string, event: unknown) => {
       const rt = accounts.get(accountId);
-      if (!rt) return;
-      const msgCtx = await rt.normalizer.normalize(event, rt.config.agentUserId);
+      if (!rt || rt.agentUserId === 0) return;
+      const msgCtx = await rt.normalizer.normalize(event, rt.agentUserId);
       if (msgCtx) dispatch(accountId, msgCtx);
     });
   }

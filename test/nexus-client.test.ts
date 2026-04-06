@@ -1,7 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ConnectError, Code } from "@connectrpc/connect";
-import { create } from "@bufbuild/protobuf";
-
 import {
   NexusClient,
   createNexusClient,
@@ -13,12 +11,15 @@ import type { NexusAccountConfig } from "../src/config.js";
 import {
   SendMessageRequestSchema,
   GetDownloadURLRequestSchema,
+  UploadFileRequestSchema,
+  WebhookDeliveryConfigSchema,
+  SetDeliveryConfigRequestSchema,
 } from "../src/nexus-api/index.js";
+import { create } from "@bufbuild/protobuf";
 
 function validConfig(): NexusAccountConfig {
   return {
     agentToken: "nxa_test_token_abc",
-    agentUserId: 42,
     serverUrl: "https://api.nexus.test",
     deliveryMode: "websocket",
   };
@@ -50,10 +51,10 @@ function mockConnectError(
 }
 
 describe("NexusClient", () => {
-  let fetchSpy: ReturnType<typeof vi.spyOn>;
+  let fetchSpy: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    fetchSpy = vi.spyOn(globalThis, "fetch");
+    fetchSpy = vi.spyOn(globalThis, "fetch") as unknown as typeof fetchSpy;
   });
 
   afterEach(() => {
@@ -135,12 +136,14 @@ describe("NexusClient", () => {
     );
 
     const client = new NexusClient(validConfig());
-    const res = await client.uploadFile({
-      fileName: "test.png",
-      contentType: "image/png",
-      purpose: 1, // MediaPurpose.MESSAGE
-      data: new Uint8Array([1, 2, 3]),
-    });
+    const res = await client.uploadFile(
+      create(UploadFileRequestSchema, {
+        fileName: "test.png",
+        contentType: "image/png",
+        purpose: 1, // MediaPurpose.MESSAGE
+        data: new Uint8Array([1, 2, 3]),
+      }),
+    );
 
     expect(res.file?.fileId).toBe("f1");
 
@@ -178,14 +181,16 @@ describe("NexusClient", () => {
     );
 
     const client = new NexusClient(validConfig());
-    const res = await client.setDeliveryConfig({
-      config: {
-        case: "webhook",
-        value: {
-          url: "https://my.hook/endpoint",
+    const res = await client.setDeliveryConfig(
+      create(SetDeliveryConfigRequestSchema, {
+        config: {
+          case: "webhook",
+          value: create(WebhookDeliveryConfigSchema, {
+            url: "https://my.hook/endpoint",
+          }),
         },
-      },
-    });
+      }),
+    );
 
     expect(res.webhookSecret).toBe("secret123");
 

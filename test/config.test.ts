@@ -8,7 +8,6 @@ import {
 function validWsConfig(): NexusAccountConfig {
   return {
     agentToken: "nxa_test_token_123",
-    agentUserId: 1,
     serverUrl: "https://api.nexus.ai",
     deliveryMode: "websocket",
   };
@@ -18,7 +17,6 @@ function validWsConfig(): NexusAccountConfig {
 function validWhConfig(): NexusAccountConfig {
   return {
     agentToken: "nxa_test_token_123",
-    agentUserId: 42,
     serverUrl: "http://localhost:8443",
     deliveryMode: "webhook",
     webhook: {
@@ -111,45 +109,6 @@ describe("validateConfig", () => {
     }
   });
 
-  // ---- agentUserId ----
-
-  it("rejects missing agentUserId", () => {
-    const { agentUserId: _, ...rest } = validWsConfig();
-    const result = validateConfig(rest);
-    expect(result.valid).toBe(false);
-    if (!result.valid) {
-      expect(result.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ field: "agentUserId" }),
-        ]),
-      );
-    }
-  });
-
-  it("rejects zero agentUserId", () => {
-    const result = validateConfig({ ...validWsConfig(), agentUserId: 0 });
-    expect(result.valid).toBe(false);
-    if (!result.valid) {
-      expect(result.errors[0].field).toBe("agentUserId");
-    }
-  });
-
-  it("rejects negative agentUserId", () => {
-    const result = validateConfig({ ...validWsConfig(), agentUserId: -5 });
-    expect(result.valid).toBe(false);
-    if (!result.valid) {
-      expect(result.errors[0].field).toBe("agentUserId");
-    }
-  });
-
-  it("rejects non-integer agentUserId", () => {
-    const result = validateConfig({ ...validWsConfig(), agentUserId: 1.5 });
-    expect(result.valid).toBe(false);
-    if (!result.valid) {
-      expect(result.errors[0].field).toBe("agentUserId");
-    }
-  });
-
   // ---- webhook mode validation ----
 
   it("rejects webhook mode without webhook config", () => {
@@ -208,7 +167,6 @@ describe("validateConfig", () => {
       const fields = result.errors.map((e) => e.field);
       expect(fields).toContain("agentToken");
       expect(fields).toContain("serverUrl");
-      expect(fields).toContain("agentUserId");
     }
   });
 

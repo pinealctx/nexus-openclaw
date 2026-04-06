@@ -23,6 +23,7 @@ interface AccountEntry {
 // ---------------------------------------------------------------------------
 
 type GatewayEventHandler = (accountId: string, event: unknown) => void;
+type AuthSuccessHandler = (accountId: string, userId: number) => void;
 
 // ---------------------------------------------------------------------------
 // GatewayManager
@@ -31,6 +32,7 @@ type GatewayEventHandler = (accountId: string, event: unknown) => void;
 export class GatewayManager {
   private readonly accounts = new Map<string, AccountEntry>();
   private readonly eventHandlers: GatewayEventHandler[] = [];
+  private readonly authSuccessHandlers: AuthSuccessHandler[] = [];
 
   constructor(
     private readonly configResolver: (accountId: string) => NexusAccountConfig,
@@ -41,6 +43,13 @@ export class GatewayManager {
    */
   onEvent(handler: GatewayEventHandler): void {
     this.eventHandlers.push(handler);
+  }
+
+  /**
+   * Register a handler fired after successful authentication, receiving the agent user ID.
+   */
+  onAuthSuccess(handler: AuthSuccessHandler): void {
+    this.authSuccessHandlers.push(handler);
   }
 
   /**
@@ -114,6 +123,12 @@ export class GatewayManager {
 
     connector.onEvent((event) => {
       this.dispatch(accountId, event);
+    });
+
+    connector.onAuthSuccess((userId) => {
+      for (const handler of this.authSuccessHandlers) {
+        handler(accountId, userId);
+      }
     });
 
     entry.connector = connector;

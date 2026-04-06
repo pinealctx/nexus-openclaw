@@ -31,12 +31,12 @@ export interface WebhookConfig {
 export interface NexusAccountConfig {
   /** Nexus Agent Token (must start with "nxa_"). */
   agentToken: string;
-  /** Agent user ID in Nexus (positive integer). */
-  agentUserId: number;
   /** Nexus Server base URL (HTTP or HTTPS). */
   serverUrl: string;
   /** Delivery mode: "websocket" (default) or "webhook". */
   deliveryMode: "websocket" | "webhook";
+  /** Gateway WebSocket URL override. When set, skips GetClientConfig discovery. */
+  gatewayUrl?: string;
   /** WebSocket tuning (only used when deliveryMode is "websocket"). */
   websocket?: WebSocketConfig;
   /** Webhook settings (required when deliveryMode is "webhook"). */
@@ -107,19 +107,6 @@ export function validateConfig(
     });
   }
 
-  // agentUserId
-  if (config.agentUserId === undefined || config.agentUserId === null) {
-    errors.push({
-      field: "agentUserId",
-      message: "agentUserId is required",
-    });
-  } else if (!isPositiveInteger(config.agentUserId)) {
-    errors.push({
-      field: "agentUserId",
-      message: "agentUserId must be a positive integer",
-    });
-  }
-
   // deliveryMode
   const mode = config.deliveryMode ?? "websocket";
   if (mode !== "websocket" && mode !== "webhook") {
@@ -155,6 +142,24 @@ export function validateConfig(
     }
   }
 
+  // gatewayUrl (optional override)
+  if (config.gatewayUrl !== undefined && config.gatewayUrl !== null) {
+    try {
+      const url = new URL(config.gatewayUrl);
+      if (url.protocol !== "ws:" && url.protocol !== "wss:") {
+        errors.push({
+          field: "gatewayUrl",
+          message: "gatewayUrl must be a valid ws:// or wss:// URL",
+        });
+      }
+    } catch {
+      errors.push({
+        field: "gatewayUrl",
+        message: "gatewayUrl must be a valid ws:// or wss:// URL",
+      });
+    }
+  }
+
   if (errors.length > 0) {
     return { valid: false, errors };
   }
@@ -162,9 +167,9 @@ export function validateConfig(
   // Build the validated config with default deliveryMode
   const validated: NexusAccountConfig = {
     agentToken: config.agentToken!,
-    agentUserId: config.agentUserId!,
     serverUrl: config.serverUrl!,
     deliveryMode: mode,
+    ...(config.gatewayUrl !== undefined && { gatewayUrl: config.gatewayUrl }),
     ...(config.websocket !== undefined && { websocket: config.websocket }),
     ...(config.webhook !== undefined && { webhook: config.webhook }),
   };
