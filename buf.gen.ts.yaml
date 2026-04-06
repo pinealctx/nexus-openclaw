@@ -1,0 +1,15 @@
+version: v2
+managed:
+  enabled: true
+
+inputs:
+  - directory: .
+    paths:
+      - shared
+      - api
+
+plugins:
+  - local: protoc-gen-es
+    out: src/generated
+    opt:
+      - target=ts

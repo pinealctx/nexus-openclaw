@@ -1,21 +1,32 @@
 /**
  * Stream adapter for Nexus AI streaming messages.
  *
- * Manages the lifecycle: start → pushDelta × N → end/error.
+ * Manages the lifecycle: start -> pushDelta x N -> end/error.
  * Maintains a per-session seq counter and handles retry with
  * idempotent seq reuse.
  */
 
+import { create } from "@bufbuild/protobuf";
+
 import type { NexusClient } from "../nexus-api/client.js";
+import {
+  MessageType,
+  StreamPhase,
+  MessageBodySchema,
+  SendMessageRequestSchema,
+  PushStreamDeltaRequestSchema,
+  EndStreamRequestSchema,
+  ErrorStreamRequestSchema,
+  toBid,
+  toNum,
+} from "../nexus-api/index.js";
+import { StreamContentSchema } from "../generated/shared/v1/message_pb.js";
 import type { OutboundTarget, StreamSession } from "../types.js";
 import { generateClientMessageId } from "../utils/id-gen.js";
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-const MESSAGE_TYPE_STREAM = "MESSAGE_TYPE_STREAM";
-const STREAM_PHASE_START = "STREAM_PHASE_START";
 
 /** Max retries per pushDelta call. */
 const DELTA_MAX_RETRIES = 3;
@@ -50,22 +61,27 @@ export class NexusStreamAdapter {
    * Create a new streaming message and return a StreamSession.
    */
   async startStream(target: OutboundTarget): Promise<StreamSession> {
-    const clientMessageId = generateClientMessageId().toString();
+    const clientMessageId = generateClientMessageId();
 
-    const res = await this.nexusClient.sendMessage({
-      clientMessageId,
-      conversationId: String(target.conversationId),
-      body: {
-        type: MESSAGE_TYPE_STREAM,
-        streamContent: { phase: STREAM_PHASE_START },
-      },
-      ...(target.replyToMessageId !== undefined && {
-        replyToMessageId: String(target.replyToMessageId),
+    const res = await this.nexusClient.sendMessage(
+      create(SendMessageRequestSchema, {
+        clientMessageId,
+        conversationId: toBid(target.conversationId),
+        body: create(MessageBodySchema, {
+          type: MessageType.STREAM,
+          content: {
+            case: "stream",
+            value: create(StreamContentSchema, { phase: StreamPhase.START }),
+          },
+        }),
+        replyToMessageId: target.replyToMessageId !== undefined
+          ? toBid(target.replyToMessageId)
+          : undefined,
       }),
-    });
+    );
 
     const session: StreamSession = {
-      messageId: Number(res.messageId),
+      messageId: toNum(res.messageId),
       conversationId: target.conversationId,
       seq: 0,
     };
@@ -91,12 +107,14 @@ export class NexusStreamAdapter {
 
     for (let attempt = 0; attempt < DELTA_MAX_RETRIES; attempt++) {
       try {
-        await this.nexusClient.pushStreamDelta({
-          conversationId: String(session.conversationId),
-          messageId: String(session.messageId),
-          seq,
-          delta,
-        });
+        await this.nexusClient.pushStreamDelta(
+          create(PushStreamDeltaRequestSchema, {
+            conversationId: toBid(session.conversationId),
+            messageId: toBid(session.messageId),
+            seq,
+            delta,
+          }),
+        );
         // Reset consecutive failure counter on success.
         this.consecutiveFailures.set(key, 0);
         return;
@@ -130,11 +148,13 @@ export class NexusStreamAdapter {
    * Finalize the stream with the full accumulated text.
    */
   async endStream(session: StreamSession, fullText: string): Promise<void> {
-    await this.nexusClient.endStream({
-      conversationId: String(session.conversationId),
-      messageId: String(session.messageId),
-      accumulatedText: fullText,
-    });
+    await this.nexusClient.endStream(
+      create(EndStreamRequestSchema, {
+        conversationId: toBid(session.conversationId),
+        messageId: toBid(session.messageId),
+        accumulatedText: fullText,
+      }),
+    );
     this.consecutiveFailures.delete(this.sessionKey(session));
   }
 
@@ -146,11 +166,13 @@ export class NexusStreamAdapter {
    * Terminate the stream with an error message.
    */
   async errorStream(session: StreamSession, error: string): Promise<void> {
-    await this.nexusClient.errorStream({
-      conversationId: String(session.conversationId),
-      messageId: String(session.messageId),
-      errorMessage: error,
-    });
+    await this.nexusClient.errorStream(
+      create(ErrorStreamRequestSchema, {
+        conversationId: toBid(session.conversationId),
+        messageId: toBid(session.messageId),
+        errorMessage: error,
+      }),
+    );
     this.consecutiveFailures.delete(this.sessionKey(session));
   }
 

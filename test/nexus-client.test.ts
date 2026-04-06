@@ -1,10 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { ConnectError, Code } from "@connectrpc/connect";
+import { create } from "@bufbuild/protobuf";
+
 import {
   NexusClient,
-  NexusRpcError,
   createNexusClient,
+  toNum,
+  toBid,
+  toBidOpt,
 } from "../src/nexus-api/client.js";
 import type { NexusAccountConfig } from "../src/config.js";
+import {
+  SendMessageRequestSchema,
+  GetDownloadURLRequestSchema,
+} from "../src/nexus-api/index.js";
 
 function validConfig(): NexusAccountConfig {
   return {
@@ -15,15 +24,29 @@ function validConfig(): NexusAccountConfig {
   };
 }
 
-/** Build a mock Response. */
-function mockResponse(body: unknown, status = 200): Response {
-  return {
-    ok: status >= 200 && status < 300,
+/**
+ * Build a mock Connect RPC success response (JSON mode).
+ * Body should be proto-json of the output message.
+ */
+function mockConnectResponse(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
     status,
-    statusText: status === 200 ? "OK" : "Error",
-    json: () => Promise.resolve(body),
-    headers: new Headers(),
-  } as unknown as Response;
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+/**
+ * Build a mock Connect RPC error response.
+ */
+function mockConnectError(
+  code: string,
+  message: string,
+  status: number,
+): Response {
+  return new Response(JSON.stringify({ code, message }), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
 }
 
 describe("NexusClient", () => {
@@ -44,98 +67,12 @@ describe("NexusClient", () => {
     expect(client).toBeInstanceOf(NexusClient);
   });
 
-  // -- rpc basics --
-
-  it("sends POST with correct URL, headers, and body", async () => {
-    fetchSpy.mockResolvedValueOnce(mockResponse({ result: "ok" }));
-
-    const client = new NexusClient(validConfig());
-    const res = await client.rpc<{ foo: number }, { result: string }>(
-      "api.v1.TestService",
-      "TestMethod",
-      { foo: 1 },
-    );
-
-    expect(res).toEqual({ result: "ok" });
-    expect(fetchSpy).toHaveBeenCalledOnce();
-
-    const [url, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
-    expect(url).toBe("https://api.nexus.test/api.v1.TestService/TestMethod");
-    expect(init.method).toBe("POST");
-    expect((init.headers as Record<string, string>)["Content-Type"]).toBe(
-      "application/json",
-    );
-    expect((init.headers as Record<string, string>)["Authorization"]).toBe(
-      "Bearer nxa_test_token_abc",
-    );
-    expect(init.body).toBe(JSON.stringify({ foo: 1 }));
-  });
-
-  it("omits Authorization header when skipAuth is true", async () => {
-    fetchSpy.mockResolvedValueOnce(mockResponse({}));
-
-    const client = new NexusClient(validConfig());
-    await client.rpc("api.v1.AuthService", "GetClientConfig", {}, true);
-
-    const [, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
-    expect(
-      (init.headers as Record<string, string>)["Authorization"],
-    ).toBeUndefined();
-  });
-
-  it("strips trailing slash from serverUrl", async () => {
-    fetchSpy.mockResolvedValueOnce(mockResponse({}));
-
-    const cfg = { ...validConfig(), serverUrl: "https://api.nexus.test/" };
-    const client = new NexusClient(cfg);
-    await client.rpc("api.v1.Svc", "M", {});
-
-    const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
-    expect(url).toBe("https://api.nexus.test/api.v1.Svc/M");
-  });
-
-  it("throws NexusRpcError on non-2xx response", async () => {
-    fetchSpy.mockResolvedValueOnce(
-      mockResponse({ code: "NOT_FOUND", message: "conversation not found" }, 404),
-    );
-
-    const client = new NexusClient(validConfig());
-
-    try {
-      await client.rpc("api.v1.MessageService", "SendMessage", {});
-      expect.unreachable("should have thrown");
-    } catch (err) {
-      expect(err).toBeInstanceOf(NexusRpcError);
-      const rpcErr = err as NexusRpcError;
-      expect(rpcErr.service).toBe("api.v1.MessageService");
-      expect(rpcErr.method).toBe("SendMessage");
-      expect(rpcErr.status).toBe(404);
-      expect(rpcErr.code).toBe("NOT_FOUND");
-      expect(rpcErr.detail).toBe("conversation not found");
-    }
-  });
-
-  it("handles non-JSON error body gracefully", async () => {
-    const badRes = {
-      ok: false,
-      status: 500,
-      statusText: "Internal Server Error",
-      json: () => Promise.reject(new Error("not json")),
-      headers: new Headers(),
-    } as unknown as Response;
-    fetchSpy.mockResolvedValueOnce(badRes);
-
-    const client = new NexusClient(validConfig());
-    await expect(client.rpc("api.v1.Svc", "M", {})).rejects.toThrow(
-      NexusRpcError,
-    );
-  });
-
   // -- discoverGatewayUrl --
 
   it("discovers gateway URL and replaces /ws with /ws/agent", async () => {
+    // GetClientConfig is called on the no-auth transport.
     fetchSpy.mockResolvedValueOnce(
-      mockResponse({
+      mockConnectResponse({
         gateway: { wsUrl: "ws://gateway.nexus.test:8444/ws" },
       }),
     );
@@ -145,16 +82,15 @@ describe("NexusClient", () => {
 
     expect(url).toBe("ws://gateway.nexus.test:8444/ws/agent");
 
-    // Verify it called GetClientConfig with skipAuth
+    // Verify no Authorization header on GetClientConfig (public endpoint).
     const [rpcUrl, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(rpcUrl).toContain("AuthService/GetClientConfig");
-    expect(
-      (init.headers as Record<string, string>)["Authorization"],
-    ).toBeUndefined();
+    const headers = init.headers as Headers;
+    expect(headers.get("Authorization")).toBeNull();
   });
 
   it("throws when gateway ws_url is missing", async () => {
-    fetchSpy.mockResolvedValueOnce(mockResponse({ gateway: {} }));
+    fetchSpy.mockResolvedValueOnce(mockConnectResponse({ gateway: {} }));
 
     const client = new NexusClient(validConfig());
     await expect(client.discoverGatewayUrl()).rejects.toThrow(
@@ -162,69 +98,165 @@ describe("NexusClient", () => {
     );
   });
 
-  // -- convenience methods --
+  // -- sendMessage --
 
-  it("sendMessage calls MessageService/SendMessage", async () => {
+  it("sendMessage calls MessageService/SendMessage and returns response", async () => {
+    // Connect RPC returns proto-json with int64 fields as strings.
     fetchSpy.mockResolvedValueOnce(
-      mockResponse({ messageId: "100", createdAt: "1700000000000" }),
+      mockConnectResponse({
+        messageId: "100",
+        createdAt: "1700000000000",
+      }),
     );
 
     const client = new NexusClient(validConfig());
-    const res = await client.sendMessage({
-      clientMessageId: "1",
-      conversationId: "10",
-      body: { type: "MESSAGE_TYPE_TEXT", textContent: { text: "hello" } },
+    const req = create(SendMessageRequestSchema, {
+      clientMessageId: 1n,
+      conversationId: 10n,
     });
+    const res = await client.sendMessage(req);
 
-    expect(res.messageId).toBe("100");
-    const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
+    expect(res.messageId).toBe(100n);
+
+    const [url, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toContain("api.v1.MessageService/SendMessage");
+    expect((init.headers as Headers).get("Authorization")).toBe(
+      "Bearer nxa_test_token_abc",
+    );
   });
 
-  it("uploadFile calls MediaService/UploadFile", async () => {
+  // -- uploadFile --
+
+  it("uploadFile calls MediaService/UploadFile and returns response", async () => {
     fetchSpy.mockResolvedValueOnce(
-      mockResponse({ file: { fileId: "f1" } }),
+      mockConnectResponse({
+        file: { fileId: "f1" },
+      }),
     );
 
     const client = new NexusClient(validConfig());
     const res = await client.uploadFile({
       fileName: "test.png",
       contentType: "image/png",
-      purpose: "MESSAGE",
-      data: "base64data",
+      purpose: 1, // MediaPurpose.MESSAGE
+      data: new Uint8Array([1, 2, 3]),
     });
 
     expect(res.file?.fileId).toBe("f1");
+
     const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toContain("api.v1.MediaService/UploadFile");
   });
 
-  it("getDownloadUrl calls MediaService/GetDownloadURL", async () => {
+  // -- getDownloadUrl --
+
+  it("getDownloadUrl calls MediaService/GetDownloadURL and returns response", async () => {
     fetchSpy.mockResolvedValueOnce(
-      mockResponse({ url: "https://cdn.test/file", expiresAt: "9999" }),
+      mockConnectResponse({
+        url: "https://cdn.test/file",
+        expiresAt: "9999",
+      }),
     );
 
     const client = new NexusClient(validConfig());
-    const res = await client.getDownloadUrl({ fileId: "f1" });
+    const req = create(GetDownloadURLRequestSchema, { fileId: "f1" });
+    const res = await client.getDownloadUrl(req);
 
     expect(res.url).toBe("https://cdn.test/file");
+
     const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toContain("api.v1.MediaService/GetDownloadURL");
   });
 
+  // -- setDeliveryConfig --
+
   it("setDeliveryConfig calls AgentService/SetDeliveryConfig", async () => {
     fetchSpy.mockResolvedValueOnce(
-      mockResponse({ webhookSecret: "secret123" }),
+      mockConnectResponse({
+        webhookSecret: "secret123",
+      }),
     );
 
     const client = new NexusClient(validConfig());
     const res = await client.setDeliveryConfig({
-      webhook: { url: "https://my.hook/endpoint" },
+      config: {
+        case: "webhook",
+        value: {
+          url: "https://my.hook/endpoint",
+        },
+      },
     });
 
     expect(res.webhookSecret).toBe("secret123");
+
     const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toContain("api.v1.AgentService/SetDeliveryConfig");
+  });
+
+  // -- Connect RPC error handling --
+
+  it("throws ConnectError on non-2xx response", async () => {
+    fetchSpy.mockResolvedValueOnce(
+      mockConnectError("not_found", "conversation not found", 404),
+    );
+
+    const client = new NexusClient(validConfig());
+
+    try {
+      await client.sendMessage(
+        create(SendMessageRequestSchema, {
+          clientMessageId: 1n,
+          conversationId: 10n,
+        }),
+      );
+      expect.unreachable("should have thrown");
+    } catch (err) {
+      expect(err).toBeInstanceOf(ConnectError);
+      const connectErr = err as ConnectError;
+      expect(connectErr.code).toBe(Code.NotFound);
+      expect(connectErr.message).toContain("conversation not found");
+    }
+  });
+
+  it("throws ConnectError with Unauthenticated code for 401", async () => {
+    fetchSpy.mockResolvedValueOnce(
+      mockConnectError("unauthenticated", "invalid token", 401),
+    );
+
+    const client = new NexusClient(validConfig());
+
+    try {
+      await client.sendMessage(
+        create(SendMessageRequestSchema, {
+          clientMessageId: 1n,
+          conversationId: 10n,
+        }),
+      );
+      expect.unreachable("should have thrown");
+    } catch (err) {
+      expect(err).toBeInstanceOf(ConnectError);
+      expect((err as ConnectError).code).toBe(Code.Unauthenticated);
+    }
+  });
+
+  // -- int64 boundary helpers --
+
+  describe("int64 helpers", () => {
+    it("toNum converts bigint to number", () => {
+      expect(toNum(42n)).toBe(42);
+      expect(toNum(undefined)).toBe(0);
+      expect(toNum(0n)).toBe(0);
+    });
+
+    it("toBid converts number to bigint", () => {
+      expect(toBid(42)).toBe(42n);
+      expect(toBid(0)).toBe(0n);
+    });
+
+    it("toBidOpt converts optional number to optional bigint", () => {
+      expect(toBidOpt(42)).toBe(42n);
+      expect(toBidOpt(undefined)).toBeUndefined();
+    });
   });
 
   // -- toString (token masking) --

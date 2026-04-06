@@ -4,56 +4,24 @@
  * Manages the WebSocket connection to /ws/agent, handling authentication,
  * heartbeat keepalive, event dispatch, and exponential backoff reconnection.
  *
- * Frame protocol is JSON-based (simplified for this plugin):
- *   Client → Server: AUTH_REQUEST, HEARTBEAT_PING
- *   Server → Client: AUTH_RESPONSE, HEARTBEAT_PONG, EVENT_PUSH, ERROR
+ * Frame protocol uses binary protobuf (AgentClientFrame / AgentServerFrame).
  */
 
 import WebSocket from "ws";
+import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
+
 import type { NexusAccountConfig } from "../config.js";
 import type { NexusClient } from "../nexus-api/client.js";
-
-// ---------------------------------------------------------------------------
-// Frame types (JSON wire format)
-// ---------------------------------------------------------------------------
-
-interface AuthRequestFrame {
-  type: "AUTH_REQUEST";
-  token: string;
-}
-
-interface HeartbeatPingFrame {
-  type: "HEARTBEAT_PING";
-}
-
-type ClientFrame = AuthRequestFrame | HeartbeatPingFrame;
-
-interface AuthResponseFrame {
-  type: "AUTH_RESPONSE";
-  success: boolean;
-  error?: string;
-}
-
-interface HeartbeatPongFrame {
-  type: "HEARTBEAT_PONG";
-}
-
-interface EventPushFrame {
-  type: "EVENT_PUSH";
-  event: unknown;
-}
-
-interface ErrorFrame {
-  type: "ERROR";
-  code: string;
-  message: string;
-}
-
-type ServerFrame =
-  | AuthResponseFrame
-  | HeartbeatPongFrame
-  | EventPushFrame
-  | ErrorFrame;
+import {
+  AgentClientFrameSchema,
+  AgentServerFrameSchema,
+  AgentAuthRequestSchema,
+  HeartbeatPingSchema,
+  AgentClientFrameType,
+  AgentServerFrameType,
+  WebhookEventSchema,
+} from "../nexus-api/index.js";
+import type { AgentServerFrame, AgentClientFrame } from "../generated/shared/v1/gateway_agent_frame_pb.js";
 
 // ---------------------------------------------------------------------------
 // Defaults
@@ -85,10 +53,10 @@ export function computeReconnectDelay(
 }
 
 // ---------------------------------------------------------------------------
-// Non-recoverable error codes that should stop reconnection
+// Non-recoverable errorDetail.errorName values
 // ---------------------------------------------------------------------------
 
-const NON_RECOVERABLE_ERROR_CODES = new Set([
+const NON_RECOVERABLE_ERROR_NAMES = new Set([
   "AUTH_FAILED",
   "TOKEN_REVOKED",
   "TOKEN_EXPIRED",
@@ -225,31 +193,30 @@ export class WebSocketConnector {
         if (!frame) return;
 
         switch (frame.type) {
-          case "AUTH_RESPONSE":
+          case AgentServerFrameType.AUTH_RESPONSE:
             this.handleAuthResponse(frame);
             if (!settled) {
               settled = true;
-              if (frame.success) {
+              if (frame.payload.case === "authResponse" && frame.payload.value.success) {
                 resolve();
               } else {
-                reject(
-                  new Error(
-                    `Authentication failed: ${frame.error ?? "unknown error"}`,
-                  ),
-                );
+                const errMsg = frame.payload.case === "authResponse"
+                  ? frame.payload.value.errorMessage ?? "unknown error"
+                  : "unexpected frame payload";
+                reject(new Error(`Authentication failed: ${errMsg}`));
               }
             }
             break;
 
-          case "HEARTBEAT_PONG":
+          case AgentServerFrameType.HEARTBEAT_PONG:
             this.handleHeartbeatPong();
             break;
 
-          case "EVENT_PUSH":
+          case AgentServerFrameType.EVENT_PUSH:
             this.handleEventPush(frame);
             break;
 
-          case "ERROR":
+          case AgentServerFrameType.ERROR:
             this.handleErrorFrame(frame);
             break;
 
@@ -291,24 +258,31 @@ export class WebSocketConnector {
   // -----------------------------------------------------------------------
 
   private sendAuthRequest(): void {
-    const frame: AuthRequestFrame = {
-      type: "AUTH_REQUEST",
-      token: this.config.agentToken,
-    };
+    const frame = create(AgentClientFrameSchema, {
+      requestId: BigInt(0),
+      type: AgentClientFrameType.AUTH_REQUEST,
+      payload: {
+        case: "authRequest",
+        value: create(AgentAuthRequestSchema, {
+          token: this.config.agentToken,
+        }),
+      },
+    });
     this.sendFrame(frame);
   }
 
-  private handleAuthResponse(frame: AuthResponseFrame): void {
-    if (frame.success) {
+  private handleAuthResponse(frame: AgentServerFrame): void {
+    if (frame.payload.case === "authResponse" && frame.payload.value.success) {
       this.authenticated = true;
       this.reconnectAttempt = 0;
       this.startHeartbeat();
     } else {
       // Auth failure is non-recoverable — stop reconnection.
       this.stopping = true;
-      this.emitError(
-        new Error(`Authentication failed: ${frame.error ?? "unknown"}`),
-      );
+      const errMsg = frame.payload.case === "authResponse"
+        ? frame.payload.value.errorMessage ?? "unknown"
+        : "unexpected payload";
+      this.emitError(new Error(`Authentication failed: ${errMsg}`));
     }
   }
 
@@ -323,7 +297,14 @@ export class WebSocketConnector {
     // Send HEARTBEAT_PING at the configured interval.
     this.heartbeatTimer = setInterval(() => {
       if (this.ws?.readyState === WebSocket.OPEN) {
-        const frame: HeartbeatPingFrame = { type: "HEARTBEAT_PING" };
+        const frame = create(AgentClientFrameSchema, {
+          requestId: BigInt(0),
+          type: AgentClientFrameType.HEARTBEAT_PING,
+          payload: {
+            case: "heartbeatPing",
+            value: create(HeartbeatPingSchema, {}),
+          },
+        });
         this.sendFrame(frame);
       }
     }, this.heartbeatInterval);
@@ -356,19 +337,25 @@ export class WebSocketConnector {
   // Event dispatch
   // -----------------------------------------------------------------------
 
-  private handleEventPush(frame: EventPushFrame): void {
-    this.eventHandler?.(frame.event);
+  private handleEventPush(frame: AgentServerFrame): void {
+    if (frame.payload.case === "eventPush" && frame.payload.value.event) {
+      this.eventHandler?.(frame.payload.value.event);
+    }
   }
 
   // -----------------------------------------------------------------------
   // Error handling
   // -----------------------------------------------------------------------
 
-  private handleErrorFrame(frame: ErrorFrame): void {
-    const err = new Error(`Gateway error [${frame.code}]: ${frame.message}`);
+  private handleErrorFrame(frame: AgentServerFrame): void {
+    if (frame.payload.case !== "error") return;
+
+    const errorDetail = frame.payload.value.error;
+    const errorName = errorDetail?.errorName ?? "UNKNOWN";
+    const err = new Error(`Gateway error [${errorName}]: ${errorDetail?.errorName ?? "no details"}`);
     this.emitError(err);
 
-    if (NON_RECOVERABLE_ERROR_CODES.has(frame.code)) {
+    if (errorDetail && NON_RECOVERABLE_ERROR_NAMES.has(errorName)) {
       this.stopping = true;
       this.ws?.close(4001, "non-recoverable error");
     }
@@ -421,20 +408,19 @@ export class WebSocketConnector {
   // Frame I/O helpers
   // -----------------------------------------------------------------------
 
-  private sendFrame(frame: ClientFrame): void {
+  private sendFrame(frame: AgentClientFrame): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify(frame));
+      const binary = toBinary(AgentClientFrameSchema, frame);
+      this.ws.send(binary);
     }
   }
 
-  private parseFrame(data: WebSocket.Data): ServerFrame | null {
+  private parseFrame(data: WebSocket.Data): AgentServerFrame | null {
     try {
-      const text =
-        typeof data === "string" ? data : (data as Buffer).toString("utf-8");
-      const parsed = JSON.parse(text) as Record<string, unknown>;
-
-      if (typeof parsed.type !== "string") return null;
-      return parsed as unknown as ServerFrame;
+      const buf = typeof data === "string"
+        ? new TextEncoder().encode(data)
+        : new Uint8Array(data as ArrayBuffer);
+      return fromBinary(AgentServerFrameSchema, buf);
     } catch {
       return null;
     }

@@ -16,6 +16,7 @@
     }
   },
   "scripts": {
+    "generate": "cd ../nexus-ai/proto && buf generate --template ../../nexus-openclaw/buf.gen.ts.yaml --include-imports -o ../../nexus-openclaw",
     "build": "tsc",
     "test": "vitest --run",
     "test:watch": "vitest",
@@ -42,6 +43,9 @@
     "streaming"
   ],
   "dependencies": {
+    "@bufbuild/protobuf": "^2.11.0",
+    "@connectrpc/connect": "^2.1.1",
+    "@connectrpc/connect-web": "^2.1.1",
     "ws": "^8.18.0"
   },
   "devDependencies": {

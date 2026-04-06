@@ -1,156 +1,71 @@
 /**
- * Lightweight Connect RPC client for Nexus AI API.
+ * Connect RPC client for Nexus AI API.
  *
- * Connect RPC uses HTTP POST with JSON bodies. URL pattern:
- *   {serverUrl}/{package}.{Service}/{Method}
- *
- * This avoids depending on generated protobuf types — the package
- * talks to Nexus over plain HTTP/JSON.
+ * Uses @connectrpc/connect-web transport with generated protobuf types.
+ * All RPC calls are typed via generated service descriptors.
  */
+
+import { create } from "@bufbuild/protobuf";
+import { createClient, type Client, type Interceptor } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
 
 import type { NexusAccountConfig } from "../config.js";
 
-// ---------------------------------------------------------------------------
-// Request / Response types (minimal, only fields we use)
-// ---------------------------------------------------------------------------
-
-// -- Auth --
-
-export interface GetClientConfigResponse {
-  gateway?: {
-    wsUrl?: string;
-  };
-}
-
-// -- Message --
-
-export interface MessageBody {
-  type: string;
-  textContent?: { text: string; entities?: MessageEntity[] };
-  markdownContent?: { rawMarkdown: string };
-  streamContent?: { phase: string };
-  imageContent?: { fileId: string };
-  audioContent?: { fileId: string };
-  videoContent?: { fileId: string };
-  fileContent?: { fileId: string };
-  cardContent?: { cardJson: string };
-}
-
-export interface MessageEntity {
-  type: string;
-  offset: number;
-  length: number;
-  userId?: number;
-  url?: string;
-}
-
-export interface SendMessageRequest {
-  clientMessageId: string;
-  conversationId: string;
-  body: MessageBody;
-  replyToMessageId?: string;
-}
-
-export interface SendMessageResponse {
-  messageId: string;
-  createdAt: string;
-}
-
-export interface EditMessageRequest {
-  conversationId: string;
-  messageId: string;
-  newBody: MessageBody;
-}
-
-export interface EditMessageResponse {
-  updatedAt: string;
-}
-
-// -- Stream --
-
-export interface PushStreamDeltaRequest {
-  conversationId: string;
-  messageId: string;
-  seq: number;
-  delta: string;
-}
-
-export interface EndStreamRequest {
-  conversationId: string;
-  messageId: string;
-  accumulatedText: string;
-  entities?: MessageEntity[];
-}
-
-export interface ErrorStreamRequest {
-  conversationId: string;
-  messageId: string;
-  errorMessage: string;
-}
-
-// -- Card --
-
-export interface AnswerCardActionRequest {
-  actionId: string;
-  text?: string;
-  showAlert: boolean;
-}
-
-// -- Media --
-
-export interface UploadFileRequest {
-  fileName: string;
-  contentType: string;
-  purpose: string;
-  data: string; // base64-encoded
-}
-
-export interface UploadFileResponse {
-  file?: {
-    fileId?: string;
-    publicUrl?: string;
-    fileName?: string;
-    contentType?: string;
-    size?: string;
-  };
-}
-
-export interface GetDownloadUrlRequest {
-  fileId: string;
-}
-
-export interface GetDownloadUrlResponse {
-  url: string;
-  expiresAt: string;
-}
-
-// -- Agent --
-
-export interface SetDeliveryConfigRequest {
-  webhook?: { url: string };
-  websocket?: Record<string, never>;
-  none?: Record<string, never>;
-}
-
-export interface SetDeliveryConfigResponse {
-  webhookSecret?: string;
-}
+// Generated service descriptors and schemas
+import { AuthService, GetClientConfigRequestSchema } from "../generated/api/v1/auth_service_pb.js";
+import {
+  MessageService,
+  type SendMessageRequest,
+  type SendMessageResponse,
+  type EditMessageRequest,
+  type EditMessageResponse,
+  type PushStreamDeltaRequest,
+  type EndStreamRequest,
+  type ErrorStreamRequest,
+  type AnswerCardActionRequest,
+  SendMessageRequestSchema,
+  EditMessageRequestSchema,
+  PushStreamDeltaRequestSchema,
+  EndStreamRequestSchema,
+  ErrorStreamRequestSchema,
+  AnswerCardActionRequestSchema,
+} from "../generated/api/v1/message_service_pb.js";
+import {
+  MediaService,
+  type UploadFileRequest,
+  type UploadFileResponse,
+  type GetDownloadURLRequest,
+  type GetDownloadURLResponse,
+  UploadFileRequestSchema,
+  GetDownloadURLRequestSchema,
+} from "../generated/api/v1/media_service_pb.js";
+import {
+  AgentService,
+  type SetDeliveryConfigRequest,
+  type SetDeliveryConfigResponse,
+  SetDeliveryConfigRequestSchema,
+} from "../generated/api/v1/agent_service_pb.js";
+import { MessageType, StreamPhase, MessageBodySchema, MessageEntityType } from "../generated/shared/v1/message_pb.js";
+import { MediaPurpose } from "../generated/shared/v1/media_pb.js";
 
 // ---------------------------------------------------------------------------
-// RPC Error
+// int64 boundary helpers
 // ---------------------------------------------------------------------------
 
-export class NexusRpcError extends Error {
-  constructor(
-    public readonly service: string,
-    public readonly method: string,
-    public readonly status: number,
-    public readonly code: string,
-    public readonly detail: string,
-  ) {
-    super(`${service}/${method} failed (${status}): [${code}] ${detail}`);
-    this.name = "NexusRpcError";
-  }
+/** Convert bigint to number for internal plugin types. */
+export function toNum(v: bigint | undefined): number {
+  if (v === undefined) return 0;
+  return Number(v);
+}
+
+/** Convert number to bigint for proto request fields. */
+export function toBid(v: number): bigint {
+  return BigInt(v);
+}
+
+/** Convert optional number to optional bigint for proto request fields. */
+export function toBidOpt(v: number | undefined): bigint | undefined {
+  return v !== undefined ? BigInt(v) : undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -166,72 +81,45 @@ function maskToken(token: string): string {
 // NexusClient
 // ---------------------------------------------------------------------------
 
-const CONNECT_RPC_CONTENT_TYPE = "application/json";
-
 /**
- * Lightweight HTTP client wrapping Nexus Connect RPC endpoints.
+ * Connect RPC client wrapping Nexus API endpoints.
  *
- * All RPC methods use HTTP POST with JSON bodies. The URL pattern is:
- *   {serverUrl}/{package}.{Service}/{Method}
+ * Uses typed service clients generated from protobuf definitions.
  */
 export class NexusClient {
   private readonly serverUrl: string;
   private readonly agentToken: string;
 
+  private readonly messageClient: Client<typeof MessageService>;
+  private readonly mediaClient: Client<typeof MediaService>;
+  private readonly agentClient: Client<typeof AgentService>;
+  private readonly authClient: Client<typeof AuthService>;
+
   constructor(private readonly config: NexusAccountConfig) {
-    // Strip trailing slash from serverUrl for consistent URL building.
     this.serverUrl = config.serverUrl.replace(/\/+$/, "");
     this.agentToken = config.agentToken;
-  }
 
-  // -----------------------------------------------------------------------
-  // Generic RPC caller
-  // -----------------------------------------------------------------------
-
-  /**
-   * Execute a Connect RPC call.
-   *
-   * @param service  Fully-qualified service name, e.g. "api.v1.AuthService"
-   * @param method   Method name, e.g. "GetClientConfig"
-   * @param request  JSON-serializable request body
-   * @param skipAuth If true, omit the Authorization header
-   */
-  async rpc<Req, Res>(
-    service: string,
-    method: string,
-    request: Req,
-    skipAuth = false,
-  ): Promise<Res> {
-    const url = `${this.serverUrl}/${service}/${method}`;
-
-    const headers: Record<string, string> = {
-      "Content-Type": CONNECT_RPC_CONTENT_TYPE,
+    // Auth interceptor adds Bearer token to all requests.
+    const authInterceptor: Interceptor = (next) => async (req) => {
+      req.header.set("Authorization", `Bearer ${this.agentToken}`);
+      return await next(req);
     };
 
-    if (!skipAuth) {
-      headers["Authorization"] = `Bearer ${this.agentToken}`;
-    }
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(request),
+    // Transport with auth interceptor.
+    const transport = createConnectTransport({
+      baseUrl: this.serverUrl,
+      interceptors: [authInterceptor],
     });
 
-    if (!res.ok) {
-      let code = "UNKNOWN";
-      let detail = res.statusText;
-      try {
-        const errBody = (await res.json()) as { code?: string; message?: string };
-        code = errBody.code ?? code;
-        detail = errBody.message ?? detail;
-      } catch {
-        // response body is not JSON — keep defaults
-      }
-      throw new NexusRpcError(service, method, res.status, code, detail);
-    }
+    // No-auth transport for GetClientConfig (public endpoint).
+    const noAuthTransport = createConnectTransport({
+      baseUrl: this.serverUrl,
+    });
 
-    return (await res.json()) as Res;
+    this.messageClient = createClient(MessageService, transport);
+    this.mediaClient = createClient(MediaService, transport);
+    this.agentClient = createClient(AgentService, transport);
+    this.authClient = createClient(AuthService, noAuthTransport);
   }
 
   // -----------------------------------------------------------------------
@@ -241,15 +129,12 @@ export class NexusClient {
   /**
    * Discover the agent WebSocket gateway URL.
    *
-   * Calls AuthService.GetClientConfig (skip_auth) to obtain
-   * GatewayEndpoints.ws_url, then replaces `/ws` with `/ws/agent`.
+   * Calls AuthService.GetClientConfig (no auth) to obtain
+   * GatewayEndpoints.ws_url, then replaces /ws with /ws/agent.
    */
   async discoverGatewayUrl(): Promise<string> {
-    const res = await this.rpc<Record<string, never>, GetClientConfigResponse>(
-      "api.v1.AuthService",
-      "GetClientConfig",
-      {},
-      true, // skip_auth
+    const res = await this.authClient.getClientConfig(
+      create(GetClientConfigRequestSchema, {}),
     );
 
     const wsUrl = res.gateway?.wsUrl;
@@ -268,11 +153,11 @@ export class NexusClient {
   // -----------------------------------------------------------------------
 
   async sendMessage(req: SendMessageRequest): Promise<SendMessageResponse> {
-    return this.rpc("api.v1.MessageService", "SendMessage", req);
+    return this.messageClient.sendMessage(req);
   }
 
   async editMessage(req: EditMessageRequest): Promise<EditMessageResponse> {
-    return this.rpc("api.v1.MessageService", "EditMessage", req);
+    return this.messageClient.editMessage(req);
   }
 
   // -----------------------------------------------------------------------
@@ -280,15 +165,15 @@ export class NexusClient {
   // -----------------------------------------------------------------------
 
   async pushStreamDelta(req: PushStreamDeltaRequest): Promise<void> {
-    await this.rpc("api.v1.MessageService", "PushStreamDelta", req);
+    await this.messageClient.pushStreamDelta(req);
   }
 
   async endStream(req: EndStreamRequest): Promise<void> {
-    await this.rpc("api.v1.MessageService", "EndStream", req);
+    await this.messageClient.endStream(req);
   }
 
   async errorStream(req: ErrorStreamRequest): Promise<void> {
-    await this.rpc("api.v1.MessageService", "ErrorStream", req);
+    await this.messageClient.errorStream(req);
   }
 
   // -----------------------------------------------------------------------
@@ -296,7 +181,7 @@ export class NexusClient {
   // -----------------------------------------------------------------------
 
   async answerCardAction(req: AnswerCardActionRequest): Promise<void> {
-    await this.rpc("api.v1.MessageService", "AnswerCardAction", req);
+    await this.messageClient.answerCardAction(req);
   }
 
   // -----------------------------------------------------------------------
@@ -304,11 +189,11 @@ export class NexusClient {
   // -----------------------------------------------------------------------
 
   async uploadFile(req: UploadFileRequest): Promise<UploadFileResponse> {
-    return this.rpc("api.v1.MediaService", "UploadFile", req);
+    return this.mediaClient.uploadFile(req);
   }
 
-  async getDownloadUrl(req: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> {
-    return this.rpc("api.v1.MediaService", "GetDownloadURL", req);
+  async getDownloadUrl(req: GetDownloadURLRequest): Promise<GetDownloadURLResponse> {
+    return this.mediaClient.getDownloadURL(req);
   }
 
   // -----------------------------------------------------------------------
@@ -316,7 +201,7 @@ export class NexusClient {
   // -----------------------------------------------------------------------
 
   async setDeliveryConfig(req: SetDeliveryConfigRequest): Promise<SetDeliveryConfigResponse> {
-    return this.rpc("api.v1.AgentService", "SetDeliveryConfig", req);
+    return this.agentClient.setDeliveryConfig(req);
   }
 
   // -----------------------------------------------------------------------
@@ -337,3 +222,10 @@ export class NexusClient {
 export function createNexusClient(config: NexusAccountConfig): NexusClient {
   return new NexusClient(config);
 }
+
+// Re-export generated types for convenience
+export { MessageType, StreamPhase, MessageBodySchema, MessageEntityType } from "../generated/shared/v1/message_pb.js";
+export { MediaPurpose } from "../generated/shared/v1/media_pb.js";
+export { SendMessageRequestSchema, EditMessageRequestSchema, PushStreamDeltaRequestSchema, EndStreamRequestSchema, ErrorStreamRequestSchema, AnswerCardActionRequestSchema } from "../generated/api/v1/message_service_pb.js";
+export { UploadFileRequestSchema, GetDownloadURLRequestSchema } from "../generated/api/v1/media_service_pb.js";
+export { SetDeliveryConfigRequestSchema } from "../generated/api/v1/agent_service_pb.js";

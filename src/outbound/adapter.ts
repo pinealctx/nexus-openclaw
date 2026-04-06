@@ -5,7 +5,22 @@
  * retry logic and error classification.
  */
 
-import type { NexusClient, NexusRpcError } from "../nexus-api/client.js";
+import { create } from "@bufbuild/protobuf";
+import { ConnectError, Code as ConnectCode } from "@connectrpc/connect";
+
+import type { NexusClient } from "../nexus-api/client.js";
+import {
+  MessageType,
+  MediaPurpose,
+  MessageBodySchema,
+  SendMessageRequestSchema,
+  EditMessageRequestSchema,
+  AnswerCardActionRequestSchema,
+  UploadFileRequestSchema,
+  toBid,
+  toBidOpt,
+} from "../nexus-api/index.js";
+import { TextContentSchema, MarkdownContentSchema, CardContentSchema, ImageContentSchema, AudioContentSchema, VideoContentSchema, FileContentSchema } from "../generated/shared/v1/message_pb.js";
 import type { OutboundTarget, SendOptions, MediaType } from "../types.js";
 import { isMarkdown } from "../utils/markdown-detect.js";
 import { generateClientMessageId } from "../utils/id-gen.js";
@@ -13,10 +28,6 @@ import { generateClientMessageId } from "../utils/id-gen.js";
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-const MESSAGE_TYPE_TEXT = "MESSAGE_TYPE_TEXT";
-const MESSAGE_TYPE_MARKDOWN = "MESSAGE_TYPE_MARKDOWN";
-const MESSAGE_TYPE_CARD = "MESSAGE_TYPE_CARD";
 
 /** Max retries for sendMessage calls. */
 const SEND_MAX_RETRIES = 2;
@@ -30,10 +41,6 @@ const UPLOAD_MAX_RETRIES = 1;
 // Helpers
 // ---------------------------------------------------------------------------
 
-function isNexusRpcError(err: unknown): err is NexusRpcError {
-  return err instanceof Error && err.name === "NexusRpcError";
-}
-
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -41,44 +48,55 @@ function sleep(ms: number): Promise<void> {
 /**
  * Determine the Nexus message type for outbound text.
  */
-function resolveTextType(text: string, options?: SendOptions): string {
+function resolveTextType(text: string, options?: SendOptions): MessageType {
   if (options?.forceMarkdown || isMarkdown(text)) {
-    return MESSAGE_TYPE_MARKDOWN;
+    return MessageType.MARKDOWN;
   }
-  return MESSAGE_TYPE_TEXT;
+  return MessageType.TEXT;
 }
 
 /**
- * Map a MediaType to the corresponding Nexus message type string.
+ * Map a MediaType to the corresponding Nexus MessageType enum value.
  */
-function mediaTypeToMessageType(type: MediaType): string {
+function mediaTypeToMessageType(type: MediaType): MessageType {
   switch (type) {
     case "image":
-      return "MESSAGE_TYPE_IMAGE";
+      return MessageType.IMAGE;
     case "audio":
-      return "MESSAGE_TYPE_AUDIO";
+      return MessageType.AUDIO;
     case "video":
-      return "MESSAGE_TYPE_VIDEO";
+      return MessageType.VIDEO;
     case "file":
-      return "MESSAGE_TYPE_FILE";
+      return MessageType.FILE;
   }
 }
 
 /**
- * Map a MediaType to the body field key used by Nexus SendMessage.
+ * Build a MessageBody for a media type using the oneof content pattern.
+ * Each case is handled individually so TypeScript narrows the literal type.
  */
-function mediaTypeToBodyKey(
-  type: MediaType,
-): "imageContent" | "audioContent" | "videoContent" | "fileContent" {
+function buildMediaBody(type: MediaType, fileId: string) {
   switch (type) {
     case "image":
-      return "imageContent";
+      return create(MessageBodySchema, {
+        type: MessageType.IMAGE,
+        content: { case: "image", value: create(ImageContentSchema, { fileId }) },
+      });
     case "audio":
-      return "audioContent";
+      return create(MessageBodySchema, {
+        type: MessageType.AUDIO,
+        content: { case: "audio", value: create(AudioContentSchema, { fileId }) },
+      });
     case "video":
-      return "videoContent";
+      return create(MessageBodySchema, {
+        type: MessageType.VIDEO,
+        content: { case: "video", value: create(VideoContentSchema, { fileId }) },
+      });
     case "file":
-      return "fileContent";
+      return create(MessageBodySchema, {
+        type: MessageType.FILE,
+        content: { case: "file", value: create(FileContentSchema, { fileId }) },
+      });
   }
 }
 
@@ -106,7 +124,7 @@ export class NexusOutboundAdapter {
   constructor(private readonly nexusClient: NexusClient) {}
 
   // -----------------------------------------------------------------------
-  // sendText  (Task 14.1 + 14.2)
+  // sendText
   // -----------------------------------------------------------------------
 
   /**
@@ -120,25 +138,28 @@ export class NexusOutboundAdapter {
     options?: SendOptions,
   ): Promise<void> {
     const msgType = resolveTextType(text, options);
-    const clientMessageId = generateClientMessageId().toString();
+    const clientMessageId = generateClientMessageId();
 
-    const body =
-      msgType === MESSAGE_TYPE_MARKDOWN
-        ? { type: msgType, markdownContent: { rawMarkdown: text } }
-        : { type: msgType, textContent: { text } };
-
-    await this.sendMessageWithRetry({
-      clientMessageId,
-      conversationId: String(target.conversationId),
-      body,
-      ...(target.replyToMessageId !== undefined && {
-        replyToMessageId: String(target.replyToMessageId),
-      }),
+    const body = create(MessageBodySchema, {
+      type: msgType,
+      content:
+        msgType === MessageType.MARKDOWN
+          ? { case: "markdown", value: create(MarkdownContentSchema, { rawMarkdown: text }) }
+          : { case: "text", value: create(TextContentSchema, { text }) },
     });
+
+    await this.sendMessageWithRetry(
+      create(SendMessageRequestSchema, {
+        clientMessageId,
+        conversationId: toBid(target.conversationId),
+        body,
+        replyToMessageId: toBidOpt(target.replyToMessageId),
+      }),
+    );
   }
 
   // -----------------------------------------------------------------------
-  // sendMedia  (Task 15.1)
+  // sendMedia
   // -----------------------------------------------------------------------
 
   /**
@@ -156,7 +177,7 @@ export class NexusOutboundAdapter {
 
     let fileId: string | undefined;
     try {
-      const data = await this.fetchAsBase64(media.url);
+      const data = await this.fetchAsUint8Array(media.url);
       fileId = await this.uploadWithRetry(fileName, contentType, data);
     } catch {
       // Upload failed — fall back to text link.
@@ -166,21 +187,17 @@ export class NexusOutboundAdapter {
     }
 
     if (fileId) {
-      const bodyKey = mediaTypeToBodyKey(media.type);
-      const msgType = mediaTypeToMessageType(media.type);
-      const clientMessageId = generateClientMessageId().toString();
+      const clientMessageId = generateClientMessageId();
+      const body = buildMediaBody(media.type, fileId);
 
-      await this.sendMessageWithRetry({
-        clientMessageId,
-        conversationId: String(target.conversationId),
-        body: {
-          type: msgType,
-          [bodyKey]: { fileId },
-        },
-        ...(target.replyToMessageId !== undefined && {
-          replyToMessageId: String(target.replyToMessageId),
+      await this.sendMessageWithRetry(
+        create(SendMessageRequestSchema, {
+          clientMessageId,
+          conversationId: toBid(target.conversationId),
+          body,
+          replyToMessageId: toBidOpt(target.replyToMessageId),
         }),
-      });
+      );
     } else {
       // Fallback: send URL as a text link.
       await this.sendText(target, `[${fileName}](${media.url})`);
@@ -188,7 +205,7 @@ export class NexusOutboundAdapter {
   }
 
   // -----------------------------------------------------------------------
-  // sendCard  (Task 18.1)
+  // sendCard
   // -----------------------------------------------------------------------
 
   /**
@@ -198,23 +215,23 @@ export class NexusOutboundAdapter {
     target: OutboundTarget,
     cardJson: string,
   ): Promise<void> {
-    const clientMessageId = generateClientMessageId().toString();
+    const clientMessageId = generateClientMessageId();
 
-    await this.sendMessageWithRetry({
-      clientMessageId,
-      conversationId: String(target.conversationId),
-      body: {
-        type: MESSAGE_TYPE_CARD,
-        cardContent: { cardJson },
-      },
-      ...(target.replyToMessageId !== undefined && {
-        replyToMessageId: String(target.replyToMessageId),
+    await this.sendMessageWithRetry(
+      create(SendMessageRequestSchema, {
+        clientMessageId,
+        conversationId: toBid(target.conversationId),
+        body: create(MessageBodySchema, {
+          type: MessageType.CARD,
+          content: { case: "card", value: create(CardContentSchema, { cardJson }) },
+        }),
+        replyToMessageId: toBidOpt(target.replyToMessageId),
       }),
-    });
+    );
   }
 
   // -----------------------------------------------------------------------
-  // answerCardAction  (Task 18.2)
+  // answerCardAction
   // -----------------------------------------------------------------------
 
   /**
@@ -225,15 +242,17 @@ export class NexusOutboundAdapter {
     text?: string,
     showAlert?: boolean,
   ): Promise<void> {
-    await this.nexusClient.answerCardAction({
-      actionId,
-      text,
-      showAlert: showAlert ?? false,
-    });
+    await this.nexusClient.answerCardAction(
+      create(AnswerCardActionRequestSchema, {
+        actionId,
+        text,
+        showAlert: showAlert ?? false,
+      }),
+    );
   }
 
   // -----------------------------------------------------------------------
-  // editCard  (Task 18.3)
+  // editCard
   // -----------------------------------------------------------------------
 
   /**
@@ -244,18 +263,20 @@ export class NexusOutboundAdapter {
     messageId: number,
     cardJson: string,
   ): Promise<void> {
-    await this.nexusClient.editMessage({
-      conversationId: String(conversationId),
-      messageId: String(messageId),
-      newBody: {
-        type: MESSAGE_TYPE_CARD,
-        cardContent: { cardJson },
-      },
-    });
+    await this.nexusClient.editMessage(
+      create(EditMessageRequestSchema, {
+        conversationId: toBid(conversationId),
+        messageId: toBid(messageId),
+        newBody: create(MessageBodySchema, {
+          type: MessageType.CARD,
+          content: { case: "card", value: create(CardContentSchema, { cardJson }) },
+        }),
+      }),
+    );
   }
 
   // -----------------------------------------------------------------------
-  // Retry helpers  (Task 14.2)
+  // Retry helpers
   // -----------------------------------------------------------------------
 
   /**
@@ -265,9 +286,7 @@ export class NexusOutboundAdapter {
    * - NOT_FOUND: log and skip (no retry).
    * - Other errors: retry up to SEND_MAX_RETRIES with exponential backoff.
    */
-  private async sendMessageWithRetry(
-    req: Parameters<NexusClient["sendMessage"]>[0],
-  ): Promise<void> {
+  private async sendMessageWithRetry(req: Parameters<NexusClient["sendMessage"]>[0]): Promise<void> {
     let lastError: unknown;
 
     for (let attempt = 0; attempt <= SEND_MAX_RETRIES; attempt++) {
@@ -277,11 +296,11 @@ export class NexusOutboundAdapter {
       } catch (err: unknown) {
         lastError = err;
 
-        if (isNexusRpcError(err)) {
-          if (err.code === "UNAUTHENTICATED") {
+        if (err instanceof ConnectError) {
+          if (err.code === ConnectCode.Unauthenticated) {
             throw err;
           }
-          if (err.code === "NOT_FOUND") {
+          if (err.code === ConnectCode.NotFound) {
             console.warn(
               `[NexusOutbound] conversation not found, skipping: ${err.message}`,
             );
@@ -306,18 +325,20 @@ export class NexusOutboundAdapter {
   private async uploadWithRetry(
     fileName: string,
     contentType: string,
-    data: string,
+    data: Uint8Array,
   ): Promise<string> {
     let lastError: unknown;
 
     for (let attempt = 0; attempt <= UPLOAD_MAX_RETRIES; attempt++) {
       try {
-        const res = await this.nexusClient.uploadFile({
-          fileName,
-          contentType,
-          purpose: "message_attachment",
-          data,
-        });
+        const res = await this.nexusClient.uploadFile(
+          create(UploadFileRequestSchema, {
+            fileName,
+            contentType,
+            purpose: MediaPurpose.MESSAGE,
+            data,
+          }),
+        );
         const fileId = res.file?.fileId;
         if (!fileId) {
           throw new Error("UploadFile response missing file_id");
@@ -339,15 +360,15 @@ export class NexusOutboundAdapter {
   // -----------------------------------------------------------------------
 
   /**
-   * Fetch a URL and return its content as a base64-encoded string.
+   * Fetch a URL and return its content as a Uint8Array.
    */
-  private async fetchAsBase64(url: string): Promise<string> {
+  private async fetchAsUint8Array(url: string): Promise<Uint8Array> {
     const res = await fetch(url);
     if (!res.ok) {
       throw new Error(`Failed to fetch media: ${res.status} ${res.statusText}`);
     }
     const buf = await res.arrayBuffer();
-    return Buffer.from(buf).toString("base64");
+    return new Uint8Array(buf);
   }
 
   /**
