@@ -1,15 +1,14 @@
 /**
- * MessageNormalizer converts Nexus WebhookEvent (protojson) into
+ * MessageNormalizer converts Nexus WebhookEvent into
  * NexusMsgContext objects for OpenClaw consumption.
  */
 
-import { fromJson, create } from "@bufbuild/protobuf";
+import { create } from "@bufbuild/protobuf";
 
 import type { NexusClient } from "../nexus-api/client.js";
 import {
   MessageType,
   MessageEntityType,
-  WebhookEventSchema,
   WebhookEventType,
   GetDownloadURLRequestSchema,
 } from "../nexus-api/index.js";
@@ -58,17 +57,17 @@ export class MessageNormalizer {
   constructor(private readonly nexusClient: NexusClient) {}
 
   /**
-   * Convert a Nexus WebhookEvent (protojson) into a NexusMsgContext.
+   * Convert a Nexus WebhookEvent into a NexusMsgContext.
+   * The event is already a deserialized protobuf object from ws-connector's fromBinary.
    * Returns null for events that should be discarded (e.g. RECALLED).
    */
   async normalize(
     event: unknown,
     agentUserId: number,
   ): Promise<NexusMsgContext | null> {
-    let ev: WebhookEvent;
-    try {
-      ev = fromJson(WebhookEventSchema, event as Parameters<typeof fromJson<typeof WebhookEventSchema>>[1]);
-    } catch {
+    // Event is already a deserialized protobuf WebhookEvent from ws-connector's fromBinary
+    const ev = event as WebhookEvent;
+    if (!ev || !ev.eventType) {
       return null;
     }
 
@@ -171,7 +170,7 @@ export class MessageNormalizer {
       case "file": {
         const fileId = content.value.fileId;
         if (fileId) {
-          const mediaType = MEDIA_TYPE_MAP[bodyType];
+          const mediaType = MEDIA_TYPE_MAP[bodyType as MessageType];
           if (mediaType) {
             const { url } = await this.nexusClient.getDownloadUrl(
               create(GetDownloadURLRequestSchema, { fileId }),

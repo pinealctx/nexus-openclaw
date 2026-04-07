@@ -1,8 +1,9 @@
 {
-  "name": "nexus-openclaw",
-  "version": "0.1.0",
-  "channel": "nexus",
-  "dock": "./dist/dock.js",
-  "plugin": "./dist/plugin.js",
-  "configSchema": "./dist/config-schema.json"
+  "id": "nexus-openclaw-plugin",
+  "channels": ["nexus"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
 }

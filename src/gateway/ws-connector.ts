@@ -19,7 +19,6 @@ import {
   HeartbeatPingSchema,
   AgentClientFrameType,
   AgentServerFrameType,
-  WebhookEventSchema,
 } from "../nexus-api/index.js";
 import type { AgentServerFrame, AgentClientFrame } from "../generated/shared/v1/gateway_agent_frame_pb.js";
 
@@ -196,6 +195,7 @@ export class WebSocketConnector {
       let settled = false;
 
       ws.on("open", () => {
+        console.log("[nexus-ws] connected to", url);
         this.sendAuthRequest();
       });
 
@@ -238,6 +238,7 @@ export class WebSocketConnector {
       });
 
       ws.on("error", (err: Error) => {
+        console.error("[nexus-ws] error:", err.message);
         if (!settled) {
           settled = true;
           reject(err);
@@ -247,6 +248,7 @@ export class WebSocketConnector {
 
       ws.on("close", (_code: number, reason: Buffer) => {
         const reasonStr = reason.toString() || "connection closed";
+        console.log("[nexus-ws] disconnected:", _code, reasonStr);
         this.authenticated = false;
         this.clearHeartbeat();
 
@@ -287,6 +289,7 @@ export class WebSocketConnector {
       this.authenticated = true;
       this.reconnectAttempt = 0;
       this.startHeartbeat();
+      console.log("[nexus-ws] authenticated, userId:", frame.payload.value.userId);
       // Expose the authenticated agent user ID so callers don't need it in config.
       if (frame.payload.value.userId) {
         this.authSuccessHandler?.(frame.payload.value.userId);
@@ -297,6 +300,7 @@ export class WebSocketConnector {
       const errMsg = frame.payload.case === "authResponse"
         ? frame.payload.value.errorMessage ?? "unknown"
         : "unexpected payload";
+      console.error("[nexus-ws] auth failed:", errMsg);
       this.emitError(new Error(`Authentication failed: ${errMsg}`));
     }
   }
@@ -354,6 +358,7 @@ export class WebSocketConnector {
 
   private handleEventPush(frame: AgentServerFrame): void {
     if (frame.payload.case === "eventPush" && frame.payload.value.event) {
+      console.log("[nexus-ws] event received, type:", frame.type);
       this.eventHandler?.(frame.payload.value.event);
     }
   }

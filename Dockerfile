@@ -15,11 +15,11 @@ WORKDIR /build
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && pnpm install --frozen-lockfile
 
-COPY tsconfig.json openclaw.plugin.json ./
+COPY tsconfig.json openclaw.plugin.json index.ts ./
 COPY src/ src/
 RUN pnpm build
 RUN pnpm install --frozen-lockfile --prod
 
 # ---- Runtime stage ----
 FROM alpine/openclaw:latest
-COPY --from=builder /build /opt/nexus-openclaw
+COPY --from=builder --chown=root:root /build /opt/nexus-openclaw

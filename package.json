@@ -1,29 +1,48 @@
 {
-  "name": "nexus-openclaw",
+  "name": "@nexus/nexus-openclaw-plugin",
   "version": "0.1.0",
   "description": "OpenClaw channel plugin for Nexus AI IM platform",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./dock": {
-      "import": "./dist/dock.js",
-      "types": "./dist/dock.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "README.md"
+  ],
   "scripts": {
     "generate": "cd ../nexus-ai/proto && buf generate --template ../../nexus-openclaw/buf.gen.ts.yaml --include-imports -o ../../nexus-openclaw",
     "build": "tsc",
+    "clean": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true})\"",
+    "prebuild": "npm run clean",
     "test": "vitest --run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit"
   },
   "openclaw": {
-    "extensions": ["channel:nexus"]
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "channel": {
+      "id": "nexus",
+      "label": "Nexus AI",
+      "selectionLabel": "Nexus AI IM",
+      "docsPath": "/channels/nexus",
+      "docsLabel": "nexus-openclaw-plugin",
+      "blurb": "Connect to Nexus AI IM platform as an agent.",
+      "order": 200
+    },
+    "install": {
+      "npmSpec": "@nexus/nexus-openclaw-plugin",
+      "localPath": "extensions/nexus-openclaw-plugin",
+      "defaultChoice": "npm"
+    }
   },
   "repository": {
     "type": "git",
@@ -49,10 +68,11 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "vitest": "^3.2.1",
-    "fast-check": "^4.1.1",
     "@types/ws": "^8.18.1",
-    "typescript": "^5.8.3"
+    "fast-check": "^4.1.1",
+    "openclaw": "^2026.4.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
   },
   "license": "MIT"
 }

@@ -1,13 +1,14 @@
 /**
- * @openclaw/channel-nexus — Nexus AI channel plugin for OpenClaw.
+ * Internal re-exports for the Nexus AI channel plugin.
  *
- * Default export: the register function.
- * Named exports: types, config utilities, dock metadata.
+ * The actual plugin entry point is at the project root: index.ts
  */
 
-export { register as default, register, nexusPlugin } from "./plugin.js";
-export { nexusDock } from "./dock.js";
+export { nexusPlugin } from "./channel.js";
+export type { ResolvedNexusAccount } from "./channel.js";
 export { validateConfig } from "./config.js";
+export { CHANNEL_ID, DEFAULT_ACCOUNT_ID } from "./const.js";
+export { getNexusRuntime, setNexusRuntime } from "./runtime.js";
 
 export type {
   NexusAccountConfig,

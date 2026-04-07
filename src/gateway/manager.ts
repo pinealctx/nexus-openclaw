@@ -64,6 +64,7 @@ export class GatewayManager {
     }
 
     const config = this.configResolver(accountId);
+    console.log("[nexus-gw] starting account:", accountId, "mode:", config.deliveryMode);
     const client = createNexusClient(config);
 
     const entry: AccountEntry = {
