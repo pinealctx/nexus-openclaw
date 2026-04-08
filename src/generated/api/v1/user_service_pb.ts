@@ -497,7 +497,7 @@ export const BatchGetUserInfoResponseSchema: GenMessage<BatchGetUserInfoResponse
 export const UserService: GenService<{
   /**
    * GetProfile returns the current user profile.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *
@@ -510,7 +510,7 @@ export const UserService: GenService<{
   },
   /**
    * UpdateProfile updates the current user profile fields.
-   *
+   * 
    * Side effects:
    *   - If avatar_url changes, the old avatar is not deleted (clients
    *     may still cache it). The new URL is propagated to all
@@ -518,7 +518,7 @@ export const UserService: GenService<{
    *   - Delivers a UserProfileUpdatedEvent as an SnUpdate to the user's
    *     own update box only (for multi-device sync). Contacts refresh
    *     cached profile data on demand.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - INVALID_ARGUMENT: Nickname exceeds 64 characters or signature
@@ -533,7 +533,7 @@ export const UserService: GenService<{
   },
   /**
    * ListDevices returns all active device sessions.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *
@@ -546,11 +546,11 @@ export const UserService: GenService<{
   },
   /**
    * RemoveDevice removes a specific device session.
-   *
+   * 
    * Side effects:
    *   - Revokes the access and refresh tokens for the target device.
    *   - Closes the long connection for the target device if active.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - NOT_FOUND: Device does not exist or does not belong to the user.
@@ -565,13 +565,13 @@ export const UserService: GenService<{
   },
   /**
    * SetUsername sets the username for the current user (first-time only).
-   *
+   * 
    * Side effects:
    *   - Sets the username globally (unique constraint enforced).
    *   - The username becomes resolvable via ResolveUsername.
    *   - Delivers a UsernameChangedEvent as an SnUpdate to the user's own
    *     update box only (multi-device sync).
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - FAILED_PRECONDITION: User already has a custom username set.
@@ -588,7 +588,7 @@ export const UserService: GenService<{
   },
   /**
    * ResolveUsername resolves a username to public user info.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - NOT_FOUND: No user exists with this username.
@@ -604,10 +604,10 @@ export const UserService: GenService<{
    * BatchGetUserInfo returns public user info for a batch of user IDs.
    * Used by clients to populate user caches (e.g., conversation list,
    * group member list, message sender info).
-   *
+   * 
    * IDs that do not exist or belong to deleted accounts are silently
    * omitted from the response (no error raised).
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - INVALID_ARGUMENT: user_ids is empty or exceeds 200 items.

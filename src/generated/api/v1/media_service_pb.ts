@@ -293,7 +293,7 @@ export const GetDownloadURLResponseSchema: GenMessage<GetDownloadURLResponse> = 
 /**
  * MediaService handles file upload and download for all media types.
  * Authenticated via Access Token.
- *
+ * 
  * Upload strategies:
  *   - Small files (avatars, thumbnails): use UploadFile for single-request
  *     upload. Returns a permanent public URL for AVATAR/GROUP_AVATAR
@@ -301,7 +301,7 @@ export const GetDownloadURLResponseSchema: GenMessage<GetDownloadURLResponse> = 
  *   - Large files (message attachments): use InitUpload → UploadChunk →
  *     CompleteUpload for resumable chunked upload. Returns a file_id;
  *     clients obtain time-limited download URLs via GetDownloadURL.
- *
+ * 
  * Access control:
  *   - AVATAR / GROUP_AVATAR files are publicly accessible via permanent
  *     URL. No download RPC needed.
@@ -317,13 +317,13 @@ export const MediaService: GenService<{
   /**
    * UploadFile uploads a complete file in a single request.
    * Suitable for avatars and small media (recommended < 5 MB).
-   *
+   * 
    * Side effects:
    *   - Stores the file and generates metadata (dimensions, checksum).
    *   - For AVATAR/GROUP_AVATAR purpose, generates a permanent public URL
    *     in MediaFileInfo.public_url.
    *   - For MESSAGE purpose, generates a thumbnail if applicable.
-   *
+   * 
    * Error conditions:
    *   - INVALID_ARGUMENT: File is empty, content_type is missing, or
    *     purpose is UNSPECIFIED.
@@ -340,10 +340,10 @@ export const MediaService: GenService<{
   /**
    * InitUpload initializes a resumable chunked upload session.
    * Only for MESSAGE purpose files (attachments, videos, etc.).
-   *
+   * 
    * Side effects:
    *   - Creates an upload session with a TTL (default 24 hours).
-   *
+   * 
    * Error conditions:
    *   - INVALID_ARGUMENT: File name, content_type, or size is missing.
    *   - RESOURCE_EXHAUSTED: File size exceeds the maximum allowed
@@ -358,7 +358,7 @@ export const MediaService: GenService<{
   },
   /**
    * UploadChunk uploads a file chunk to an active session.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Session does not exist or has expired.
    *   - INVALID_ARGUMENT: Offset does not match the expected position.
@@ -373,12 +373,12 @@ export const MediaService: GenService<{
   },
   /**
    * CompleteUpload finalizes the chunked upload and returns file metadata.
-   *
+   * 
    * Side effects:
    *   - Validates checksum integrity and generates metadata (dimensions,
    *     thumbnail).
    *   - Deletes the upload session.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Session does not exist or has expired.
    *   - FAILED_PRECONDITION: Uploaded bytes do not match declared size.
@@ -393,11 +393,11 @@ export const MediaService: GenService<{
   /**
    * GetDownloadURL returns a time-limited signed download URL for a
    * private (MESSAGE purpose) file.
-   *
+   * 
    * Access control: file_id is UUID v7 and cannot be enumerated,
    * which provides sufficient protection against unauthorized access.
    * No conversation membership check is performed.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: File does not exist.
    *

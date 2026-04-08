@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file shared/v1/updates.proto.
  */
 export const file_shared_v1_updates: GenFile = /*@__PURE__*/
-  fileDesc("ChdzaGFyZWQvdjEvdXBkYXRlcy5wcm90bxIJc2hhcmVkLnYxIqEJCghTblVwZGF0ZRIKCgJzbhgBIAEoBRI2ChBtZXNzYWdlX2VudmVsb3BlGAIgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEkgKF2ZyaWVuZF9yZXF1ZXN0X3JlY2VpdmVkGAMgASgLMiUuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50SAASSAoXZnJpZW5kX3JlcXVlc3RfYWNjZXB0ZWQYBCABKAsyJS5zaGFyZWQudjEuRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnRIABJIChdmcmllbmRfcmVxdWVzdF9yZWplY3RlZBgFIAEoCzIlLnNoYXJlZC52MS5GcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudEgAEjkKD2NvbnRhY3RfZGVsZXRlZBgGIAEoCzIeLnNoYXJlZC52MS5Db250YWN0RGVsZXRlZEV2ZW50SAASPgoSdXNlcl9ibG9ja190b2dnbGVkGAcgASgLMiAuc2hhcmVkLnYxLlVzZXJCbG9ja1RvZ2dsZWRFdmVudEgAEkIKFHVzZXJfcHJvZmlsZV91cGRhdGVkGAggASgLMiIuc2hhcmVkLnYxLlVzZXJQcm9maWxlVXBkYXRlZEV2ZW50SAASQQoTY29udmVyc2F0aW9uX2FjdGlvbhgJIAEoCzIiLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25FdmVudEgAEjMKDHJlYWRfcmVjZWlwdBgKIAEoCzIbLnNoYXJlZC52MS5SZWFkUmVjZWlwdEV2ZW50SAASQgoUYWdlbnRfc3RhdHVzX2NoYW5nZWQYCyABKAsyIi5zaGFyZWQudjEuQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnRIABJAChNmcmllbmRfcmVxdWVzdF9zZW50GAwgASgLMiEuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RTZW50RXZlbnRIABJEChVjb250YWN0X2FsaWFzX3VwZGF0ZWQYDSABKAsyIy5zaGFyZWQudjEuQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50SAASOwoQdXNlcm5hbWVfY2hhbmdlZBgOIAEoCzIfLnNoYXJlZC52MS5Vc2VybmFtZUNoYW5nZWRFdmVudEgAEjwKEWtpY2tlZF9mcm9tX2dyb3VwGA8gASgLMh8uc2hhcmVkLnYxLktpY2tlZEZyb21Hcm91cEV2ZW50SAASOQoPZ3JvdXBfZGlzc29sdmVkGBAgASgLMh4uc2hhcmVkLnYxLkdyb3VwRGlzc29sdmVkRXZlbnRIABI+ChJyZW1vdmVkX2Zyb21fZ3JvdXAYESABKAsyIC5zaGFyZWQudjEuUmVtb3ZlZEZyb21Hcm91cEV2ZW50SAASOQoPbWVzc2FnZV9kZWxldGVkGBIgASgLMh4uc2hhcmVkLnYxLk1lc3NhZ2VEZWxldGVkRXZlbnRIABI1Cg1jb250YWN0X2FkZGVkGBMgASgLMhwuc2hhcmVkLnYxLkNvbnRhY3RBZGRlZEV2ZW50SABCCAoGdXBkYXRlIooBCgtOb25TblVwZGF0ZRI2ChBtZXNzYWdlX2VudmVsb3BlGAEgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEjkKEmNhcmRfYWN0aW9uX2Fuc3dlchgCIAEoCzIbLnNoYXJlZC52MS5DYXJkQWN0aW9uQW5zd2VySABCCAoGdXBkYXRlIkcKEENhcmRBY3Rpb25BbnN3ZXISEQoJYWN0aW9uX2lkGAEgASgJEgwKBHRleHQYAiABKAkSEgoKc2hvd19hbGVydBgDIAEoCCIgCgtVcGRhdGVTdGF0ZRIRCglsYXRlc3Rfc24YASABKAUiTAoaRnJpZW5kUmVxdWVzdFJlY2VpdmVkRXZlbnQSLgoHcmVxdWVzdBgBIAEoCzIdLnNoYXJlZC52MS5QZW5kaW5nUmVxdWVzdEl0ZW0iTAoaRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnQSLgoHcmVxdWVzdBgBIAEoCzIdLnNoYXJlZC52MS5QZW5kaW5nUmVxdWVzdEl0ZW0iRQoaRnJpZW5kUmVxdWVzdFJlamVjdGVkRXZlbnQSEgoKcmVxdWVzdF9pZBgBIAEoAxITCgtyZWplY3Rvcl9pZBgCIAEoBSJEChZGcmllbmRSZXF1ZXN0U2VudEV2ZW50EhIKCnJlcXVlc3RfaWQYASABKAMSFgoOdGFyZ2V0X3VzZXJfaWQYAiABKAUiRgoYQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50EhcKD2NvbnRhY3RfdXNlcl9pZBgBIAEoBRIRCgluZXdfYWxpYXMYAiABKAkiPQoUVXNlcm5hbWVDaGFuZ2VkRXZlbnQSDwoHdXNlcl9pZBgBIAEoBRIUCgxuZXdfdXNlcm5hbWUYAiABKAkiKwoTQ29udGFjdERlbGV0ZWRFdmVudBIUCgxwZWVyX3VzZXJfaWQYASABKAUiKQoRQ29udGFjdEFkZGVkRXZlbnQSFAoMcGVlcl91c2VyX2lkGAEgASgFIkMKFVVzZXJCbG9ja1RvZ2dsZWRFdmVudBIWCg50YXJnZXRfdXNlcl9pZBgBIAEoBRISCgppc19ibG9ja2VkGAIgASgIIrQBChdVc2VyUHJvZmlsZVVwZGF0ZWRFdmVudBIPCgd1c2VyX2lkGAEgASgFEhkKDG5ld19uaWNrbmFtZRgCIAEoCUgAiAEBEhsKDm5ld19hdmF0YXJfdXJsGAMgASgJSAGIAQESGgoNbmV3X3NpZ25hdHVyZRgEIAEoCUgCiAEBQg8KDV9uZXdfbmlja25hbWVCEQoPX25ld19hdmF0YXJfdXJsQhAKDl9uZXdfc2lnbmF0dXJlIn0KF0NvbnZlcnNhdGlvbkFjdGlvbkV2ZW50EhcKD2NvbnZlcnNhdGlvbl9pZBgBIAEoAxIxCgZhY3Rpb24YAiABKA4yIS5zaGFyZWQudjEuQ29udmVyc2F0aW9uQWN0aW9uVHlwZRIWCg5jbGVhcl9tZXNzYWdlcxgDIAEoCCJdChNNZXNzYWdlRGVsZXRlZEV2ZW50EhcKD2NvbnZlcnNhdGlvbl9pZBgBIAEoAxITCgttZXNzYWdlX2lkcxgCIAMoAxIYChB1cF90b19tZXNzYWdlX2lkGAMgASgDInIKEFJlYWRSZWNlaXB0RXZlbnQSFwoPY29udmVyc2F0aW9uX2lkGAEgASgDEhYKDnJlYWRlcl91c2VyX2lkGAIgASgFEhwKFGxhc3RfcmVhZF9tZXNzYWdlX2lkGAMgASgDEg8KB3JlYWRfYXQYBCABKAMiPQoUS2lja2VkRnJvbUdyb3VwRXZlbnQSEAoIZ3JvdXBfaWQYASABKAUSEwoLb3BlcmF0b3JfaWQYAiABKAUiPgoVUmVtb3ZlZEZyb21Hcm91cEV2ZW50EhAKCGdyb3VwX2lkGAEgASgFEhMKC29wZXJhdG9yX2lkGAIgASgFIjwKE0dyb3VwRGlzc29sdmVkRXZlbnQSEwoLb3BlcmF0b3JfaWQYASABKAUSEAoIZ3JvdXBfaWQYAiABKAUiXAoXQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnQSFQoNYWdlbnRfdXNlcl9pZBgBIAEoBRIqCgpuZXdfc3RhdHVzGAIgASgOMhYuc2hhcmVkLnYxLkFnZW50U3RhdHVzQp4BCg1jb20uc2hhcmVkLnYxQgxVcGRhdGVzUHJvdG9QAVo6Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtYWkvcGtnL3Byb3RvL3NoYXJlZC92MTtzaGFyZWR2MaICA1NYWKoCCVNoYXJlZC5WMcoCCVNoYXJlZFxWMeICFVNoYXJlZFxWMVxHUEJNZXRhZGF0YeoCClNoYXJlZDo6VjFiBnByb3RvMw", [file_shared_v1_agent, file_shared_v1_contact, file_shared_v1_conversation, file_shared_v1_message]);
+  fileDesc("ChdzaGFyZWQvdjEvdXBkYXRlcy5wcm90bxIJc2hhcmVkLnYxIuMICghTblVwZGF0ZRIKCgJzbhgBIAEoBRI2ChBtZXNzYWdlX2VudmVsb3BlGAIgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEkgKF2ZyaWVuZF9yZXF1ZXN0X3JlY2VpdmVkGAMgASgLMiUuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50SAASSAoXZnJpZW5kX3JlcXVlc3RfYWNjZXB0ZWQYBCABKAsyJS5zaGFyZWQudjEuRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnRIABJIChdmcmllbmRfcmVxdWVzdF9yZWplY3RlZBgFIAEoCzIlLnNoYXJlZC52MS5GcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudEgAEjkKD2NvbnRhY3RfZGVsZXRlZBgGIAEoCzIeLnNoYXJlZC52MS5Db250YWN0RGVsZXRlZEV2ZW50SAASPgoSdXNlcl9ibG9ja190b2dnbGVkGAcgASgLMiAuc2hhcmVkLnYxLlVzZXJCbG9ja1RvZ2dsZWRFdmVudEgAEkIKFHVzZXJfcHJvZmlsZV91cGRhdGVkGAggASgLMiIuc2hhcmVkLnYxLlVzZXJQcm9maWxlVXBkYXRlZEV2ZW50SAASQQoTY29udmVyc2F0aW9uX2FjdGlvbhgJIAEoCzIiLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25FdmVudEgAEjMKDHJlYWRfcmVjZWlwdBgKIAEoCzIbLnNoYXJlZC52MS5SZWFkUmVjZWlwdEV2ZW50SAASQgoUYWdlbnRfc3RhdHVzX2NoYW5nZWQYCyABKAsyIi5zaGFyZWQudjEuQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnRIABJAChNmcmllbmRfcmVxdWVzdF9zZW50GAwgASgLMiEuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RTZW50RXZlbnRIABJEChVjb250YWN0X2FsaWFzX3VwZGF0ZWQYDSABKAsyIy5zaGFyZWQudjEuQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50SAASOwoQdXNlcm5hbWVfY2hhbmdlZBgOIAEoCzIfLnNoYXJlZC52MS5Vc2VybmFtZUNoYW5nZWRFdmVudEgAEj4KEnJlbW92ZWRfZnJvbV9ncm91cBgRIAEoCzIgLnNoYXJlZC52MS5SZW1vdmVkRnJvbUdyb3VwRXZlbnRIABI5Cg9ncm91cF9kaXNzb2x2ZWQYECABKAsyHi5zaGFyZWQudjEuR3JvdXBEaXNzb2x2ZWRFdmVudEgAEjkKD21lc3NhZ2VfZGVsZXRlZBgSIAEoCzIeLnNoYXJlZC52MS5NZXNzYWdlRGVsZXRlZEV2ZW50SAASNQoNY29udGFjdF9hZGRlZBgTIAEoCzIcLnNoYXJlZC52MS5Db250YWN0QWRkZWRFdmVudEgAQggKBnVwZGF0ZSKKAQoLTm9uU25VcGRhdGUSNgoQbWVzc2FnZV9lbnZlbG9wZRgBIAEoCzIaLnNoYXJlZC52MS5NZXNzYWdlRW52ZWxvcGVIABI5ChJjYXJkX2FjdGlvbl9hbnN3ZXIYAiABKAsyGy5zaGFyZWQudjEuQ2FyZEFjdGlvbkFuc3dlckgAQggKBnVwZGF0ZSJHChBDYXJkQWN0aW9uQW5zd2VyEhEKCWFjdGlvbl9pZBgBIAEoCRIMCgR0ZXh0GAIgASgJEhIKCnNob3dfYWxlcnQYAyABKAgiIAoLVXBkYXRlU3RhdGUSEQoJbGF0ZXN0X3NuGAEgASgFIkwKGkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkwKGkZyaWVuZFJlcXVlc3RBY2NlcHRlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkUKGkZyaWVuZFJlcXVlc3RSZWplY3RlZEV2ZW50EhIKCnJlcXVlc3RfaWQYASABKAMSEwoLcmVqZWN0b3JfaWQYAiABKAUiRAoWRnJpZW5kUmVxdWVzdFNlbnRFdmVudBISCgpyZXF1ZXN0X2lkGAEgASgDEhYKDnRhcmdldF91c2VyX2lkGAIgASgFIkYKGENvbnRhY3RBbGlhc1VwZGF0ZWRFdmVudBIXCg9jb250YWN0X3VzZXJfaWQYASABKAUSEQoJbmV3X2FsaWFzGAIgASgJIj0KFFVzZXJuYW1lQ2hhbmdlZEV2ZW50Eg8KB3VzZXJfaWQYASABKAUSFAoMbmV3X3VzZXJuYW1lGAIgASgJIisKE0NvbnRhY3REZWxldGVkRXZlbnQSFAoMcGVlcl91c2VyX2lkGAEgASgFIikKEUNvbnRhY3RBZGRlZEV2ZW50EhQKDHBlZXJfdXNlcl9pZBgBIAEoBSJDChVVc2VyQmxvY2tUb2dnbGVkRXZlbnQSFgoOdGFyZ2V0X3VzZXJfaWQYASABKAUSEgoKaXNfYmxvY2tlZBgCIAEoCCK0AQoXVXNlclByb2ZpbGVVcGRhdGVkRXZlbnQSDwoHdXNlcl9pZBgBIAEoBRIZCgxuZXdfbmlja25hbWUYAiABKAlIAIgBARIbCg5uZXdfYXZhdGFyX3VybBgDIAEoCUgBiAEBEhoKDW5ld19zaWduYXR1cmUYBCABKAlIAogBAUIPCg1fbmV3X25pY2tuYW1lQhEKD19uZXdfYXZhdGFyX3VybEIQCg5fbmV3X3NpZ25hdHVyZSJ9ChdDb252ZXJzYXRpb25BY3Rpb25FdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSMQoGYWN0aW9uGAIgASgOMiEuc2hhcmVkLnYxLkNvbnZlcnNhdGlvbkFjdGlvblR5cGUSFgoOY2xlYXJfbWVzc2FnZXMYAyABKAgiXQoTTWVzc2FnZURlbGV0ZWRFdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSEwoLbWVzc2FnZV9pZHMYAiADKAMSGAoQdXBfdG9fbWVzc2FnZV9pZBgDIAEoAyJyChBSZWFkUmVjZWlwdEV2ZW50EhcKD2NvbnZlcnNhdGlvbl9pZBgBIAEoAxIWCg5yZWFkZXJfdXNlcl9pZBgCIAEoBRIcChRsYXN0X3JlYWRfbWVzc2FnZV9pZBgDIAEoAxIPCgdyZWFkX2F0GAQgASgDIj4KFVJlbW92ZWRGcm9tR3JvdXBFdmVudBIQCghncm91cF9pZBgBIAEoBRITCgtvcGVyYXRvcl9pZBgCIAEoBSI8ChNHcm91cERpc3NvbHZlZEV2ZW50EhMKC29wZXJhdG9yX2lkGAEgASgFEhAKCGdyb3VwX2lkGAIgASgFIlwKF0FnZW50U3RhdHVzQ2hhbmdlZEV2ZW50EhUKDWFnZW50X3VzZXJfaWQYASABKAUSKgoKbmV3X3N0YXR1cxgCIAEoDjIWLnNoYXJlZC52MS5BZ2VudFN0YXR1c0KeAQoNY29tLnNoYXJlZC52MUIMVXBkYXRlc1Byb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLWFpL3BrZy9wcm90by9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM", [file_shared_v1_agent, file_shared_v1_contact, file_shared_v1_conversation, file_shared_v1_message]);
 
 /**
  * SnUpdate is a sequenced update delivered to a user's update box.
@@ -146,28 +146,21 @@ export type SnUpdate = Message<"shared.v1.SnUpdate"> & {
     case: "usernameChanged";
   } | {
     /**
-     * The user was kicked from a group by an admin/owner.
+     * A member (user or agent) was removed from a group by the owner.
      *
-     * @generated from field: shared.v1.KickedFromGroupEvent kicked_from_group = 15;
+     * @generated from field: shared.v1.RemovedFromGroupEvent removed_from_group = 17;
      */
-    value: KickedFromGroupEvent;
-    case: "kickedFromGroup";
+    value: RemovedFromGroupEvent;
+    case: "removedFromGroup";
   } | {
     /**
+     * Field 15 was KickedFromGroupEvent (removed, unified into RemovedFromGroupEvent).
      * A group was dissolved by its owner.
      *
      * @generated from field: shared.v1.GroupDissolvedEvent group_dissolved = 16;
      */
     value: GroupDissolvedEvent;
     case: "groupDissolved";
-  } | {
-    /**
-     * An agent was removed from a group.
-     *
-     * @generated from field: shared.v1.RemovedFromGroupEvent removed_from_group = 17;
-     */
-    value: RemovedFromGroupEvent;
-    case: "removedFromGroup";
   } | {
     /**
      * Messages were deleted locally (multi-device sync).
@@ -698,50 +691,22 @@ export const ReadReceiptEventSchema: GenMessage<ReadReceiptEvent> = /*@__PURE__*
   messageDesc(file_shared_v1_updates, 16);
 
 /**
- * KickedFromGroupEvent is delivered as an SnUpdate to the kicked user's
- * update box when they are removed from a group by an admin/owner.
- *
- * @generated from message shared.v1.KickedFromGroupEvent
- */
-export type KickedFromGroupEvent = Message<"shared.v1.KickedFromGroupEvent"> & {
-  /**
-   * Group ID the user was kicked from.
-   *
-   * @generated from field: int32 group_id = 1;
-   */
-  groupId: number;
-
-  /**
-   * User ID of the operator who performed the kick.
-   *
-   * @generated from field: int32 operator_id = 2;
-   */
-  operatorId: number;
-};
-
-/**
- * Describes the message shared.v1.KickedFromGroupEvent.
- * Use `create(KickedFromGroupEventSchema)` to create a new message.
- */
-export const KickedFromGroupEventSchema: GenMessage<KickedFromGroupEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 17);
-
-/**
- * RemovedFromGroupEvent is delivered to the removed agent's update box
- * when the agent is removed from a group.
+ * RemovedFromGroupEvent is delivered as an SnUpdate to the removed
+ * member's (user or agent) update box when they are removed from a
+ * group by the owner. Unified event for both user kicks and agent removals.
  *
  * @generated from message shared.v1.RemovedFromGroupEvent
  */
 export type RemovedFromGroupEvent = Message<"shared.v1.RemovedFromGroupEvent"> & {
   /**
-   * Group ID the agent was removed from.
+   * Group ID the member was removed from.
    *
    * @generated from field: int32 group_id = 1;
    */
   groupId: number;
 
   /**
-   * User ID of the operator who removed the agent.
+   * User ID of the operator who performed the removal.
    *
    * @generated from field: int32 operator_id = 2;
    */
@@ -753,7 +718,7 @@ export type RemovedFromGroupEvent = Message<"shared.v1.RemovedFromGroupEvent"> &
  * Use `create(RemovedFromGroupEventSchema)` to create a new message.
  */
 export const RemovedFromGroupEventSchema: GenMessage<RemovedFromGroupEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 18);
+  messageDesc(file_shared_v1_updates, 17);
 
 /**
  * GroupDissolvedEvent is produced when the group owner dissolves the group.
@@ -782,7 +747,7 @@ export type GroupDissolvedEvent = Message<"shared.v1.GroupDissolvedEvent"> & {
  * Use `create(GroupDissolvedEventSchema)` to create a new message.
  */
 export const GroupDissolvedEventSchema: GenMessage<GroupDissolvedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 19);
+  messageDesc(file_shared_v1_updates, 18);
 
 /**
  * AgentStatusChangedEvent is produced when an agent is deleted by its
@@ -812,5 +777,5 @@ export type AgentStatusChangedEvent = Message<"shared.v1.AgentStatusChangedEvent
  * Use `create(AgentStatusChangedEventSchema)` to create a new message.
  */
 export const AgentStatusChangedEventSchema: GenMessage<AgentStatusChangedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 20);
+  messageDesc(file_shared_v1_updates, 19);
 

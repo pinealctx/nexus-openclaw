@@ -700,7 +700,7 @@ export const AnswerCardActionResponseSchema: GenMessage<AnswerCardActionResponse
 /**
  * MessageService handles message sending, editing, deletion, recall,
  * forwarding, and history retrieval. Authenticated via Access Token.
- *
+ * 
  * All message operations are performed via Connect RPC (HTTP).
  * The long connection (WebSocket) is used exclusively for server-side
  * push delivery (new messages, status updates, etc.).
@@ -710,14 +710,14 @@ export const AnswerCardActionResponseSchema: GenMessage<AnswerCardActionResponse
 export const MessageService: GenService<{
   /**
    * SendMessage sends a message to a conversation.
-   *
+   * 
    * Side effects:
    *   - Persists the message and assigns a server message_id.
    *   - Pushes an Update to all online conversation participants
    *     via their long connections.
    *   - Triggers offline push notifications for offline participants.
    *   - Updates the conversation's last_message_time and last_message_id.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation,
@@ -734,13 +734,13 @@ export const MessageService: GenService<{
   },
   /**
    * EditMessage edits a previously sent message.
-   *
+   * 
    * Side effects:
    *   - Updates the message content and sets updated_at timestamp.
    *   - Pushes an Update with the edited message to all online
    *     conversation participants.
    *   - Triggers webhook delivery for agent members.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist.
    *   - PERMISSION_DENIED: User is not the message sender.
@@ -759,14 +759,14 @@ export const MessageService: GenService<{
   /**
    * DeleteMessages deletes messages by ID list for the current user only
    * (local delete). Other participants are not affected.
-   *
+   * 
    * Side effects:
    *   - Marks the specified messages as deleted for the current user.
    *   - Deleted messages are excluded from future GetMessageHistory
    *     responses for this user.
    *   - Delivers a MessageDeletedEvent to the caller's own update box
    *     (multi-device sync).
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -781,13 +781,13 @@ export const MessageService: GenService<{
   /**
    * DeleteHistory deletes all messages up to a given message ID for the
    * current user only (local delete).
-   *
+   * 
    * Side effects:
    *   - Marks all messages with message_id <= up_to_message_id as deleted
    *     for the current user.
    *   - Delivers a MessageDeletedEvent to the caller's own update box
    *     (multi-device sync).
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -803,14 +803,14 @@ export const MessageService: GenService<{
    * RecallMessage recalls a sent message (visible to all participants).
    * The original message content is replaced with a MessageRecalledContent
    * message in the conversation timeline.
-   *
+   * 
    * Side effects:
    *   - Replaces the message body with RecalledContent (body.type
    *     becomes MESSAGE_TYPE_RECALLED).
    *   - Pushes an Update with the recalled message to all online
    *     conversation participants.
    *   - Triggers webhook delivery for agent members.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist.
    *   - PERMISSION_DENIED: User is not the message sender.
@@ -826,7 +826,7 @@ export const MessageService: GenService<{
   },
   /**
    * GetMessage returns a single message by ID.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist or has been deleted by this user.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -842,7 +842,7 @@ export const MessageService: GenService<{
    * GetMessageHistory returns message history with ID-based cursor
    * pagination. Supports both backward (older) and forward (newer)
    * pagination directions.
-   *
+   * 
    * Pagination:
    *   - Backward (load older): set before_message_id. Returns messages
    *     with message_id < before_message_id, ordered descending.
@@ -854,7 +854,7 @@ export const MessageService: GenService<{
    *     as the next after_message_id.
    *   - Omit both for the latest messages (equivalent to backward from
    *     the conversation's last_message_id).
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -870,12 +870,12 @@ export const MessageService: GenService<{
    * SubmitCardAction reports an Adaptive Card Action.Submit to the
    * server. The server forwards the action data to the agent that sent
    * the card message.
-   *
+   * 
    * Side effects:
    *   - Delivers a CardActionPayload event to the agent via webhook.
    *   - The agent may respond via AnswerCardAction (toast/alert) and
    *     optionally update the card via EditMessage.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -890,7 +890,7 @@ export const MessageService: GenService<{
   },
   /**
    * PushStreamDelta pushes an incremental delta to a streaming message.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Streaming message does not exist.
    *   - FAILED_PRECONDITION: Stream has already ended or errored.
@@ -904,11 +904,11 @@ export const MessageService: GenService<{
   },
   /**
    * EndStream finalizes a streaming message with the accumulated content.
-   *
+   * 
    * Side effects:
    *   - Persists the final accumulated text as the message content.
    *   - Pushes StreamContent(phase=END) to online participants.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Streaming message does not exist.
    *   - FAILED_PRECONDITION: Stream has already ended or errored.
@@ -922,11 +922,11 @@ export const MessageService: GenService<{
   },
   /**
    * ErrorStream terminates a streaming message with an error.
-   *
+   * 
    * Side effects:
    *   - Persists the error state and partial content.
    *   - Pushes StreamContent(phase=ERROR) to online participants.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Streaming message does not exist.
    *   - FAILED_PRECONDITION: Stream has already ended or errored.
@@ -940,7 +940,7 @@ export const MessageService: GenService<{
   },
   /**
    * AnswerCardAction responds to a card action submission.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Card action does not exist or has expired.
    *

@@ -531,7 +531,7 @@ export const ListBlockedResponseSchema: GenMessage<ListBlockedResponse> = /*@__P
 
 /**
  * SearchUsersRequest searches for users and/or agents across the platform.
- *
+ * 
  * Search behavior depends on account_type filter:
  *   - USER / ALL: The server auto-detects the search dimension based on
  *     query format:
@@ -542,7 +542,7 @@ export const ListBlockedResponseSchema: GenMessage<ListBlockedResponse> = /*@__P
  *   - AGENT / ALL: Fuzzy match against agent nickname, username, and
  *     description. Only PUBLIC + ACTIVE agents are returned.
  *     Returns at most 10 results.
- *
+ * 
  * No pagination. Results are capped by design.
  *
  * @generated from message api.v1.SearchUsersRequest
@@ -629,13 +629,13 @@ export const SearchAccountTypeSchema: GenEnum<SearchAccountType> = /*@__PURE__*/
 /**
  * ContactService handles friend requests, contact management, and blocklist.
  * Authenticated via Access Token.
- *
+ * 
  * Update box integration:
  * All state-changing operations in this service produce SnUpdate entries
  * delivered to the relevant users' update boxes. This ensures clients
  * can reliably sync contact state changes via the SyncService.GetDifference
  * mechanism.
- *
+ * 
  * See shared.v1 (in shared/v1/updates.proto) for the full list of
  * contact-related event payloads.
  *
@@ -646,14 +646,14 @@ export const SearchAccountTypeSchema: GenEnum<SearchAccountType> = /*@__PURE__*/
 export const ContactService: GenService<{
   /**
    * SendFriendRequest sends a friend request to a target user.
-   *
+   * 
    * Side effects:
    *   - Creates a pending friend request record.
    *   - Delivers a FriendRequestReceivedEvent to the target
    *     user's update box, containing the requester's info and greeting.
    *   - If the target user is online, the update is pushed in real-time
    *     via the long connection.
-   *
+   * 
    * Error conditions:
    *   - ALREADY_EXISTS: A pending request already exists between the two users.
    *   - NOT_FOUND: Target user does not exist.
@@ -680,7 +680,7 @@ export const ContactService: GenService<{
   },
   /**
    * AcceptFriendRequest accepts a pending friend request.
-   *
+   * 
    * Side effects:
    *   - Updates the request status from PENDING to ACCEPTED.
    *   - Creates a mutual contact relationship between both users.
@@ -688,7 +688,7 @@ export const ContactService: GenService<{
    *     parties' update boxes, containing each other's brief info.
    *   - The SnUpdate delivery triggers creation of a PRIVATE
    *     conversation if one does not already exist.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Request does not exist.
    *   - FAILED_PRECONDITION: Request has already been handled (ACCEPTED/REJECTED).
@@ -702,12 +702,12 @@ export const ContactService: GenService<{
   },
   /**
    * RejectFriendRequest rejects a pending friend request.
-   *
+   * 
    * Side effects:
    *   - Updates the request status from PENDING to REJECTED.
    *   - Delivers a FriendRequestRejectedEvent to the
    *     requester's update box.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Request does not exist.
    *   - FAILED_PRECONDITION: Request has already been handled (ACCEPTED/REJECTED).
@@ -722,7 +722,7 @@ export const ContactService: GenService<{
   /**
    * AddContact adds a contact without friend request approval.
    * Currently supports adding public agents and private agents (creator only).
-   *
+   * 
    * Side effects:
    *   - Creates bidirectional contact rows in contacts table.
    *   - Delivers a ContactAddedEvent SnUpdate to the caller's update box
@@ -730,7 +730,7 @@ export const ContactService: GenService<{
    *     record and the PRIVATE conversation.
    *   - Increments the agent's user_count in agent_profiles.
    *   - Delivers a contact.added webhook event to the agent.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Target user does not exist.
    *   - ALREADY_EXISTS: Contact relationship already exists.
@@ -759,13 +759,13 @@ export const ContactService: GenService<{
    * DeleteContact removes a contact from the current user's contact list.
    * This is a single-sided operation: only the caller's contact record
    * is removed. The other party's contact list is not affected.
-   *
+   * 
    * Side effects:
    *   - Delivers a ContactDeletedEvent to the caller's own update box
    *     (multi-device sync). The other party is not notified.
    *   - The private conversation is NOT deleted; it remains accessible
    *     but new messages cannot be sent until re-friended.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Contact relationship does not exist.
    *
@@ -779,7 +779,7 @@ export const ContactService: GenService<{
   /**
    * UpdateContactAlias sets or clears a custom alias for a contact.
    * The alias overrides the contact's nickname in the current user's UI.
-   *
+   * 
    * Side effects:
    *   - Delivers a ContactAliasUpdatedEvent to the caller's own update
    *     box (multi-device sync).
@@ -794,13 +794,13 @@ export const ContactService: GenService<{
   /**
    * SearchUsers searches for users and/or agents across the platform.
    * Supports filtering by account type (USER, AGENT, or ALL).
-   *
+   * 
    * For human users: exact match on phone, email, or username (returns
    * at most 1 result).
    * For agents: fuzzy match on nickname, username, and description
    * (returns at most 10 results). Only PUBLIC + ACTIVE agents are
    * returned.
-   *
+   * 
    * Results exclude the current user and blocked users.
    * No pagination — results are capped by design.
    *
@@ -813,7 +813,7 @@ export const ContactService: GenService<{
   },
   /**
    * BlockUser blocks a user.
-   *
+   * 
    * Side effects:
    *   - If the blocked user is a contact, the contact relationship is
    *     removed (equivalent to DeleteContact + block).
@@ -824,7 +824,7 @@ export const ContactService: GenService<{
    *   - The blocked user can no longer send messages or friend requests
    *     to the blocker. The blocker also cannot send messages to the
    *     blocked user.
-   *
+   * 
    * Error conditions:
    *   - ALREADY_EXISTS: User is already blocked.
    *   - NOT_FOUND: Target user does not exist.
@@ -838,14 +838,14 @@ export const ContactService: GenService<{
   },
   /**
    * UnblockUser unblocks a previously blocked user.
-   *
+   * 
    * Side effects:
    *   - Delivers a UserBlockToggledEvent (is_blocked=false) to
    *     the unblocker's own update box (for multi-device sync). The
    *     unblocked user is NOT notified.
    *   - Unblocking does NOT restore the contact relationship; the user
    *     must send a new friend request.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: User is not in the blocklist.
    *

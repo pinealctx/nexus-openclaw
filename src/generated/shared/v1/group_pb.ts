@@ -4,15 +4,13 @@
 
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { UserInfo } from "./user_pb";
-import { file_shared_v1_user } from "./user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file shared/v1/group.proto.
  */
 export const file_shared_v1_group: GenFile = /*@__PURE__*/
-  fileDesc("ChVzaGFyZWQvdjEvZ3JvdXAucHJvdG8SCXNoYXJlZC52MSKiAQoJR3JvdXBJbmZvEhAKCGdyb3VwX2lkGAEgASgFEgwKBG5hbWUYAiABKAkSEgoKYXZhdGFyX3VybBgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRISCgpjcmVhdGVkX2F0GAUgASgDEhAKCG93bmVyX2lkGAYgASgFEiYKBnN0YXR1cxgHIAEoDjIWLnNoYXJlZC52MS5Hcm91cFN0YXR1cyJnCgpNZW1iZXJJbmZvEiEKBHVzZXIYASABKAsyEy5zaGFyZWQudjEuVXNlckluZm8SIwoEcm9sZRgCIAEoDjIVLnNoYXJlZC52MS5NZW1iZXJSb2xlEhEKCWpvaW5lZF9hdBgDIAEoAypYCgpNZW1iZXJSb2xlEhsKF01FTUJFUl9ST0xFX1VOU1BFQ0lGSUVEEAASFQoRTUVNQkVSX1JPTEVfT1dORVIQARIWChJNRU1CRVJfUk9MRV9NRU1CRVIQAipgCgtHcm91cFN0YXR1cxIcChhHUk9VUF9TVEFUVVNfVU5TUEVDSUZJRUQQABIXChNHUk9VUF9TVEFUVVNfTk9STUFMEAESGgoWR1JPVVBfU1RBVFVTX0RJU1NPTFZFRBACQpwBCg1jb20uc2hhcmVkLnYxQgpHcm91cFByb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLWFpL3BrZy9wcm90by9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM", [file_shared_v1_user]);
+  fileDesc("ChVzaGFyZWQvdjEvZ3JvdXAucHJvdG8SCXNoYXJlZC52MSKiAQoJR3JvdXBJbmZvEhAKCGdyb3VwX2lkGAEgASgFEgwKBG5hbWUYAiABKAkSEgoKYXZhdGFyX3VybBgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRISCgpjcmVhdGVkX2F0GAUgASgDEhAKCG93bmVyX2lkGAYgASgFEiYKBnN0YXR1cxgHIAEoDjIWLnNoYXJlZC52MS5Hcm91cFN0YXR1cyJVCgpNZW1iZXJJbmZvEg8KB3VzZXJfaWQYASABKAUSIwoEcm9sZRgCIAEoDjIVLnNoYXJlZC52MS5NZW1iZXJSb2xlEhEKCWpvaW5lZF9hdBgDIAEoAypYCgpNZW1iZXJSb2xlEhsKF01FTUJFUl9ST0xFX1VOU1BFQ0lGSUVEEAASFQoRTUVNQkVSX1JPTEVfT1dORVIQARIWChJNRU1CRVJfUk9MRV9NRU1CRVIQAipgCgtHcm91cFN0YXR1cxIcChhHUk9VUF9TVEFUVVNfVU5TUEVDSUZJRUQQABIXChNHUk9VUF9TVEFUVVNfTk9STUFMEAESGgoWR1JPVVBfU1RBVFVTX0RJU1NPTFZFRBACQpwBCg1jb20uc2hhcmVkLnYxQgpHcm91cFByb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLWFpL3BrZy9wcm90by9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM");
 
 /**
  * GroupInfo is the shared group detail structure.
@@ -78,18 +76,19 @@ export const GroupInfoSchema: GenMessage<GroupInfo> = /*@__PURE__*/
   messageDesc(file_shared_v1_group, 0);
 
 /**
- * MemberInfo represents a group member.
+ * MemberInfo represents a group member (lightweight).
+ * User details (nickname, avatar, etc.) are provided separately via
+ * the users list in GetGroupInfoResponse or related_users in push events.
  *
  * @generated from message shared.v1.MemberInfo
  */
 export type MemberInfo = Message<"shared.v1.MemberInfo"> & {
   /**
-   * Member user info (user_id, username, nickname, avatar_url, account_type).
-   * account_type distinguishes human users from agents.
+   * Member user ID.
    *
-   * @generated from field: shared.v1.UserInfo user = 1;
+   * @generated from field: int32 user_id = 1;
    */
-  user?: UserInfo;
+  userId: number;
 
   /**
    * Member role (owner/member).

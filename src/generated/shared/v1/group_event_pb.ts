@@ -4,19 +4,21 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { MemberInfo } from "./group_pb";
+import { file_shared_v1_group } from "./group_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file shared/v1/group_event.proto.
  */
 export const file_shared_v1_group_event: GenFile = /*@__PURE__*/
-  fileDesc("ChtzaGFyZWQvdjEvZ3JvdXBfZXZlbnQucHJvdG8SCXNoYXJlZC52MSLiAgoMR3JvdXBDb250ZW50EjUKDW1lbWJlcl9qb2luZWQYASABKAsyHC5zaGFyZWQudjEuTWVtYmVySm9pbmVkRXZlbnRIABIxCgttZW1iZXJfbGVmdBgCIAEoCzIaLnNoYXJlZC52MS5NZW1iZXJMZWZ0RXZlbnRIABI1Cg1tZW1iZXJfa2lja2VkGAMgASgLMhwuc2hhcmVkLnYxLk1lbWJlcktpY2tlZEV2ZW50SAASPgoSZ3JvdXBfaW5mb19jaGFuZ2VkGAQgASgLMiAuc2hhcmVkLnYxLkdyb3VwSW5mb0NoYW5nZWRFdmVudEgAEjEKC2FnZW50X2FkZGVkGAUgASgLMhouc2hhcmVkLnYxLkFnZW50QWRkZWRFdmVudEgAEjUKDWFnZW50X3JlbW92ZWQYBiABKAsyHC5zaGFyZWQudjEuQWdlbnRSZW1vdmVkRXZlbnRIAEIHCgVldmVudCI5ChFNZW1iZXJKb2luZWRFdmVudBIQCgh1c2VyX2lkcxgBIAMoBRISCgppbnZpdGVyX2lkGAIgASgFIiIKD01lbWJlckxlZnRFdmVudBIPCgd1c2VyX2lkGAEgASgFIjkKEU1lbWJlcktpY2tlZEV2ZW50Eg8KB3VzZXJfaWQYASABKAUSEwoLb3BlcmF0b3JfaWQYAiABKAUiOwoVR3JvdXBJbmZvQ2hhbmdlZEV2ZW50EhMKC29wZXJhdG9yX2lkGAEgASgFEg0KBWZpZWxkGAIgASgJIjgKD0FnZW50QWRkZWRFdmVudBIQCghhZ2VudF9pZBgBIAEoBRITCgtvcGVyYXRvcl9pZBgCIAEoBSI6ChFBZ2VudFJlbW92ZWRFdmVudBIQCghhZ2VudF9pZBgBIAEoBRITCgtvcGVyYXRvcl9pZBgCIAEoBUKhAQoNY29tLnNoYXJlZC52MUIPR3JvdXBFdmVudFByb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLWFpL3BrZy9wcm90by9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM");
+  fileDesc("ChtzaGFyZWQvdjEvZ3JvdXBfZXZlbnQucHJvdG8SCXNoYXJlZC52MSKMAgoMR3JvdXBDb250ZW50EhAKCGdyb3VwX2lkGAcgASgFEjUKDW1lbWJlcl9qb2luZWQYASABKAsyHC5zaGFyZWQudjEuTWVtYmVySm9pbmVkRXZlbnRIABIxCgttZW1iZXJfbGVmdBgCIAEoCzIaLnNoYXJlZC52MS5NZW1iZXJMZWZ0RXZlbnRIABI3Cg5tZW1iZXJfcmVtb3ZlZBgDIAEoCzIdLnNoYXJlZC52MS5NZW1iZXJSZW1vdmVkRXZlbnRIABI+ChJncm91cF9pbmZvX2NoYW5nZWQYBCABKAsyIC5zaGFyZWQudjEuR3JvdXBJbmZvQ2hhbmdlZEV2ZW50SABCBwoFZXZlbnQiYwoRTWVtYmVySm9pbmVkRXZlbnQSJgoHbWVtYmVycxgBIAMoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvEiYKB2ludml0ZXIYAiABKAsyFS5zaGFyZWQudjEuTWVtYmVySW5mbyI4Cg9NZW1iZXJMZWZ0RXZlbnQSJQoGbWVtYmVyGAEgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8iZAoSTWVtYmVyUmVtb3ZlZEV2ZW50EiUKBm1lbWJlchgBIAEoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvEicKCG9wZXJhdG9yGAIgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8iTwoVR3JvdXBJbmZvQ2hhbmdlZEV2ZW50EicKCG9wZXJhdG9yGAEgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8SDQoFZmllbGQYAiABKAlCoQEKDWNvbS5zaGFyZWQudjFCD0dyb3VwRXZlbnRQcm90b1ABWjpnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1haS9wa2cvcHJvdG8vc2hhcmVkL3YxO3NoYXJlZHYxogIDU1hYqgIJU2hhcmVkLlYxygIJU2hhcmVkXFYx4gIVU2hhcmVkXFYxXEdQQk1ldGFkYXRh6gIKU2hhcmVkOjpWMWIGcHJvdG8z", [file_shared_v1_group]);
 
 /**
  * GroupContent carries structured group event data as the body of a
  * system message (MessageType = GROUP) delivered to a GROUP conversation.
  * Each event type has its own strongly-typed payload.
- *
+ * 
  * The oneof field implicitly identifies the event type, so no separate
  * enum is needed. Clients and agents switch on the oneof case to handle
  * the appropriate in-chat system notification.
@@ -25,13 +27,21 @@ export const file_shared_v1_group_event: GenFile = /*@__PURE__*/
  */
 export type GroupContent = Message<"shared.v1.GroupContent"> & {
   /**
+   * Group ID this event belongs to, allowing update consumers to
+   * identify the group without deriving it from conversation_id.
+   *
+   * @generated from field: int32 group_id = 7;
+   */
+  groupId: number;
+
+  /**
    * Event payload. Exactly one field is set, identifying the event type.
    *
    * @generated from oneof shared.v1.GroupContent.event
    */
   event: {
     /**
-     * A member joined the group.
+     * Members joined the group (user or agent).
      *
      * @generated from field: shared.v1.MemberJoinedEvent member_joined = 1;
      */
@@ -47,12 +57,12 @@ export type GroupContent = Message<"shared.v1.GroupContent"> & {
     case: "memberLeft";
   } | {
     /**
-     * A member was kicked from the group.
+     * A member was removed from the group by the owner.
      *
-     * @generated from field: shared.v1.MemberKickedEvent member_kicked = 3;
+     * @generated from field: shared.v1.MemberRemovedEvent member_removed = 3;
      */
-    value: MemberKickedEvent;
-    case: "memberKicked";
+    value: MemberRemovedEvent;
+    case: "memberRemoved";
   } | {
     /**
      * Group metadata was changed (name, avatar, description, etc.).
@@ -61,22 +71,6 @@ export type GroupContent = Message<"shared.v1.GroupContent"> & {
      */
     value: GroupInfoChangedEvent;
     case: "groupInfoChanged";
-  } | {
-    /**
-     * An agent was added to the group.
-     *
-     * @generated from field: shared.v1.AgentAddedEvent agent_added = 5;
-     */
-    value: AgentAddedEvent;
-    case: "agentAdded";
-  } | {
-    /**
-     * An agent was removed from the group.
-     *
-     * @generated from field: shared.v1.AgentRemovedEvent agent_removed = 6;
-     */
-    value: AgentRemovedEvent;
-    case: "agentRemoved";
   } | { case: undefined; value?: undefined };
 };
 
@@ -88,28 +82,28 @@ export const GroupContentSchema: GenMessage<GroupContent> = /*@__PURE__*/
   messageDesc(file_shared_v1_group_event, 0);
 
 /**
- * MemberJoinedEvent is produced when users join a group. Supports batch
- * joins: group creation and multi-invite produce a single event containing
- * all user IDs, so clients render one "A, B, C joined" message instead of
- * multiple individual messages.
+ * MemberJoinedEvent is produced when members (users or agents) join a
+ * group. Supports batch joins: group creation and multi-invite produce
+ * a single event containing all member info, so clients render one
+ * "A, B, C joined" message instead of multiple individual messages.
  * Delivered as a system message to the group conversation.
  *
  * @generated from message shared.v1.MemberJoinedEvent
  */
 export type MemberJoinedEvent = Message<"shared.v1.MemberJoinedEvent"> & {
   /**
-   * User IDs of all members who joined in this batch.
+   * Members who joined in this batch.
    *
-   * @generated from field: repeated int32 user_ids = 1;
+   * @generated from field: repeated shared.v1.MemberInfo members = 1;
    */
-  userIds: number[];
+  members: MemberInfo[];
 
   /**
-   * User ID of the inviter (0 for group creation).
+   * The inviter who added these members (absent for group creation).
    *
-   * @generated from field: int32 inviter_id = 2;
+   * @generated from field: shared.v1.MemberInfo inviter = 2;
    */
-  inviterId: number;
+  inviter?: MemberInfo;
 };
 
 /**
@@ -120,18 +114,18 @@ export const MemberJoinedEventSchema: GenMessage<MemberJoinedEvent> = /*@__PURE_
   messageDesc(file_shared_v1_group_event, 1);
 
 /**
- * MemberLeftEvent is produced when a user voluntarily leaves a group.
+ * MemberLeftEvent is produced when a member voluntarily leaves a group.
  * Delivered as a system message to the group conversation.
  *
  * @generated from message shared.v1.MemberLeftEvent
  */
 export type MemberLeftEvent = Message<"shared.v1.MemberLeftEvent"> & {
   /**
-   * User ID of the member who left.
+   * The member who left.
    *
-   * @generated from field: int32 user_id = 1;
+   * @generated from field: shared.v1.MemberInfo member = 1;
    */
-  userId: number;
+  member?: MemberInfo;
 };
 
 /**
@@ -142,35 +136,38 @@ export const MemberLeftEventSchema: GenMessage<MemberLeftEvent> = /*@__PURE__*/
   messageDesc(file_shared_v1_group_event, 2);
 
 /**
- * MemberKickedEvent is produced when a member is removed by an admin/owner.
+ * MemberRemovedEvent is produced when a member (user or agent) is removed
+ * by the group owner. Unified event replacing the old MemberKickedEvent,
+ * AgentRemovedEvent, KickedFromGroupEvent, and RemovedFromGroupEvent.
+ * 
  * Dual delivery:
  *   - GROUP conversation: visible to all remaining members.
- *   - Kicked user's update box: via KickedFromGroupEvent SnUpdate
- *     (the user is no longer in the group).
+ *   - Removed member's update box: via RemovedFromGroupEvent SnUpdate
+ *     (the member is no longer in the group).
  *
- * @generated from message shared.v1.MemberKickedEvent
+ * @generated from message shared.v1.MemberRemovedEvent
  */
-export type MemberKickedEvent = Message<"shared.v1.MemberKickedEvent"> & {
+export type MemberRemovedEvent = Message<"shared.v1.MemberRemovedEvent"> & {
   /**
-   * User ID of the kicked member.
+   * The member who was removed.
    *
-   * @generated from field: int32 user_id = 1;
+   * @generated from field: shared.v1.MemberInfo member = 1;
    */
-  userId: number;
+  member?: MemberInfo;
 
   /**
-   * User ID of the admin/owner who performed the kick.
+   * The owner who performed the removal.
    *
-   * @generated from field: int32 operator_id = 2;
+   * @generated from field: shared.v1.MemberInfo operator = 2;
    */
-  operatorId: number;
+  operator?: MemberInfo;
 };
 
 /**
- * Describes the message shared.v1.MemberKickedEvent.
- * Use `create(MemberKickedEventSchema)` to create a new message.
+ * Describes the message shared.v1.MemberRemovedEvent.
+ * Use `create(MemberRemovedEventSchema)` to create a new message.
  */
-export const MemberKickedEventSchema: GenMessage<MemberKickedEvent> = /*@__PURE__*/
+export const MemberRemovedEventSchema: GenMessage<MemberRemovedEvent> = /*@__PURE__*/
   messageDesc(file_shared_v1_group_event, 3);
 
 /**
@@ -183,11 +180,11 @@ export const MemberKickedEventSchema: GenMessage<MemberKickedEvent> = /*@__PURE_
  */
 export type GroupInfoChangedEvent = Message<"shared.v1.GroupInfoChangedEvent"> & {
   /**
-   * User ID of the operator who made the change.
+   * The operator who made the change.
    *
-   * @generated from field: int32 operator_id = 1;
+   * @generated from field: shared.v1.MemberInfo operator = 1;
    */
-  operatorId: number;
+  operator?: MemberInfo;
 
   /**
    * Changed field identifier (e.g. "name", "avatar", "description").
@@ -203,65 +200,4 @@ export type GroupInfoChangedEvent = Message<"shared.v1.GroupInfoChangedEvent"> &
  */
 export const GroupInfoChangedEventSchema: GenMessage<GroupInfoChangedEvent> = /*@__PURE__*/
   messageDesc(file_shared_v1_group_event, 4);
-
-/**
- * AgentAddedEvent is produced when an agent is added to a group.
- * Delivered as a system message to the group conversation.
- *
- * @generated from message shared.v1.AgentAddedEvent
- */
-export type AgentAddedEvent = Message<"shared.v1.AgentAddedEvent"> & {
-  /**
-   * Agent user ID.
-   *
-   * @generated from field: int32 agent_id = 1;
-   */
-  agentId: number;
-
-  /**
-   * User ID of the operator who added the agent.
-   *
-   * @generated from field: int32 operator_id = 2;
-   */
-  operatorId: number;
-};
-
-/**
- * Describes the message shared.v1.AgentAddedEvent.
- * Use `create(AgentAddedEventSchema)` to create a new message.
- */
-export const AgentAddedEventSchema: GenMessage<AgentAddedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_group_event, 5);
-
-/**
- * AgentRemovedEvent is produced when an agent is removed from a group.
- * Dual delivery:
- *   - GROUP conversation: visible to all remaining members.
- *   - Removed agent's update box: via RemovedFromGroupEvent SnUpdate
- *     (the agent is no longer in the group).
- *
- * @generated from message shared.v1.AgentRemovedEvent
- */
-export type AgentRemovedEvent = Message<"shared.v1.AgentRemovedEvent"> & {
-  /**
-   * Agent user ID.
-   *
-   * @generated from field: int32 agent_id = 1;
-   */
-  agentId: number;
-
-  /**
-   * User ID of the operator who removed the agent.
-   *
-   * @generated from field: int32 operator_id = 2;
-   */
-  operatorId: number;
-};
-
-/**
- * Describes the message shared.v1.AgentRemovedEvent.
- * Use `create(AgentRemovedEventSchema)` to create a new message.
- */
-export const AgentRemovedEventSchema: GenMessage<AgentRemovedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_group_event, 6);
 

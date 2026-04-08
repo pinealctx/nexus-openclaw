@@ -8,13 +8,15 @@ import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
 import type { GroupInfo, MemberInfo } from "../../shared/v1/group_pb";
 import { file_shared_v1_group } from "../../shared/v1/group_pb";
 import { file_shared_v1_options } from "../../shared/v1/options_pb";
+import type { UserInfo } from "../../shared/v1/user_pb";
+import { file_shared_v1_user } from "../../shared/v1/user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file api/v1/group_service.proto.
  */
 export const file_api_v1_group_service: GenFile = /*@__PURE__*/
-  fileDesc("ChphcGkvdjEvZ3JvdXBfc2VydmljZS5wcm90bxIGYXBpLnYxIosBChJDcmVhdGVHcm91cFJlcXVlc3QSFwoEbmFtZRgBIAEoCUIJukgGcgQQARhAEhwKCmF2YXRhcl91cmwYAiABKAlCCLpIBXIDGIAQEh8KCm1lbWJlcl9pZHMYAyADKAVCC7pICJIBBQgCEMcBEh0KC2Rlc2NyaXB0aW9uGAQgASgJQgi6SAVyAxj0AyI6ChNDcmVhdGVHcm91cFJlc3BvbnNlEiMKBWdyb3VwGAEgASgLMhQuc2hhcmVkLnYxLkdyb3VwSW5mbyIxChREaXNzb2x2ZUdyb3VwUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgACIXChVEaXNzb2x2ZUdyb3VwUmVzcG9uc2UiTAoWVXBkYXRlR3JvdXBOYW1lUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgABIXCgRuYW1lGAIgASgJQgm6SAZyBBABGEAiGQoXVXBkYXRlR3JvdXBOYW1lUmVzcG9uc2UiUwoYVXBkYXRlR3JvdXBBdmF0YXJSZXF1ZXN0EhkKCGdyb3VwX2lkGAEgASgFQge6SAQaAiAAEhwKCmF2YXRhcl91cmwYAiABKAlCCLpIBXIDGIAQIhsKGVVwZGF0ZUdyb3VwQXZhdGFyUmVzcG9uc2UiWQodVXBkYXRlR3JvdXBEZXNjcmlwdGlvblJlcXVlc3QSGQoIZ3JvdXBfaWQYASABKAVCB7pIBBoCIAASHQoLZGVzY3JpcHRpb24YAiABKAlCCLpIBXIDGPQDIiAKHlVwZGF0ZUdyb3VwRGVzY3JpcHRpb25SZXNwb25zZSJRChRJbnZpdGVNZW1iZXJzUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgABIeCgptZW1iZXJfaWRzGAIgAygFQgq6SAeSAQQIARBjIhcKFUludml0ZU1lbWJlcnNSZXNwb25zZSJMChNSZW1vdmVNZW1iZXJSZXF1ZXN0EhkKCGdyb3VwX2lkGAEgASgFQge6SAQaAiAAEhoKCXRhcmdldF9pZBgCIAEoBUIHukgEGgIgACIWChRSZW1vdmVNZW1iZXJSZXNwb25zZSIuChFMZWF2ZUdyb3VwUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgACIUChJMZWF2ZUdyb3VwUmVzcG9uc2UiRwoPQWRkQWdlbnRSZXF1ZXN0EhkKCGdyb3VwX2lkGAEgASgFQge6SAQaAiAAEhkKCGFnZW50X2lkGAIgASgFQge6SAQaAiAAIhIKEEFkZEFnZW50UmVzcG9uc2UiSgoSUmVtb3ZlQWdlbnRSZXF1ZXN0EhkKCGdyb3VwX2lkGAEgASgFQge6SAQaAiAAEhkKCGFnZW50X2lkGAIgASgFQge6SAQaAiAAIhUKE1JlbW92ZUFnZW50UmVzcG9uc2UiMAoTR2V0R3JvdXBJbmZvUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgACJjChRHZXRHcm91cEluZm9SZXNwb25zZRIjCgVncm91cBgBIAEoCzIULnNoYXJlZC52MS5Hcm91cEluZm8SJgoHbWVtYmVycxgCIAMoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvIm4KEkxpc3RNZW1iZXJzUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgABIVCghhZnRlcl9pZBgCIAEoBUgAiAEBEhkKBWxpbWl0GAMgASgFQgq6SAcaBRjIASgAQgsKCV9hZnRlcl9pZCJPChNMaXN0TWVtYmVyc1Jlc3BvbnNlEiYKB21lbWJlcnMYASADKAsyFS5zaGFyZWQudjEuTWVtYmVySW5mbxIQCghoYXNfbW9yZRgCIAEoCCJSChFMaXN0R3JvdXBzUmVxdWVzdBIVCghhZnRlcl9pZBgBIAEoBUgAiAEBEhkKBWxpbWl0GAIgASgFQgq6SAcaBRjIASgAQgsKCV9hZnRlcl9pZCJMChJMaXN0R3JvdXBzUmVzcG9uc2USJAoGZ3JvdXBzGAEgAygLMhQuc2hhcmVkLnYxLkdyb3VwSW5mbxIQCghoYXNfbW9yZRgCIAEoCDKuCAoMR3JvdXBTZXJ2aWNlEkwKC0NyZWF0ZUdyb3VwEhouYXBpLnYxLkNyZWF0ZUdyb3VwUmVxdWVzdBobLmFwaS52MS5DcmVhdGVHcm91cFJlc3BvbnNlIgSgtRgBElIKDURpc3NvbHZlR3JvdXASHC5hcGkudjEuRGlzc29sdmVHcm91cFJlcXVlc3QaHS5hcGkudjEuRGlzc29sdmVHcm91cFJlc3BvbnNlIgSgtRgBElgKD1VwZGF0ZUdyb3VwTmFtZRIeLmFwaS52MS5VcGRhdGVHcm91cE5hbWVSZXF1ZXN0Gh8uYXBpLnYxLlVwZGF0ZUdyb3VwTmFtZVJlc3BvbnNlIgSgtRgBEl4KEVVwZGF0ZUdyb3VwQXZhdGFyEiAuYXBpLnYxLlVwZGF0ZUdyb3VwQXZhdGFyUmVxdWVzdBohLmFwaS52MS5VcGRhdGVHcm91cEF2YXRhclJlc3BvbnNlIgSgtRgBEm0KFlVwZGF0ZUdyb3VwRGVzY3JpcHRpb24SJS5hcGkudjEuVXBkYXRlR3JvdXBEZXNjcmlwdGlvblJlcXVlc3QaJi5hcGkudjEuVXBkYXRlR3JvdXBEZXNjcmlwdGlvblJlc3BvbnNlIgSgtRgBElIKDUludml0ZU1lbWJlcnMSHC5hcGkudjEuSW52aXRlTWVtYmVyc1JlcXVlc3QaHS5hcGkudjEuSW52aXRlTWVtYmVyc1Jlc3BvbnNlIgSgtRgBEk8KDFJlbW92ZU1lbWJlchIbLmFwaS52MS5SZW1vdmVNZW1iZXJSZXF1ZXN0GhwuYXBpLnYxLlJlbW92ZU1lbWJlclJlc3BvbnNlIgSgtRgBEkMKCkxlYXZlR3JvdXASGS5hcGkudjEuTGVhdmVHcm91cFJlcXVlc3QaGi5hcGkudjEuTGVhdmVHcm91cFJlc3BvbnNlEkMKCEFkZEFnZW50EhcuYXBpLnYxLkFkZEFnZW50UmVxdWVzdBoYLmFwaS52MS5BZGRBZ2VudFJlc3BvbnNlIgSgtRgBEkwKC1JlbW92ZUFnZW50EhouYXBpLnYxLlJlbW92ZUFnZW50UmVxdWVzdBobLmFwaS52MS5SZW1vdmVBZ2VudFJlc3BvbnNlIgSgtRgBEkkKDEdldEdyb3VwSW5mbxIbLmFwaS52MS5HZXRHcm91cEluZm9SZXF1ZXN0GhwuYXBpLnYxLkdldEdyb3VwSW5mb1Jlc3BvbnNlEkYKC0xpc3RNZW1iZXJzEhouYXBpLnYxLkxpc3RNZW1iZXJzUmVxdWVzdBobLmFwaS52MS5MaXN0TWVtYmVyc1Jlc3BvbnNlEkMKCkxpc3RHcm91cHMSGS5hcGkudjEuTGlzdEdyb3Vwc1JlcXVlc3QaGi5hcGkudjEuTGlzdEdyb3Vwc1Jlc3BvbnNlQo4BCgpjb20uYXBpLnYxQhFHcm91cFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1haS9wa2cvcHJvdG8vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_group, file_shared_v1_options]);
+  fileDesc("ChphcGkvdjEvZ3JvdXBfc2VydmljZS5wcm90bxIGYXBpLnYxIosBChJDcmVhdGVHcm91cFJlcXVlc3QSFwoEbmFtZRgBIAEoCUIJukgGcgQQARhAEhwKCmF2YXRhcl91cmwYAiABKAlCCLpIBXIDGIAQEh8KCm1lbWJlcl9pZHMYAyADKAVCC7pICJIBBQgCEMcBEh0KC2Rlc2NyaXB0aW9uGAQgASgJQgi6SAVyAxj0AyI6ChNDcmVhdGVHcm91cFJlc3BvbnNlEiMKBWdyb3VwGAEgASgLMhQuc2hhcmVkLnYxLkdyb3VwSW5mbyIxChREaXNzb2x2ZUdyb3VwUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgACIXChVEaXNzb2x2ZUdyb3VwUmVzcG9uc2UiTAoWVXBkYXRlR3JvdXBOYW1lUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgABIXCgRuYW1lGAIgASgJQgm6SAZyBBABGEAiGQoXVXBkYXRlR3JvdXBOYW1lUmVzcG9uc2UiUwoYVXBkYXRlR3JvdXBBdmF0YXJSZXF1ZXN0EhkKCGdyb3VwX2lkGAEgASgFQge6SAQaAiAAEhwKCmF2YXRhcl91cmwYAiABKAlCCLpIBXIDGIAQIhsKGVVwZGF0ZUdyb3VwQXZhdGFyUmVzcG9uc2UiWQodVXBkYXRlR3JvdXBEZXNjcmlwdGlvblJlcXVlc3QSGQoIZ3JvdXBfaWQYASABKAVCB7pIBBoCIAASHQoLZGVzY3JpcHRpb24YAiABKAlCCLpIBXIDGPQDIiAKHlVwZGF0ZUdyb3VwRGVzY3JpcHRpb25SZXNwb25zZSJRChRJbnZpdGVNZW1iZXJzUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgABIeCgptZW1iZXJfaWRzGAIgAygFQgq6SAeSAQQIARBjIhcKFUludml0ZU1lbWJlcnNSZXNwb25zZSJMChNSZW1vdmVNZW1iZXJSZXF1ZXN0EhkKCGdyb3VwX2lkGAEgASgFQge6SAQaAiAAEhoKCXRhcmdldF9pZBgCIAEoBUIHukgEGgIgACIWChRSZW1vdmVNZW1iZXJSZXNwb25zZSIuChFMZWF2ZUdyb3VwUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgACIUChJMZWF2ZUdyb3VwUmVzcG9uc2UiMAoTR2V0R3JvdXBJbmZvUmVxdWVzdBIZCghncm91cF9pZBgBIAEoBUIHukgEGgIgACKHAQoUR2V0R3JvdXBJbmZvUmVzcG9uc2USIwoFZ3JvdXAYASABKAsyFC5zaGFyZWQudjEuR3JvdXBJbmZvEiYKB21lbWJlcnMYAiADKAsyFS5zaGFyZWQudjEuTWVtYmVySW5mbxIiCgV1c2VycxgDIAMoCzITLnNoYXJlZC52MS5Vc2VySW5mbyJSChFMaXN0R3JvdXBzUmVxdWVzdBIVCghhZnRlcl9pZBgBIAEoBUgAiAEBEhkKBWxpbWl0GAIgASgFQgq6SAcaBRjIASgAQgsKCV9hZnRlcl9pZCJMChJMaXN0R3JvdXBzUmVzcG9uc2USJAoGZ3JvdXBzGAEgAygLMhQuc2hhcmVkLnYxLkdyb3VwSW5mbxIQCghoYXNfbW9yZRgCIAEoCDLTBgoMR3JvdXBTZXJ2aWNlEkwKC0NyZWF0ZUdyb3VwEhouYXBpLnYxLkNyZWF0ZUdyb3VwUmVxdWVzdBobLmFwaS52MS5DcmVhdGVHcm91cFJlc3BvbnNlIgSgtRgBElIKDURpc3NvbHZlR3JvdXASHC5hcGkudjEuRGlzc29sdmVHcm91cFJlcXVlc3QaHS5hcGkudjEuRGlzc29sdmVHcm91cFJlc3BvbnNlIgSgtRgBElgKD1VwZGF0ZUdyb3VwTmFtZRIeLmFwaS52MS5VcGRhdGVHcm91cE5hbWVSZXF1ZXN0Gh8uYXBpLnYxLlVwZGF0ZUdyb3VwTmFtZVJlc3BvbnNlIgSgtRgBEl4KEVVwZGF0ZUdyb3VwQXZhdGFyEiAuYXBpLnYxLlVwZGF0ZUdyb3VwQXZhdGFyUmVxdWVzdBohLmFwaS52MS5VcGRhdGVHcm91cEF2YXRhclJlc3BvbnNlIgSgtRgBEm0KFlVwZGF0ZUdyb3VwRGVzY3JpcHRpb24SJS5hcGkudjEuVXBkYXRlR3JvdXBEZXNjcmlwdGlvblJlcXVlc3QaJi5hcGkudjEuVXBkYXRlR3JvdXBEZXNjcmlwdGlvblJlc3BvbnNlIgSgtRgBElIKDUludml0ZU1lbWJlcnMSHC5hcGkudjEuSW52aXRlTWVtYmVyc1JlcXVlc3QaHS5hcGkudjEuSW52aXRlTWVtYmVyc1Jlc3BvbnNlIgSgtRgBEk8KDFJlbW92ZU1lbWJlchIbLmFwaS52MS5SZW1vdmVNZW1iZXJSZXF1ZXN0GhwuYXBpLnYxLlJlbW92ZU1lbWJlclJlc3BvbnNlIgSgtRgBEkMKCkxlYXZlR3JvdXASGS5hcGkudjEuTGVhdmVHcm91cFJlcXVlc3QaGi5hcGkudjEuTGVhdmVHcm91cFJlc3BvbnNlEkkKDEdldEdyb3VwSW5mbxIbLmFwaS52MS5HZXRHcm91cEluZm9SZXF1ZXN0GhwuYXBpLnYxLkdldEdyb3VwSW5mb1Jlc3BvbnNlEkMKCkxpc3RHcm91cHMSGS5hcGkudjEuTGlzdEdyb3Vwc1JlcXVlc3QaGi5hcGkudjEuTGlzdEdyb3Vwc1Jlc3BvbnNlQo4BCgpjb20uYXBpLnYxQhFHcm91cFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1haS9wa2cvcHJvdG8vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_group, file_shared_v1_options, file_shared_v1_user]);
 
 /**
  * CreateGroupRequest creates a new group.
@@ -248,7 +250,8 @@ export const UpdateGroupDescriptionResponseSchema: GenMessage<UpdateGroupDescrip
   messageDesc(file_api_v1_group_service, 9);
 
 /**
- * InviteMembersRequest invites users to the group.
+ * InviteMembersRequest invites users or agents to the group.
+ * The server auto-detects member type by looking up account_type.
  *
  * @generated from message api.v1.InviteMembersRequest
  */
@@ -261,7 +264,8 @@ export type InviteMembersRequest = Message<"api.v1.InviteMembersRequest"> & {
   groupId: number;
 
   /**
-   * User IDs to invite. Server enforces max group size of 100.
+   * User IDs to invite (can include both users and agents).
+   * Server enforces max group size and max agent count.
    *
    * @generated from field: repeated int32 member_ids = 2;
    */
@@ -291,7 +295,7 @@ export const InviteMembersResponseSchema: GenMessage<InviteMembersResponse> = /*
   messageDesc(file_api_v1_group_service, 11);
 
 /**
- * RemoveMemberRequest removes a member from the group.
+ * RemoveMemberRequest removes a member (user or agent) from the group.
  *
  * @generated from message api.v1.RemoveMemberRequest
  */
@@ -304,7 +308,7 @@ export type RemoveMemberRequest = Message<"api.v1.RemoveMemberRequest"> & {
   groupId: number;
 
   /**
-   * Target member user ID.
+   * Target member user ID (can be a user or agent).
    *
    * @generated from field: int32 target_id = 2;
    */
@@ -370,92 +374,6 @@ export const LeaveGroupResponseSchema: GenMessage<LeaveGroupResponse> = /*@__PUR
   messageDesc(file_api_v1_group_service, 15);
 
 /**
- * AddAgentRequest adds an agent to the group.
- *
- * @generated from message api.v1.AddAgentRequest
- */
-export type AddAgentRequest = Message<"api.v1.AddAgentRequest"> & {
-  /**
-   * Group ID.
-   *
-   * @generated from field: int32 group_id = 1;
-   */
-  groupId: number;
-
-  /**
-   * Agent user ID.
-   *
-   * @generated from field: int32 agent_id = 2;
-   */
-  agentId: number;
-};
-
-/**
- * Describes the message api.v1.AddAgentRequest.
- * Use `create(AddAgentRequestSchema)` to create a new message.
- */
-export const AddAgentRequestSchema: GenMessage<AddAgentRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 16);
-
-/**
- * AddAgentResponse is returned after adding an agent.
- *
- * @generated from message api.v1.AddAgentResponse
- */
-export type AddAgentResponse = Message<"api.v1.AddAgentResponse"> & {
-};
-
-/**
- * Describes the message api.v1.AddAgentResponse.
- * Use `create(AddAgentResponseSchema)` to create a new message.
- */
-export const AddAgentResponseSchema: GenMessage<AddAgentResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 17);
-
-/**
- * RemoveAgentRequest removes an agent from the group.
- *
- * @generated from message api.v1.RemoveAgentRequest
- */
-export type RemoveAgentRequest = Message<"api.v1.RemoveAgentRequest"> & {
-  /**
-   * Group ID.
-   *
-   * @generated from field: int32 group_id = 1;
-   */
-  groupId: number;
-
-  /**
-   * Agent user ID.
-   *
-   * @generated from field: int32 agent_id = 2;
-   */
-  agentId: number;
-};
-
-/**
- * Describes the message api.v1.RemoveAgentRequest.
- * Use `create(RemoveAgentRequestSchema)` to create a new message.
- */
-export const RemoveAgentRequestSchema: GenMessage<RemoveAgentRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 18);
-
-/**
- * RemoveAgentResponse is returned after removing an agent.
- *
- * @generated from message api.v1.RemoveAgentResponse
- */
-export type RemoveAgentResponse = Message<"api.v1.RemoveAgentResponse"> & {
-};
-
-/**
- * Describes the message api.v1.RemoveAgentResponse.
- * Use `create(RemoveAgentResponseSchema)` to create a new message.
- */
-export const RemoveAgentResponseSchema: GenMessage<RemoveAgentResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 19);
-
-/**
  * GetGroupInfoRequest requests group details.
  *
  * @generated from message api.v1.GetGroupInfoRequest
@@ -474,10 +392,10 @@ export type GetGroupInfoRequest = Message<"api.v1.GetGroupInfoRequest"> & {
  * Use `create(GetGroupInfoRequestSchema)` to create a new message.
  */
 export const GetGroupInfoRequestSchema: GenMessage<GetGroupInfoRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 20);
+  messageDesc(file_api_v1_group_service, 16);
 
 /**
- * GetGroupInfoResponse contains the group details.
+ * GetGroupInfoResponse contains the group details with all members.
  *
  * @generated from message api.v1.GetGroupInfoResponse
  */
@@ -490,11 +408,19 @@ export type GetGroupInfoResponse = Message<"api.v1.GetGroupInfoResponse"> & {
   group?: GroupInfo;
 
   /**
-   * Group members (partial preview, use ListMembers for full list).
+   * All group members (lightweight: user_id + role + joined_at).
    *
    * @generated from field: repeated shared.v1.MemberInfo members = 2;
    */
   members: MemberInfo[];
+
+  /**
+   * User info for all members, keyed by user_id. Clients join
+   * members[i].user_id with this list for display.
+   *
+   * @generated from field: repeated shared.v1.UserInfo users = 3;
+   */
+  users: UserInfo[];
 };
 
 /**
@@ -502,71 +428,7 @@ export type GetGroupInfoResponse = Message<"api.v1.GetGroupInfoResponse"> & {
  * Use `create(GetGroupInfoResponseSchema)` to create a new message.
  */
 export const GetGroupInfoResponseSchema: GenMessage<GetGroupInfoResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 21);
-
-/**
- * ListMembersRequest lists group members with cursor-based pagination.
- *
- * @generated from message api.v1.ListMembersRequest
- */
-export type ListMembersRequest = Message<"api.v1.ListMembersRequest"> & {
-  /**
-   * Group ID.
-   *
-   * @generated from field: int32 group_id = 1;
-   */
-  groupId: number;
-
-  /**
-   * Pagination anchor: only return members with user_id > after_id.
-   * Omit for the first page.
-   *
-   * @generated from field: optional int32 after_id = 2;
-   */
-  afterId?: number;
-
-  /**
-   * Maximum number of items to return (default: 50, max: 200).
-   *
-   * @generated from field: int32 limit = 3;
-   */
-  limit: number;
-};
-
-/**
- * Describes the message api.v1.ListMembersRequest.
- * Use `create(ListMembersRequestSchema)` to create a new message.
- */
-export const ListMembersRequestSchema: GenMessage<ListMembersRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 22);
-
-/**
- * ListMembersResponse contains the member list.
- *
- * @generated from message api.v1.ListMembersResponse
- */
-export type ListMembersResponse = Message<"api.v1.ListMembersResponse"> & {
-  /**
-   * Group members.
-   *
-   * @generated from field: repeated shared.v1.MemberInfo members = 1;
-   */
-  members: MemberInfo[];
-
-  /**
-   * Whether there are more members beyond this page.
-   *
-   * @generated from field: bool has_more = 2;
-   */
-  hasMore: boolean;
-};
-
-/**
- * Describes the message api.v1.ListMembersResponse.
- * Use `create(ListMembersResponseSchema)` to create a new message.
- */
-export const ListMembersResponseSchema: GenMessage<ListMembersResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 23);
+  messageDesc(file_api_v1_group_service, 17);
 
 /**
  * ListGroupsRequest requests the current user's joined groups.
@@ -595,7 +457,7 @@ export type ListGroupsRequest = Message<"api.v1.ListGroupsRequest"> & {
  * Use `create(ListGroupsRequestSchema)` to create a new message.
  */
 export const ListGroupsRequestSchema: GenMessage<ListGroupsRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 24);
+  messageDesc(file_api_v1_group_service, 18);
 
 /**
  * ListGroupsResponse contains the user's joined groups.
@@ -623,25 +485,24 @@ export type ListGroupsResponse = Message<"api.v1.ListGroupsResponse"> & {
  * Use `create(ListGroupsResponseSchema)` to create a new message.
  */
 export const ListGroupsResponseSchema: GenMessage<ListGroupsResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_group_service, 25);
+  messageDesc(file_api_v1_group_service, 19);
 
 /**
- * GroupService handles group lifecycle, membership, and in-group agent
- * management. Authenticated via Access Token.
- *
+ * GroupService handles group lifecycle, membership, and settings.
+ * Authenticated via Access Token.
+ * 
  * Group lifecycle:
  *   - CreateGroup creates a GROUP conversation and adds the creator as
  *     owner.
  *   - DissolveGroup permanently removes the group (owner only).
- *
+ * 
  * System message integration:
  *   All state-changing operations produce GroupContent system messages
  *   delivered to the group conversation. See shared/v1/group_event.proto
  *   for the full list of event payloads:
  *   - Member changes: MemberJoinedEvent, MemberLeftEvent,
- *     MemberKickedEvent.
+ *     MemberRemovedEvent.
  *   - Setting changes: GroupInfoChangedEvent.
- *   - Agent changes: AgentAddedEvent, AgentRemovedEvent.
  *
  * ── Lifecycle ──
  *
@@ -650,11 +511,11 @@ export const ListGroupsResponseSchema: GenMessage<ListGroupsResponse> = /*@__PUR
 export const GroupService: GenService<{
   /**
    * CreateGroup creates a new group conversation.
-   *
+   * 
    * Side effects:
    *   - Creates a GROUP conversation and adds the creator as owner.
-   *   - Delivers a single MemberJoinedEvent containing all initial member IDs.
-   *
+   *   - Delivers a single MemberJoinedEvent containing all initial members.
+   * 
    * Error conditions:
    *   - INVALID_ARGUMENT: Name is empty or fewer than 2 member_ids.
    *   - FAILED_PRECONDITION: After filtering invalid/blocked users,
@@ -671,14 +532,15 @@ export const GroupService: GenService<{
   },
   /**
    * DissolveGroup permanently dissolves a group.
-   *
+   * 
    * Side effects:
-   *   - Marks the group conversation as dissolved; no further messages
-   *     can be sent.
-   *   - All members are removed from the group.
-   *
+   *   - Marks the group as DISSOLVED; no further messages can be sent.
+   *   - Removes all members from the group.
+   *   - Delivers GroupDissolvedEvent SnUpdate to every member's update box.
+   * 
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
+   *   - FAILED_PRECONDITION: Group is already dissolved.
    *   - PERMISSION_DENIED: Caller is not the group owner.
    *
    * @generated from rpc api.v1.GroupService.DissolveGroup
@@ -690,13 +552,14 @@ export const GroupService: GenService<{
   },
   /**
    * UpdateGroupName updates the group display name.
-   *
+   * 
    * Side effects:
    *   - Delivers GroupInfoChangedEvent (field="name") to the group
    *     conversation.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not the owner.
    *   - INVALID_ARGUMENT: Name is empty.
    *
@@ -709,13 +572,14 @@ export const GroupService: GenService<{
   },
   /**
    * UpdateGroupAvatar updates the group avatar.
-   *
+   * 
    * Side effects:
    *   - Delivers GroupInfoChangedEvent (field="avatar") to the group
    *     conversation.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not the owner.
    *
    * @generated from rpc api.v1.GroupService.UpdateGroupAvatar
@@ -727,13 +591,14 @@ export const GroupService: GenService<{
   },
   /**
    * UpdateGroupDescription updates the group description.
-   *
+   * 
    * Side effects:
    *   - Delivers GroupInfoChangedEvent (field="description") to the group
    *     conversation.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not the owner.
    *
    * @generated from rpc api.v1.GroupService.UpdateGroupDescription
@@ -744,21 +609,25 @@ export const GroupService: GenService<{
     output: typeof UpdateGroupDescriptionResponseSchema;
   },
   /**
-   * InviteMembers invites one or more users to join the group.
-   *
+   * InviteMembers invites one or more users or agents to join the group.
+   * The server auto-detects member type (user vs agent) by account_type.
+   * 
    * Side effects:
-   *   - Adds the invited users as group members.
-   *   - Delivers a single MemberJoinedEvent containing all newly added member IDs.
-   *
+   *   - Adds the invited members to the group.
+   *   - Delivers a single MemberJoinedEvent containing all newly added members.
+   * 
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not the owner.
    *   - RESOURCE_EXHAUSTED: Adding these members would exceed the group
-   *     member limit (100).
-   *
+   *     member limit or agent limit.
+   * 
    * Skipped silently (no error):
+   *   - User IDs that do not exist.
    *   - Users who have blocked the inviter (or vice versa).
-   *   - Users who are already group members.
+   *   - Users/agents who are already group members.
+   *   - Agents that are not active.
    *
    * @generated from rpc api.v1.GroupService.InviteMembers
    */
@@ -768,15 +637,19 @@ export const GroupService: GenService<{
     output: typeof InviteMembersResponseSchema;
   },
   /**
-   * RemoveMember removes a member from the group (owner only).
-   *
+   * RemoveMember removes a member (user or agent) from the group (owner only).
+   * 
    * Side effects:
    *   - Removes the target from the group.
-   *   - Delivers MemberKickedEvent to the group conversation.
-   *
+   *   - Delivers MemberRemovedEvent to the group conversation.
+   *   - Delivers RemovedFromGroupEvent SnUpdate to the removed member's
+   *     update box.
+   * 
    * Error conditions:
-   *   - NOT_FOUND: Group or target member does not exist.
+   *   - NOT_FOUND: Group does not exist, or target is not a member.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not the owner.
+   *   - INVALID_ARGUMENT: Cannot remove the group owner.
    *
    * @generated from rpc api.v1.GroupService.RemoveMember
    */
@@ -788,13 +661,14 @@ export const GroupService: GenService<{
   /**
    * LeaveGroup allows a member to voluntarily leave the group.
    * The group owner cannot leave; use DissolveGroup instead.
-   *
+   * 
    * Side effects:
    *   - Removes the caller from the group.
    *   - Delivers MemberLeftEvent to the group conversation.
-   *
+   * 
    * Error conditions:
-   *   - NOT_FOUND: Group does not exist.
+   *   - NOT_FOUND: Group does not exist, or caller is not a member.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is the group owner (must dissolve instead).
    *
    * @generated from rpc api.v1.GroupService.LeaveGroup
@@ -805,48 +679,11 @@ export const GroupService: GenService<{
     output: typeof LeaveGroupResponseSchema;
   },
   /**
-   * AddAgent adds an agent to the group.
-   *
-   * Side effects:
-   *   - Adds the agent as a group member with account_type = AGENT.
-   *   - Delivers AgentAddedEvent to the group conversation.
-   *
-   * Error conditions:
-   *   - NOT_FOUND: Group or agent does not exist.
-   *   - PERMISSION_DENIED: Caller is not the owner.
-   *   - ALREADY_EXISTS: Agent is already in the group.
-   *
-   * @generated from rpc api.v1.GroupService.AddAgent
-   */
-  addAgent: {
-    methodKind: "unary";
-    input: typeof AddAgentRequestSchema;
-    output: typeof AddAgentResponseSchema;
-  },
-  /**
-   * RemoveAgent removes an agent from the group.
-   *
-   * Side effects:
-   *   - Removes the agent from the group.
-   *   - Delivers AgentRemovedEvent to the group conversation.
-   *
-   * Error conditions:
-   *   - NOT_FOUND: Group or agent does not exist, or agent is not in
-   *     the group.
-   *   - PERMISSION_DENIED: Caller is not the owner.
-   *
-   * @generated from rpc api.v1.GroupService.RemoveAgent
-   */
-  removeAgent: {
-    methodKind: "unary";
-    input: typeof RemoveAgentRequestSchema;
-    output: typeof RemoveAgentResponseSchema;
-  },
-  /**
-   * GetGroupInfo returns group details and a partial member preview.
-   *
+   * GetGroupInfo returns group details with all members and their user info.
+   * 
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
+   *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not a member of the group.
    *
    * @generated from rpc api.v1.GroupService.GetGroupInfo
@@ -855,20 +692,6 @@ export const GroupService: GenService<{
     methodKind: "unary";
     input: typeof GetGroupInfoRequestSchema;
     output: typeof GetGroupInfoResponseSchema;
-  },
-  /**
-   * ListMembers lists group members with cursor-based pagination.
-   *
-   * Error conditions:
-   *   - NOT_FOUND: Group does not exist.
-   *   - PERMISSION_DENIED: Caller is not a member of the group.
-   *
-   * @generated from rpc api.v1.GroupService.ListMembers
-   */
-  listMembers: {
-    methodKind: "unary";
-    input: typeof ListMembersRequestSchema;
-    output: typeof ListMembersResponseSchema;
   },
   /**
    * ListGroups returns the current user's joined groups with cursor-based

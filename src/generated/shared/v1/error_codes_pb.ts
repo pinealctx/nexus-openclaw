@@ -15,7 +15,7 @@ export const file_shared_v1_error_codes: GenFile = /*@__PURE__*/
 /**
  * ErrorDetail is the standard error payload attached to connect.Error details.
  * It is the sole mechanism for clients to identify and handle errors.
- *
+ * 
  * Full error code definitions: docs/designs/d12-error-codes.md
  * Go constants: internal/xerr/
  *

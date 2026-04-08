@@ -230,13 +230,13 @@ export const MarkAsReadResponseSchema: GenMessage<MarkAsReadResponse> = /*@__PUR
 /**
  * ConversationService handles conversation list retrieval, actions, and
  * read-state management. Authenticated via Access Token.
- *
+ * 
  * Conversation lifecycle:
  *   - PRIVATE conversations are created implicitly when a friend request
  *     is accepted (via ContactService.AcceptFriendRequest), or when a
  *     user adds an agent as a contact (via ContactService.AddContact).
  *   - GROUP conversations are created via GroupService.CreateGroup.
- *
+ * 
  * Conversation list model:
  *   - Conversations are paginated by the `last_message_time` field descending.
  *   - Responses include denormalized related_users to avoid extra
@@ -247,7 +247,7 @@ export const MarkAsReadResponseSchema: GenMessage<MarkAsReadResponse> = /*@__PUR
 export const ConversationService: GenService<{
   /**
    * GetConversation returns a single conversation detail by ID.
-   *
+   * 
    * Clients should call this when they receive a message push for a
    * conversation_id that is not in their local list (e.g., a previously
    * deleted conversation that was auto-restored by the server).
@@ -262,12 +262,12 @@ export const ConversationService: GenService<{
   /**
    * ListConversations returns conversations ordered by last_message_time descending,
    * with cursor-based pagination.
-   *
+   * 
    * This is also the entry point for reconnection sync: after
    * authentication, clients pull the full conversation list, compare each
    * conversation's last_message_id with their local value, and call
    * MessageService.GetMessageHistory for conversations with a gap.
-   *
+   * 
    * Note: Deleted conversations that have been auto-restored (due to a new
    * incoming message) will appear in the results normally, since the server
    * clears the is_deleted flag upon message arrival.
@@ -281,12 +281,20 @@ export const ConversationService: GenService<{
   },
   /**
    * UpdateConversationAction performs a unified conversation action.
-   *
+   * 
    * Supported actions:
    *   - MUTE: Mute conversation notifications.
    *   - UNMUTE: Restore conversation notifications.
    *   - DELETE: Soft-delete the conversation from the user's list.
-   *
+   * 
+   * Access control:
+   *   - Permission is checked against the underlying relationship (contact
+   *     for PRIVATE, group membership for GROUP), not the user_conversations
+   *     record. This allows users to configure conversations before the
+   *     first message arrives (user_conversations is lazily created).
+   *   - If the user_conversations record doesn't exist yet, the server
+   *     creates it automatically (upsert semantics).
+   * 
    * DELETE behavior:
    *   - Sets is_deleted flag for the current user only (per-user soft-delete).
    *   - If clear_messages is true, also clears the user's local message
@@ -300,7 +308,7 @@ export const ConversationService: GenService<{
    *     the restored conversation since is_deleted has been cleared.
    *   - If a client receives a message for an unknown conversation_id,
    *     it should call GetConversation to fetch the full conversation info.
-   *
+   * 
    * Side effects:
    *   - Delivers a ConversationActionEvent to the current
    *     user's update box for multi-device sync. Other devices consume
@@ -315,7 +323,11 @@ export const ConversationService: GenService<{
   },
   /**
    * MarkAsRead updates the current user's read position in a conversation.
-   *
+   * 
+   * Access control:
+   *   - Same as UpdateConversationAction: checks underlying relationship,
+   *     auto-creates user_conversations record if needed (upsert semantics).
+   * 
    * Side effects:
    *   - Updates last_read_message_id in the conversation membership.
    *   - Produces a ReadReceiptEvent SnUpdate to the caller's own

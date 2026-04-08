@@ -17,7 +17,7 @@ export const file_shared_v1_user: GenFile = /*@__PURE__*/
  * UserInfo is the public view of a user, used across list rendering and
  * profile pages. Combines identity and display fields into a single
  * reusable structure.
- *
+ * 
  * Online status is NOT exposed to clients. Gateway maintains connection
  * state in memory only (no Redis, no client display).
  *

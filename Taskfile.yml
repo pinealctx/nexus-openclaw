@@ -1,0 +1,42 @@
+version: '3'
+
+tasks:
+  # ─── Protobuf Codegen ──────────────────────────────────────
+
+  proto:
+    desc: Generate TypeScript from protobuf definitions
+    dir: ../nexus-ai/proto
+    cmds:
+      - buf generate --template ../../nexus-openclaw/buf.gen.ts.yaml --include-imports -o ../../nexus-openclaw
+
+  # ─── Build ─────────────────────────────────────────────────
+
+  build:
+    desc: Build TypeScript
+    cmds:
+      - pnpm build
+
+  # ─── Test ──────────────────────────────────────────────────
+
+  test:
+    desc: Run tests
+    cmds:
+      - pnpm test
+
+  # ─── Lint ──────────────────────────────────────────────────
+
+  lint:
+    desc: Type-check with tsc
+    cmds:
+      - pnpm lint
+
+  # ─── Clean ─────────────────────────────────────────────────
+
+  clean:
+    desc: Remove build artifacts
+    cmds:
+      - cmd: rm -rf dist
+        platforms: [linux, darwin]
+      - cmd: Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue
+        platforms: [windows]
+        shell: powershell

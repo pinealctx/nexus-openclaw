@@ -347,7 +347,7 @@ export const SetDeliveryConfigResponseSchema: GenMessage<SetDeliveryConfigRespon
 /**
  * AgentService handles agent discovery (client side) and agent
  * self-management (agent side, agent_only).
- *
+ * 
  * Agent lifecycle (client side):
  *   - Users discover agents via ContactService.SearchUsers (account_type=AGENT).
  *   - Users browse featured agents via ListFeaturedAgents.
@@ -356,14 +356,14 @@ export const SetDeliveryConfigResponseSchema: GenMessage<SetDeliveryConfigRespon
  *   - Users remove agent contacts via ContactService.DeleteContact.
  *   - Users list their agent contacts via ContactService.ListContacts
  *     (filtered by account_type = "agent").
- *
+ * 
  * Agent self-management (agent_only):
  *   - Agents view their own profile via GetSelfAgent.
  *   - Agents update profile fields via UpdateSelfAgent.
  *   - Agents permanently delete themselves via DeleteSelfAgent.
  *   - Agents regenerate their token via RevokeSelfToken.
  *   - Agents configure event delivery via SetDeliveryConfig.
- *
+ * 
  * Relationship to other services:
  *   - Adding an agent creates a conversation (type = AGENT) visible
  *     in ConversationService.ListConversations.
@@ -388,7 +388,7 @@ export const AgentService: GenService<{
   },
   /**
    * GetAgentDetail returns detailed info for a specific agent.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist or has been deleted.
    *
@@ -401,7 +401,7 @@ export const AgentService: GenService<{
   },
   /**
    * GetSelfAgent returns the current agent's profile.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired agent token.
    *
@@ -414,11 +414,11 @@ export const AgentService: GenService<{
   },
   /**
    * UpdateSelfAgent updates the current agent's profile fields.
-   *
+   * 
    * Side effects:
    *   - If visibility changes from PRIVATE to PUBLIC, the agent becomes
    *     discoverable in the client-facing agent directory.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired agent token.
    *   - INVALID_ARGUMENT: Invalid field values.
@@ -432,12 +432,12 @@ export const AgentService: GenService<{
   },
   /**
    * DeleteSelfAgent permanently deletes the current agent.
-   *
+   * 
    * Side effects:
    *   - Sets agent status to DELETED.
    *   - Removes the agent from all group memberships.
    *   - Existing conversations with this agent become read-only.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired agent token.
    *
@@ -450,11 +450,11 @@ export const AgentService: GenService<{
   },
   /**
    * RevokeSelfToken revokes the current agent token and issues a new one.
-   *
+   * 
    * Side effects:
    *   - The current token becomes invalid immediately.
    *   - A new token is returned in the response.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired agent token.
    *
@@ -470,7 +470,7 @@ export const AgentService: GenService<{
    * Supports three modes via oneof: webhook (HTTPS POST), websocket
    * (persistent /ws/agent connection), or none (stop all delivery).
    * Modes are mutually exclusive; setting one clears the other.
-   *
+   * 
    * Side effects (webhook mode):
    *   - Verifies the URL with a test request before saving.
    *   - Generates a new signing secret (replaces any existing secret).
@@ -481,7 +481,7 @@ export const AgentService: GenService<{
    * Side effects (none mode):
    *   - Clears webhook config and resets delivery_mode to WEBHOOK.
    *   - Stops all event delivery until reconfigured.
-   *
+   * 
    * Error conditions:
    *   - FAILED_PRECONDITION: Agent is deleted.
    *   - INVALID_ARGUMENT: Webhook URL is not a valid HTTPS endpoint.

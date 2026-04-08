@@ -21,7 +21,7 @@ export const file_shared_v1_webhook_events: GenFile = /*@__PURE__*/
 /**
  * WebhookEvent is the unified event envelope delivered to agent webhook
  * endpoints via HTTP POST with protojson serialization.
- *
+ * 
  * Message delivery model:
  *   Agents receive the same message stream as regular users. Group
  *   events (group membership changes, etc.) arrive as messages with
@@ -272,7 +272,7 @@ export const GroupDissolvedPayloadSchema: GenMessage<GroupDissolvedPayload> = /*
 
 /**
  * WebhookEventType identifies the kind of webhook event.
- *
+ * 
  * Agents are first-class citizens in the message system. All message
  * types (text, media, group events, recalls) are
  * delivered as MESSAGE events containing a full MessageEnvelope.
