@@ -18,10 +18,10 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file shared/v1/updates.proto.
  */
 export const file_shared_v1_updates: GenFile = /*@__PURE__*/
-  fileDesc("ChdzaGFyZWQvdjEvdXBkYXRlcy5wcm90bxIJc2hhcmVkLnYxIuMICghTblVwZGF0ZRIKCgJzbhgBIAEoBRI2ChBtZXNzYWdlX2VudmVsb3BlGAIgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEkgKF2ZyaWVuZF9yZXF1ZXN0X3JlY2VpdmVkGAMgASgLMiUuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50SAASSAoXZnJpZW5kX3JlcXVlc3RfYWNjZXB0ZWQYBCABKAsyJS5zaGFyZWQudjEuRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnRIABJIChdmcmllbmRfcmVxdWVzdF9yZWplY3RlZBgFIAEoCzIlLnNoYXJlZC52MS5GcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudEgAEjkKD2NvbnRhY3RfZGVsZXRlZBgGIAEoCzIeLnNoYXJlZC52MS5Db250YWN0RGVsZXRlZEV2ZW50SAASPgoSdXNlcl9ibG9ja190b2dnbGVkGAcgASgLMiAuc2hhcmVkLnYxLlVzZXJCbG9ja1RvZ2dsZWRFdmVudEgAEkIKFHVzZXJfcHJvZmlsZV91cGRhdGVkGAggASgLMiIuc2hhcmVkLnYxLlVzZXJQcm9maWxlVXBkYXRlZEV2ZW50SAASQQoTY29udmVyc2F0aW9uX2FjdGlvbhgJIAEoCzIiLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25FdmVudEgAEjMKDHJlYWRfcmVjZWlwdBgKIAEoCzIbLnNoYXJlZC52MS5SZWFkUmVjZWlwdEV2ZW50SAASQgoUYWdlbnRfc3RhdHVzX2NoYW5nZWQYCyABKAsyIi5zaGFyZWQudjEuQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnRIABJAChNmcmllbmRfcmVxdWVzdF9zZW50GAwgASgLMiEuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RTZW50RXZlbnRIABJEChVjb250YWN0X2FsaWFzX3VwZGF0ZWQYDSABKAsyIy5zaGFyZWQudjEuQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50SAASOwoQdXNlcm5hbWVfY2hhbmdlZBgOIAEoCzIfLnNoYXJlZC52MS5Vc2VybmFtZUNoYW5nZWRFdmVudEgAEj4KEnJlbW92ZWRfZnJvbV9ncm91cBgRIAEoCzIgLnNoYXJlZC52MS5SZW1vdmVkRnJvbUdyb3VwRXZlbnRIABI5Cg9ncm91cF9kaXNzb2x2ZWQYECABKAsyHi5zaGFyZWQudjEuR3JvdXBEaXNzb2x2ZWRFdmVudEgAEjkKD21lc3NhZ2VfZGVsZXRlZBgSIAEoCzIeLnNoYXJlZC52MS5NZXNzYWdlRGVsZXRlZEV2ZW50SAASNQoNY29udGFjdF9hZGRlZBgTIAEoCzIcLnNoYXJlZC52MS5Db250YWN0QWRkZWRFdmVudEgAQggKBnVwZGF0ZSKKAQoLTm9uU25VcGRhdGUSNgoQbWVzc2FnZV9lbnZlbG9wZRgBIAEoCzIaLnNoYXJlZC52MS5NZXNzYWdlRW52ZWxvcGVIABI5ChJjYXJkX2FjdGlvbl9hbnN3ZXIYAiABKAsyGy5zaGFyZWQudjEuQ2FyZEFjdGlvbkFuc3dlckgAQggKBnVwZGF0ZSJHChBDYXJkQWN0aW9uQW5zd2VyEhEKCWFjdGlvbl9pZBgBIAEoCRIMCgR0ZXh0GAIgASgJEhIKCnNob3dfYWxlcnQYAyABKAgiIAoLVXBkYXRlU3RhdGUSEQoJbGF0ZXN0X3NuGAEgASgFIkwKGkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkwKGkZyaWVuZFJlcXVlc3RBY2NlcHRlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkUKGkZyaWVuZFJlcXVlc3RSZWplY3RlZEV2ZW50EhIKCnJlcXVlc3RfaWQYASABKAMSEwoLcmVqZWN0b3JfaWQYAiABKAUiRAoWRnJpZW5kUmVxdWVzdFNlbnRFdmVudBISCgpyZXF1ZXN0X2lkGAEgASgDEhYKDnRhcmdldF91c2VyX2lkGAIgASgFIkYKGENvbnRhY3RBbGlhc1VwZGF0ZWRFdmVudBIXCg9jb250YWN0X3VzZXJfaWQYASABKAUSEQoJbmV3X2FsaWFzGAIgASgJIj0KFFVzZXJuYW1lQ2hhbmdlZEV2ZW50Eg8KB3VzZXJfaWQYASABKAUSFAoMbmV3X3VzZXJuYW1lGAIgASgJIisKE0NvbnRhY3REZWxldGVkRXZlbnQSFAoMcGVlcl91c2VyX2lkGAEgASgFIikKEUNvbnRhY3RBZGRlZEV2ZW50EhQKDHBlZXJfdXNlcl9pZBgBIAEoBSJDChVVc2VyQmxvY2tUb2dnbGVkRXZlbnQSFgoOdGFyZ2V0X3VzZXJfaWQYASABKAUSEgoKaXNfYmxvY2tlZBgCIAEoCCK0AQoXVXNlclByb2ZpbGVVcGRhdGVkRXZlbnQSDwoHdXNlcl9pZBgBIAEoBRIZCgxuZXdfbmlja25hbWUYAiABKAlIAIgBARIbCg5uZXdfYXZhdGFyX3VybBgDIAEoCUgBiAEBEhoKDW5ld19zaWduYXR1cmUYBCABKAlIAogBAUIPCg1fbmV3X25pY2tuYW1lQhEKD19uZXdfYXZhdGFyX3VybEIQCg5fbmV3X3NpZ25hdHVyZSJ9ChdDb252ZXJzYXRpb25BY3Rpb25FdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSMQoGYWN0aW9uGAIgASgOMiEuc2hhcmVkLnYxLkNvbnZlcnNhdGlvbkFjdGlvblR5cGUSFgoOY2xlYXJfbWVzc2FnZXMYAyABKAgiXQoTTWVzc2FnZURlbGV0ZWRFdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSEwoLbWVzc2FnZV9pZHMYAiADKAMSGAoQdXBfdG9fbWVzc2FnZV9pZBgDIAEoAyJyChBSZWFkUmVjZWlwdEV2ZW50EhcKD2NvbnZlcnNhdGlvbl9pZBgBIAEoAxIWCg5yZWFkZXJfdXNlcl9pZBgCIAEoBRIcChRsYXN0X3JlYWRfbWVzc2FnZV9pZBgDIAEoAxIPCgdyZWFkX2F0GAQgASgDIj4KFVJlbW92ZWRGcm9tR3JvdXBFdmVudBIQCghncm91cF9pZBgBIAEoBRITCgtvcGVyYXRvcl9pZBgCIAEoBSI8ChNHcm91cERpc3NvbHZlZEV2ZW50EhMKC29wZXJhdG9yX2lkGAEgASgFEhAKCGdyb3VwX2lkGAIgASgFIlwKF0FnZW50U3RhdHVzQ2hhbmdlZEV2ZW50EhUKDWFnZW50X3VzZXJfaWQYASABKAUSKgoKbmV3X3N0YXR1cxgCIAEoDjIWLnNoYXJlZC52MS5BZ2VudFN0YXR1c0KeAQoNY29tLnNoYXJlZC52MUIMVXBkYXRlc1Byb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLWFpL3BrZy9wcm90by9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM", [file_shared_v1_agent, file_shared_v1_contact, file_shared_v1_conversation, file_shared_v1_message]);
+  fileDesc("ChdzaGFyZWQvdjEvdXBkYXRlcy5wcm90bxIJc2hhcmVkLnYxIuMICghTblVwZGF0ZRIKCgJzbhgBIAEoBRI2ChBtZXNzYWdlX2VudmVsb3BlGAIgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEkgKF2ZyaWVuZF9yZXF1ZXN0X3JlY2VpdmVkGAMgASgLMiUuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50SAASSAoXZnJpZW5kX3JlcXVlc3RfYWNjZXB0ZWQYBCABKAsyJS5zaGFyZWQudjEuRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnRIABJIChdmcmllbmRfcmVxdWVzdF9yZWplY3RlZBgFIAEoCzIlLnNoYXJlZC52MS5GcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudEgAEjkKD2NvbnRhY3RfZGVsZXRlZBgGIAEoCzIeLnNoYXJlZC52MS5Db250YWN0RGVsZXRlZEV2ZW50SAASPgoSdXNlcl9ibG9ja190b2dnbGVkGAcgASgLMiAuc2hhcmVkLnYxLlVzZXJCbG9ja1RvZ2dsZWRFdmVudEgAEkIKFHVzZXJfcHJvZmlsZV91cGRhdGVkGAggASgLMiIuc2hhcmVkLnYxLlVzZXJQcm9maWxlVXBkYXRlZEV2ZW50SAASQQoTY29udmVyc2F0aW9uX2FjdGlvbhgJIAEoCzIiLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25FdmVudEgAEjMKDHJlYWRfcmVjZWlwdBgKIAEoCzIbLnNoYXJlZC52MS5SZWFkUmVjZWlwdEV2ZW50SAASQgoUYWdlbnRfc3RhdHVzX2NoYW5nZWQYCyABKAsyIi5zaGFyZWQudjEuQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnRIABJAChNmcmllbmRfcmVxdWVzdF9zZW50GAwgASgLMiEuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RTZW50RXZlbnRIABJEChVjb250YWN0X2FsaWFzX3VwZGF0ZWQYDSABKAsyIy5zaGFyZWQudjEuQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50SAASOwoQdXNlcm5hbWVfY2hhbmdlZBgOIAEoCzIfLnNoYXJlZC52MS5Vc2VybmFtZUNoYW5nZWRFdmVudEgAEj4KEnJlbW92ZWRfZnJvbV9ncm91cBgRIAEoCzIgLnNoYXJlZC52MS5SZW1vdmVkRnJvbUdyb3VwRXZlbnRIABI5Cg9ncm91cF9kaXNzb2x2ZWQYECABKAsyHi5zaGFyZWQudjEuR3JvdXBEaXNzb2x2ZWRFdmVudEgAEjkKD21lc3NhZ2VfZGVsZXRlZBgSIAEoCzIeLnNoYXJlZC52MS5NZXNzYWdlRGVsZXRlZEV2ZW50SAASNQoNY29udGFjdF9hZGRlZBgTIAEoCzIcLnNoYXJlZC52MS5Db250YWN0QWRkZWRFdmVudEgAQggKBnVwZGF0ZSKKAQoLTm9uU25VcGRhdGUSNgoQbWVzc2FnZV9lbnZlbG9wZRgBIAEoCzIaLnNoYXJlZC52MS5NZXNzYWdlRW52ZWxvcGVIABI5ChJjYXJkX2FjdGlvbl9hbnN3ZXIYAiABKAsyGy5zaGFyZWQudjEuQ2FyZEFjdGlvbkFuc3dlckgAQggKBnVwZGF0ZSJHChBDYXJkQWN0aW9uQW5zd2VyEhEKCWFjdGlvbl9pZBgBIAEoCRIMCgR0ZXh0GAIgASgJEhIKCnNob3dfYWxlcnQYAyABKAgiIAoLVXBkYXRlU3RhdGUSEQoJbGF0ZXN0X3NuGAEgASgFIkwKGkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkwKGkZyaWVuZFJlcXVlc3RBY2NlcHRlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkUKGkZyaWVuZFJlcXVlc3RSZWplY3RlZEV2ZW50EhIKCnJlcXVlc3RfaWQYASABKAMSEwoLcmVqZWN0b3JfaWQYAiABKAUiRAoWRnJpZW5kUmVxdWVzdFNlbnRFdmVudBISCgpyZXF1ZXN0X2lkGAEgASgDEhYKDnRhcmdldF91c2VyX2lkGAIgASgFIkYKGENvbnRhY3RBbGlhc1VwZGF0ZWRFdmVudBIXCg9jb250YWN0X3VzZXJfaWQYASABKAUSEQoJbmV3X2FsaWFzGAIgASgJIj0KFFVzZXJuYW1lQ2hhbmdlZEV2ZW50Eg8KB3VzZXJfaWQYASABKAUSFAoMbmV3X3VzZXJuYW1lGAIgASgJIisKE0NvbnRhY3REZWxldGVkRXZlbnQSFAoMcGVlcl91c2VyX2lkGAEgASgFIikKEUNvbnRhY3RBZGRlZEV2ZW50EhQKDHBlZXJfdXNlcl9pZBgBIAEoBSJDChVVc2VyQmxvY2tUb2dnbGVkRXZlbnQSFgoOdGFyZ2V0X3VzZXJfaWQYASABKAUSEgoKaXNfYmxvY2tlZBgCIAEoCCK0AQoXVXNlclByb2ZpbGVVcGRhdGVkRXZlbnQSDwoHdXNlcl9pZBgBIAEoBRIZCgxuZXdfbmlja25hbWUYAiABKAlIAIgBARIbCg5uZXdfYXZhdGFyX3VybBgDIAEoCUgBiAEBEhoKDW5ld19zaWduYXR1cmUYBCABKAlIAogBAUIPCg1fbmV3X25pY2tuYW1lQhEKD19uZXdfYXZhdGFyX3VybEIQCg5fbmV3X3NpZ25hdHVyZSJ9ChdDb252ZXJzYXRpb25BY3Rpb25FdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSMQoGYWN0aW9uGAIgASgOMiEuc2hhcmVkLnYxLkNvbnZlcnNhdGlvbkFjdGlvblR5cGUSFgoOY2xlYXJfbWVzc2FnZXMYAyABKAgiXQoTTWVzc2FnZURlbGV0ZWRFdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSEwoLbWVzc2FnZV9pZHMYAiADKAMSGAoQdXBfdG9fbWVzc2FnZV9pZBgDIAEoAyJyChBSZWFkUmVjZWlwdEV2ZW50EhcKD2NvbnZlcnNhdGlvbl9pZBgBIAEoAxIWCg5yZWFkZXJfdXNlcl9pZBgCIAEoBRIcChRsYXN0X3JlYWRfbWVzc2FnZV9pZBgDIAEoAxIPCgdyZWFkX2F0GAQgASgDIj4KFVJlbW92ZWRGcm9tR3JvdXBFdmVudBIQCghncm91cF9pZBgBIAEoBRITCgtvcGVyYXRvcl9pZBgCIAEoBSI8ChNHcm91cERpc3NvbHZlZEV2ZW50EhMKC29wZXJhdG9yX2lkGAEgASgFEhAKCGdyb3VwX2lkGAIgASgFIlwKF0FnZW50U3RhdHVzQ2hhbmdlZEV2ZW50EhUKDWFnZW50X3VzZXJfaWQYASABKAUSKgoKbmV3X3N0YXR1cxgCIAEoDjIWLnNoYXJlZC52MS5BZ2VudFN0YXR1c0KeAQoNY29tLnNoYXJlZC52MUIMVXBkYXRlc1Byb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLXByb3RvL2dlbi9nby9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM", [file_shared_v1_agent, file_shared_v1_contact, file_shared_v1_conversation, file_shared_v1_message]);
 
 /**
- * SnUpdate is a sequenced update delivered to a user's update box.
+ * SnUpdate is a sequenced update delivered to a user's update stream.
  * Each update carries a monotonically increasing sn. Clients detect
  * gaps by comparing received sn with local_sn + 1.
  *
@@ -188,8 +188,8 @@ export const SnUpdateSchema: GenMessage<SnUpdate> = /*@__PURE__*/
   messageDesc(file_shared_v1_updates, 0);
 
 /**
- * NonSnUpdate is a non-sequenced update pushed in real time but not
- * persisted in the update box. Clients do not track sn for these.
+ * NonSnUpdate is a non-sequenced, ephemeral update pushed in real time.
+ * Clients do not track sn for these.
  *
  * @generated from message shared.v1.NonSnUpdate
  */
@@ -228,7 +228,6 @@ export const NonSnUpdateSchema: GenMessage<NonSnUpdate> = /*@__PURE__*/
 /**
  * CardActionAnswer carries the agent's response to a card action.
  * Pushed as NonSnUpdate to the user who submitted the action.
- * Gateway maps this to a CardActionAnswerPush frame.
  *
  * @generated from message shared.v1.CardActionAnswer
  */
@@ -285,7 +284,7 @@ export const UpdateStateSchema: GenMessage<UpdateState> = /*@__PURE__*/
 
 /**
  * FriendRequestReceivedEvent is produced when a friend request is sent.
- * Delivered as an SnUpdate to the target user's update box.
+ * Delivered as an SnUpdate to the target user's update stream.
  * User info for from_user_id is provided via related_users in the
  * Update wrapper.
  *
@@ -309,7 +308,7 @@ export const FriendRequestReceivedEventSchema: GenMessage<FriendRequestReceivedE
 
 /**
  * FriendRequestAcceptedEvent is produced when a friend request is accepted.
- * Delivered as an SnUpdate to both parties' update boxes.
+ * Delivered as an SnUpdate to both parties' update stream.
  * User info for the peer is provided via related_users in the
  * Update wrapper.
  *
@@ -333,7 +332,7 @@ export const FriendRequestAcceptedEventSchema: GenMessage<FriendRequestAcceptedE
 
 /**
  * FriendRequestRejectedEvent is produced when a friend request is rejected.
- * Delivered as an SnUpdate to both parties' update boxes.
+ * Delivered as an SnUpdate to both parties' update stream.
  *
  * @generated from message shared.v1.FriendRequestRejectedEvent
  */
@@ -362,7 +361,7 @@ export const FriendRequestRejectedEventSchema: GenMessage<FriendRequestRejectedE
 
 /**
  * FriendRequestSentEvent is produced when the current user sends a friend
- * request. Delivered to the sender's own update box (multi-device sync).
+ * request. Delivered to the sender's own update stream (multi-device sync).
  *
  * @generated from message shared.v1.FriendRequestSentEvent
  */
@@ -391,7 +390,7 @@ export const FriendRequestSentEventSchema: GenMessage<FriendRequestSentEvent> = 
 
 /**
  * ContactAliasUpdatedEvent is produced when a contact alias is changed.
- * Delivered as an SnUpdate to the caller's own update box only
+ * Delivered as an SnUpdate to the caller's own update stream only
  * (multi-device sync).
  *
  * @generated from message shared.v1.ContactAliasUpdatedEvent
@@ -421,7 +420,7 @@ export const ContactAliasUpdatedEventSchema: GenMessage<ContactAliasUpdatedEvent
 
 /**
  * UsernameChangedEvent is produced when a user sets their username.
- * Delivered as an SnUpdate to the user's own update box only
+ * Delivered as an SnUpdate to the user's own update stream only
  * (multi-device sync). Contacts learn the new username on demand.
  *
  * @generated from message shared.v1.UsernameChangedEvent
@@ -451,7 +450,7 @@ export const UsernameChangedEventSchema: GenMessage<UsernameChangedEvent> = /*@_
 
 /**
  * ContactDeletedEvent is produced when a contact is removed.
- * Single-sided: delivered as an SnUpdate to the caller's own update box
+ * Single-sided: delivered as an SnUpdate to the caller's own update stream
  * only (multi-device sync). The other party is NOT notified.
  *
  * @generated from message shared.v1.ContactDeletedEvent
@@ -474,7 +473,7 @@ export const ContactDeletedEventSchema: GenMessage<ContactDeletedEvent> = /*@__P
 
 /**
  * ContactAddedEvent is produced when a user adds an agent as a contact
- * via AddContact. Delivered to the caller's own update box (multi-device sync).
+ * via AddContact. Delivered to the caller's own update stream (multi-device sync).
  *
  * @generated from message shared.v1.ContactAddedEvent
  */
@@ -496,7 +495,7 @@ export const ContactAddedEventSchema: GenMessage<ContactAddedEvent> = /*@__PURE_
 
 /**
  * UserBlockToggledEvent is produced when a user blocks or unblocks another.
- * Delivered as an SnUpdate to the operator's own update box only
+ * Delivered as an SnUpdate to the operator's own update stream only
  * (for multi-device sync). The target user is NOT notified.
  *
  * @generated from message shared.v1.UserBlockToggledEvent
@@ -526,9 +525,8 @@ export const UserBlockToggledEventSchema: GenMessage<UserBlockToggledEvent> = /*
 
 /**
  * UserProfileUpdatedEvent is produced when a user updates their profile.
- * Delivered as an SnUpdate to the user's own update box only (multi-device
- * sync). Contacts refresh cached profile data on demand (via message
- * denormalized user info or by viewing the contact detail page).
+ * Delivered as an SnUpdate to the user's own update stream only (multi-device
+ * sync). Contacts refresh cached profile data on demand.
  *
  * @generated from message shared.v1.UserProfileUpdatedEvent
  */
@@ -572,7 +570,7 @@ export const UserProfileUpdatedEventSchema: GenMessage<UserProfileUpdatedEvent> 
 /**
  * ConversationActionEvent is produced when a user performs a conversation
  * management action (mute, unmute, delete). Delivered as an SnUpdate
- * to the operator's own update box only (for multi-device sync).
+ * to the operator's own update stream only (for multi-device sync).
  * Other participants are NOT notified.
  *
  * @generated from message shared.v1.ConversationActionEvent
@@ -610,7 +608,7 @@ export const ConversationActionEventSchema: GenMessage<ConversationActionEvent> 
 /**
  * MessageDeletedEvent is produced when a user deletes messages locally
  * (DeleteMessages or DeleteHistory). Delivered as an SnUpdate to the
- * operator's own update box only (for multi-device sync).
+ * operator's own update stream only (for multi-device sync).
  * Other participants are NOT notified.
  *
  * @generated from message shared.v1.MessageDeletedEvent
@@ -648,7 +646,7 @@ export const MessageDeletedEventSchema: GenMessage<MessageDeletedEvent> = /*@__P
 
 /**
  * ReadReceiptEvent is produced when a user marks messages as read.
- * Delivered as an SnUpdate to the reader's own update box only
+ * Delivered as an SnUpdate to the reader's own update stream only
  * (for multi-device sync). The peer is NOT notified.
  *
  * @generated from message shared.v1.ReadReceiptEvent
@@ -692,7 +690,7 @@ export const ReadReceiptEventSchema: GenMessage<ReadReceiptEvent> = /*@__PURE__*
 
 /**
  * RemovedFromGroupEvent is delivered as an SnUpdate to the removed
- * member's (user or agent) update box when they are removed from a
+ * member's (user or agent) update stream when they are removed from a
  * group by the owner. Unified event for both user kicks and agent removals.
  *
  * @generated from message shared.v1.RemovedFromGroupEvent
@@ -722,7 +720,7 @@ export const RemovedFromGroupEventSchema: GenMessage<RemovedFromGroupEvent> = /*
 
 /**
  * GroupDissolvedEvent is produced when the group owner dissolves the group.
- * Delivered as an SnUpdate to every member's update box.
+ * Delivered as an SnUpdate to every member's update stream.
  *
  * @generated from message shared.v1.GroupDissolvedEvent
  */

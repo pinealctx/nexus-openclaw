@@ -10,14 +10,11 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file shared/v1/error_codes.proto.
  */
 export const file_shared_v1_error_codes: GenFile = /*@__PURE__*/
-  fileDesc("ChtzaGFyZWQvdjEvZXJyb3JfY29kZXMucHJvdG8SCXNoYXJlZC52MSKeAQoLRXJyb3JEZXRhaWwSEgoKZXJyb3JfY29kZRgBIAEoBRISCgplcnJvcl9uYW1lGAIgASgJEjYKCG1ldGFkYXRhGAMgAygLMiQuc2hhcmVkLnYxLkVycm9yRGV0YWlsLk1ldGFkYXRhRW50cnkaLwoNTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQqEBCg1jb20uc2hhcmVkLnYxQg9FcnJvckNvZGVzUHJvdG9QAVo6Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtYWkvcGtnL3Byb3RvL3NoYXJlZC92MTtzaGFyZWR2MaICA1NYWKoCCVNoYXJlZC5WMcoCCVNoYXJlZFxWMeICFVNoYXJlZFxWMVxHUEJNZXRhZGF0YeoCClNoYXJlZDo6VjFiBnByb3RvMw");
+  fileDesc("ChtzaGFyZWQvdjEvZXJyb3JfY29kZXMucHJvdG8SCXNoYXJlZC52MSKeAQoLRXJyb3JEZXRhaWwSEgoKZXJyb3JfY29kZRgBIAEoBRISCgplcnJvcl9uYW1lGAIgASgJEjYKCG1ldGFkYXRhGAMgAygLMiQuc2hhcmVkLnYxLkVycm9yRGV0YWlsLk1ldGFkYXRhRW50cnkaLwoNTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQqEBCg1jb20uc2hhcmVkLnYxQg9FcnJvckNvZGVzUHJvdG9QAVo6Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtcHJvdG8vZ2VuL2dvL3NoYXJlZC92MTtzaGFyZWR2MaICA1NYWKoCCVNoYXJlZC5WMcoCCVNoYXJlZFxWMeICFVNoYXJlZFxWMVxHUEJNZXRhZGF0YeoCClNoYXJlZDo6VjFiBnByb3RvMw");
 
 /**
  * ErrorDetail is the standard error payload attached to connect.Error details.
  * It is the sole mechanism for clients to identify and handle errors.
- * 
- * Full error code definitions: docs/designs/d12-error-codes.md
- * Go constants: internal/xerr/
  *
  * @generated from message shared.v1.ErrorDetail
  */

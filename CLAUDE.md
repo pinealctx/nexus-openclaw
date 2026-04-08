@@ -17,7 +17,7 @@ pnpm build           # Compile TypeScript (tsc)
 pnpm lint            # Type-check without emitting (tsc --noEmit)
 ```
 
-**Prerequisites for `pnpm generate`**: `buf` CLI and `protoc-gen-es` must be installed. Proto definitions are in `nexus-ai/proto/`.
+**Prerequisites for `pnpm generate`**: `buf` CLI and `protoc-gen-es` must be installed. Proto definitions are in `nexus-proto/proto/`.
 
 No ESLint, Prettier, or CI/CD configuration. Linting is via `tsc --noEmit` only.
 
@@ -25,10 +25,10 @@ No ESLint, Prettier, or CI/CD configuration. Linting is via `tsc --noEmit` only.
 
 ### Protobuf Code Generation
 
-All Nexus protocol types are generated from protobuf definitions (`nexus-ai/proto/`) using `buf` + `protoc-gen-es` (v2). Generated code lives in `src/generated/` and is committed to the repository.
+All Nexus protocol types are generated from protobuf definitions (`nexus-proto/proto/`) using `buf` + `protoc-gen-es` (v2). Generated code lives in `src/generated/` and is committed to the repository.
 
 - **Toolchain**: `@bufbuild/protobuf` v2 + `@connectrpc/connect-web` v2 + `@connectrpc/connect` v2
-- **Config**: `buf.gen.ts.yaml` — generates `src/generated/` from `nexus-ai/proto/{shared,api}`
+- **Config**: `buf.gen.ts.yaml` — generates `src/generated/` from `nexus-proto/proto/{shared,api}`
 - **Transport**: Connect RPC over HTTP POST/JSON (`createConnectTransport` + `createClient`)
 - **WS frames**: Binary protobuf (`toBinary`/`fromBinary` on `AgentClientFrame`/`AgentServerFrame`)
 - **Webhook inbound**: `fromJson(WebhookEventSchema, rawJson)` for protojson parsing
@@ -117,7 +117,7 @@ test/
 
 ## Key Design Decisions
 
-- **Protobuf code generation**: All types, enums, service descriptors generated from `nexus-ai/proto/`. No hand-written protocol types.
+- **Protobuf code generation**: All types, enums, service descriptors generated from `nexus-proto/proto/`. No hand-written protocol types.
 - **Connect RPC**: Typed service clients via `createClient(ServiceDesc, transport)`. Auth interceptor adds Bearer token. JSON transport mode.
 - **Binary protobuf WS frames**: `toBinary()`/`fromBinary()` for WebSocket communication, matching the server proto protocol.
 - **Snowflake-like IDs**: 42-bit timestamp + 22-bit counter for uniqueness within a single process. Returned as `bigint`, converted to `number` at plugin boundary.

@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v1/contact_service.proto.
  */
 export const file_api_v1_contact_service: GenFile = /*@__PURE__*/
-  fileDesc("ChxhcGkvdjEvY29udGFjdF9zZXJ2aWNlLnByb3RvEgZhcGkudjEiSAoPQmxvY2tlZFVzZXJJdGVtEiEKBHVzZXIYASABKAsyEy5zaGFyZWQudjEuVXNlckluZm8SEgoKYmxvY2tlZF9hdBgCIAEoAyJWChhTZW5kRnJpZW5kUmVxdWVzdFJlcXVlc3QSHwoOdGFyZ2V0X3VzZXJfaWQYASABKAVCB7pIBBoCIAASGQoHbWVzc2FnZRgCIAEoCUIIukgFcgMYyAEiLwoZU2VuZEZyaWVuZFJlcXVlc3RSZXNwb25zZRISCgpyZXF1ZXN0X2lkGAEgASgDImAKGkxpc3RQZW5kaW5nUmVxdWVzdHNSZXF1ZXN0EhgKC2JlZm9yZV90aW1lGAEgASgDSACIAQESGAoFbGltaXQYAiABKAVCCbpIBhoEGGQoAEIOCgxfYmVmb3JlX3RpbWUigQEKG0xpc3RQZW5kaW5nUmVxdWVzdHNSZXNwb25zZRIsCgVpdGVtcxgBIAMoCzIdLnNoYXJlZC52MS5QZW5kaW5nUmVxdWVzdEl0ZW0SEAoIaGFzX21vcmUYAiABKAgSIgoFdXNlcnMYAyADKAsyEy5zaGFyZWQudjEuVXNlckluZm8iOQoaQWNjZXB0RnJpZW5kUmVxdWVzdFJlcXVlc3QSGwoKcmVxdWVzdF9pZBgBIAEoA0IHukgEIgIgACIdChtBY2NlcHRGcmllbmRSZXF1ZXN0UmVzcG9uc2UiOQoaUmVqZWN0RnJpZW5kUmVxdWVzdFJlcXVlc3QSGwoKcmVxdWVzdF9pZBgBIAEoA0IHukgEIgIgACIdChtSZWplY3RGcmllbmRSZXF1ZXN0UmVzcG9uc2UiNAoRQWRkQ29udGFjdFJlcXVlc3QSHwoOdGFyZ2V0X3VzZXJfaWQYASABKAVCB7pIBBoCIAAiFAoSQWRkQ29udGFjdFJlc3BvbnNlIlQKE0xpc3RDb250YWN0c1JlcXVlc3QSFQoIYWZ0ZXJfaWQYASABKAVIAIgBARIZCgVsaW1pdBgCIAEoBUIKukgHGgUYyAEoAEILCglfYWZ0ZXJfaWQiagoUTGlzdENvbnRhY3RzUmVzcG9uc2USKAoIY29udGFjdHMYASADKAsyFi5zaGFyZWQudjEuQ29udGFjdEl0ZW0SFgoOdG90YWxfY29udGFjdHMYAiABKAUSEAoIaGFzX21vcmUYAyABKAgiOAoURGVsZXRlQ29udGFjdFJlcXVlc3QSIAoPY29udGFjdF91c2VyX2lkGAEgASgFQge6SAQaAiAAIhcKFURlbGV0ZUNvbnRhY3RSZXNwb25zZSJkChlVcGRhdGVDb250YWN0QWxpYXNSZXF1ZXN0EiAKD2NvbnRhY3RfdXNlcl9pZBgBIAEoBUIHukgEGgIgABIbCgVhbGlhcxgCIAEoCUIHukgEcgIYQEgAiAEBQggKBl9hbGlhcyIcChpVcGRhdGVDb250YWN0QWxpYXNSZXNwb25zZSIzChBCbG9ja1VzZXJSZXF1ZXN0Eh8KDnRhcmdldF91c2VyX2lkGAEgASgFQge6SAQaAiAAIhMKEUJsb2NrVXNlclJlc3BvbnNlIjUKElVuYmxvY2tVc2VyUmVxdWVzdBIfCg50YXJnZXRfdXNlcl9pZBgBIAEoBUIHukgEGgIgACIVChNVbmJsb2NrVXNlclJlc3BvbnNlIhQKEkxpc3RCbG9ja2VkUmVxdWVzdCI/ChNMaXN0QmxvY2tlZFJlc3BvbnNlEigKB2Jsb2NrZWQYASADKAsyFy5hcGkudjEuQmxvY2tlZFVzZXJJdGVtImAKElNlYXJjaFVzZXJzUmVxdWVzdBIZCgVxdWVyeRgBIAEoCUIKukgHcgUQARj/ARIvCgxhY2NvdW50X3R5cGUYAiABKA4yGS5hcGkudjEuU2VhcmNoQWNjb3VudFR5cGUiOQoTU2VhcmNoVXNlcnNSZXNwb25zZRIiCgVpdGVtcxgBIAMoCzITLnNoYXJlZC52MS5Vc2VySW5mbyp1ChFTZWFyY2hBY2NvdW50VHlwZRIjCh9TRUFSQ0hfQUNDT1VOVF9UWVBFX1VOU1BFQ0lGSUVEEAASHAoYU0VBUkNIX0FDQ09VTlRfVFlQRV9VU0VSEAESHQoZU0VBUkNIX0FDQ09VTlRfVFlQRV9BR0VOVBACMvcHCg5Db250YWN0U2VydmljZRJeChFTZW5kRnJpZW5kUmVxdWVzdBIgLmFwaS52MS5TZW5kRnJpZW5kUmVxdWVzdFJlcXVlc3QaIS5hcGkudjEuU2VuZEZyaWVuZFJlcXVlc3RSZXNwb25zZSIEoLUYARJeChNMaXN0UGVuZGluZ1JlcXVlc3RzEiIuYXBpLnYxLkxpc3RQZW5kaW5nUmVxdWVzdHNSZXF1ZXN0GiMuYXBpLnYxLkxpc3RQZW5kaW5nUmVxdWVzdHNSZXNwb25zZRJkChNBY2NlcHRGcmllbmRSZXF1ZXN0EiIuYXBpLnYxLkFjY2VwdEZyaWVuZFJlcXVlc3RSZXF1ZXN0GiMuYXBpLnYxLkFjY2VwdEZyaWVuZFJlcXVlc3RSZXNwb25zZSIEoLUYARJkChNSZWplY3RGcmllbmRSZXF1ZXN0EiIuYXBpLnYxLlJlamVjdEZyaWVuZFJlcXVlc3RSZXF1ZXN0GiMuYXBpLnYxLlJlamVjdEZyaWVuZFJlcXVlc3RSZXNwb25zZSIEoLUYARJJCgpBZGRDb250YWN0EhkuYXBpLnYxLkFkZENvbnRhY3RSZXF1ZXN0GhouYXBpLnYxLkFkZENvbnRhY3RSZXNwb25zZSIEoLUYARJJCgxMaXN0Q29udGFjdHMSGy5hcGkudjEuTGlzdENvbnRhY3RzUmVxdWVzdBocLmFwaS52MS5MaXN0Q29udGFjdHNSZXNwb25zZRJMCg1EZWxldGVDb250YWN0EhwuYXBpLnYxLkRlbGV0ZUNvbnRhY3RSZXF1ZXN0Gh0uYXBpLnYxLkRlbGV0ZUNvbnRhY3RSZXNwb25zZRJbChJVcGRhdGVDb250YWN0QWxpYXMSIS5hcGkudjEuVXBkYXRlQ29udGFjdEFsaWFzUmVxdWVzdBoiLmFwaS52MS5VcGRhdGVDb250YWN0QWxpYXNSZXNwb25zZRJGCgtTZWFyY2hVc2VycxIaLmFwaS52MS5TZWFyY2hVc2Vyc1JlcXVlc3QaGy5hcGkudjEuU2VhcmNoVXNlcnNSZXNwb25zZRJACglCbG9ja1VzZXISGC5hcGkudjEuQmxvY2tVc2VyUmVxdWVzdBoZLmFwaS52MS5CbG9ja1VzZXJSZXNwb25zZRJGCgtVbmJsb2NrVXNlchIaLmFwaS52MS5VbmJsb2NrVXNlclJlcXVlc3QaGy5hcGkudjEuVW5ibG9ja1VzZXJSZXNwb25zZRJGCgtMaXN0QmxvY2tlZBIaLmFwaS52MS5MaXN0QmxvY2tlZFJlcXVlc3QaGy5hcGkudjEuTGlzdEJsb2NrZWRSZXNwb25zZUKQAQoKY29tLmFwaS52MUITQ29udGFjdFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1haS9wa2cvcHJvdG8vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_contact, file_shared_v1_options, file_shared_v1_user]);
+  fileDesc("ChxhcGkvdjEvY29udGFjdF9zZXJ2aWNlLnByb3RvEgZhcGkudjEiSAoPQmxvY2tlZFVzZXJJdGVtEiEKBHVzZXIYASABKAsyEy5zaGFyZWQudjEuVXNlckluZm8SEgoKYmxvY2tlZF9hdBgCIAEoAyJWChhTZW5kRnJpZW5kUmVxdWVzdFJlcXVlc3QSHwoOdGFyZ2V0X3VzZXJfaWQYASABKAVCB7pIBBoCIAASGQoHbWVzc2FnZRgCIAEoCUIIukgFcgMYyAEiLwoZU2VuZEZyaWVuZFJlcXVlc3RSZXNwb25zZRISCgpyZXF1ZXN0X2lkGAEgASgDImAKGkxpc3RQZW5kaW5nUmVxdWVzdHNSZXF1ZXN0EhgKC2JlZm9yZV90aW1lGAEgASgDSACIAQESGAoFbGltaXQYAiABKAVCCbpIBhoEGGQoAEIOCgxfYmVmb3JlX3RpbWUigQEKG0xpc3RQZW5kaW5nUmVxdWVzdHNSZXNwb25zZRIsCgVpdGVtcxgBIAMoCzIdLnNoYXJlZC52MS5QZW5kaW5nUmVxdWVzdEl0ZW0SEAoIaGFzX21vcmUYAiABKAgSIgoFdXNlcnMYAyADKAsyEy5zaGFyZWQudjEuVXNlckluZm8iOQoaQWNjZXB0RnJpZW5kUmVxdWVzdFJlcXVlc3QSGwoKcmVxdWVzdF9pZBgBIAEoA0IHukgEIgIgACIdChtBY2NlcHRGcmllbmRSZXF1ZXN0UmVzcG9uc2UiOQoaUmVqZWN0RnJpZW5kUmVxdWVzdFJlcXVlc3QSGwoKcmVxdWVzdF9pZBgBIAEoA0IHukgEIgIgACIdChtSZWplY3RGcmllbmRSZXF1ZXN0UmVzcG9uc2UiNAoRQWRkQ29udGFjdFJlcXVlc3QSHwoOdGFyZ2V0X3VzZXJfaWQYASABKAVCB7pIBBoCIAAiFAoSQWRkQ29udGFjdFJlc3BvbnNlIlQKE0xpc3RDb250YWN0c1JlcXVlc3QSFQoIYWZ0ZXJfaWQYASABKAVIAIgBARIZCgVsaW1pdBgCIAEoBUIKukgHGgUYyAEoAEILCglfYWZ0ZXJfaWQiagoUTGlzdENvbnRhY3RzUmVzcG9uc2USKAoIY29udGFjdHMYASADKAsyFi5zaGFyZWQudjEuQ29udGFjdEl0ZW0SFgoOdG90YWxfY29udGFjdHMYAiABKAUSEAoIaGFzX21vcmUYAyABKAgiOAoURGVsZXRlQ29udGFjdFJlcXVlc3QSIAoPY29udGFjdF91c2VyX2lkGAEgASgFQge6SAQaAiAAIhcKFURlbGV0ZUNvbnRhY3RSZXNwb25zZSJkChlVcGRhdGVDb250YWN0QWxpYXNSZXF1ZXN0EiAKD2NvbnRhY3RfdXNlcl9pZBgBIAEoBUIHukgEGgIgABIbCgVhbGlhcxgCIAEoCUIHukgEcgIYQEgAiAEBQggKBl9hbGlhcyIcChpVcGRhdGVDb250YWN0QWxpYXNSZXNwb25zZSIzChBCbG9ja1VzZXJSZXF1ZXN0Eh8KDnRhcmdldF91c2VyX2lkGAEgASgFQge6SAQaAiAAIhMKEUJsb2NrVXNlclJlc3BvbnNlIjUKElVuYmxvY2tVc2VyUmVxdWVzdBIfCg50YXJnZXRfdXNlcl9pZBgBIAEoBUIHukgEGgIgACIVChNVbmJsb2NrVXNlclJlc3BvbnNlIhQKEkxpc3RCbG9ja2VkUmVxdWVzdCI/ChNMaXN0QmxvY2tlZFJlc3BvbnNlEigKB2Jsb2NrZWQYASADKAsyFy5hcGkudjEuQmxvY2tlZFVzZXJJdGVtImAKElNlYXJjaFVzZXJzUmVxdWVzdBIZCgVxdWVyeRgBIAEoCUIKukgHcgUQARj/ARIvCgxhY2NvdW50X3R5cGUYAiABKA4yGS5hcGkudjEuU2VhcmNoQWNjb3VudFR5cGUiOQoTU2VhcmNoVXNlcnNSZXNwb25zZRIiCgVpdGVtcxgBIAMoCzITLnNoYXJlZC52MS5Vc2VySW5mbyp1ChFTZWFyY2hBY2NvdW50VHlwZRIjCh9TRUFSQ0hfQUNDT1VOVF9UWVBFX1VOU1BFQ0lGSUVEEAASHAoYU0VBUkNIX0FDQ09VTlRfVFlQRV9VU0VSEAESHQoZU0VBUkNIX0FDQ09VTlRfVFlQRV9BR0VOVBACMvcHCg5Db250YWN0U2VydmljZRJeChFTZW5kRnJpZW5kUmVxdWVzdBIgLmFwaS52MS5TZW5kRnJpZW5kUmVxdWVzdFJlcXVlc3QaIS5hcGkudjEuU2VuZEZyaWVuZFJlcXVlc3RSZXNwb25zZSIEoLUYARJeChNMaXN0UGVuZGluZ1JlcXVlc3RzEiIuYXBpLnYxLkxpc3RQZW5kaW5nUmVxdWVzdHNSZXF1ZXN0GiMuYXBpLnYxLkxpc3RQZW5kaW5nUmVxdWVzdHNSZXNwb25zZRJkChNBY2NlcHRGcmllbmRSZXF1ZXN0EiIuYXBpLnYxLkFjY2VwdEZyaWVuZFJlcXVlc3RSZXF1ZXN0GiMuYXBpLnYxLkFjY2VwdEZyaWVuZFJlcXVlc3RSZXNwb25zZSIEoLUYARJkChNSZWplY3RGcmllbmRSZXF1ZXN0EiIuYXBpLnYxLlJlamVjdEZyaWVuZFJlcXVlc3RSZXF1ZXN0GiMuYXBpLnYxLlJlamVjdEZyaWVuZFJlcXVlc3RSZXNwb25zZSIEoLUYARJJCgpBZGRDb250YWN0EhkuYXBpLnYxLkFkZENvbnRhY3RSZXF1ZXN0GhouYXBpLnYxLkFkZENvbnRhY3RSZXNwb25zZSIEoLUYARJJCgxMaXN0Q29udGFjdHMSGy5hcGkudjEuTGlzdENvbnRhY3RzUmVxdWVzdBocLmFwaS52MS5MaXN0Q29udGFjdHNSZXNwb25zZRJMCg1EZWxldGVDb250YWN0EhwuYXBpLnYxLkRlbGV0ZUNvbnRhY3RSZXF1ZXN0Gh0uYXBpLnYxLkRlbGV0ZUNvbnRhY3RSZXNwb25zZRJbChJVcGRhdGVDb250YWN0QWxpYXMSIS5hcGkudjEuVXBkYXRlQ29udGFjdEFsaWFzUmVxdWVzdBoiLmFwaS52MS5VcGRhdGVDb250YWN0QWxpYXNSZXNwb25zZRJGCgtTZWFyY2hVc2VycxIaLmFwaS52MS5TZWFyY2hVc2Vyc1JlcXVlc3QaGy5hcGkudjEuU2VhcmNoVXNlcnNSZXNwb25zZRJACglCbG9ja1VzZXISGC5hcGkudjEuQmxvY2tVc2VyUmVxdWVzdBoZLmFwaS52MS5CbG9ja1VzZXJSZXNwb25zZRJGCgtVbmJsb2NrVXNlchIaLmFwaS52MS5VbmJsb2NrVXNlclJlcXVlc3QaGy5hcGkudjEuVW5ibG9ja1VzZXJSZXNwb25zZRJGCgtMaXN0QmxvY2tlZBIaLmFwaS52MS5MaXN0QmxvY2tlZFJlcXVlc3QaGy5hcGkudjEuTGlzdEJsb2NrZWRSZXNwb25zZUKQAQoKY29tLmFwaS52MUITQ29udGFjdFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_contact, file_shared_v1_options, file_shared_v1_user]);
 
 /**
  * BlockedUserItem represents a blocked user entry.
@@ -25,7 +25,7 @@ export const file_api_v1_contact_service: GenFile = /*@__PURE__*/
  *   - If the two users are contacts, the contact relationship is removed.
  *   - Existing conversations are hidden but not deleted.
  *   - A UserBlockToggledEvent is delivered to the blocker's
- *     update box.
+ *     update stream.
  *
  * @generated from message api.v1.BlockedUserItem
  */
@@ -67,7 +67,7 @@ export type SendFriendRequestRequest = Message<"api.v1.SendFriendRequestRequest"
 
   /**
    * Optional greeting message (max 200 chars). Included in the
-   * FriendRequestReceivedEvent delivered to the target's update box.
+   * FriendRequestReceivedEvent delivered to the target's update stream.
    *
    * @generated from field: string message = 2;
    */
@@ -630,9 +630,9 @@ export const SearchAccountTypeSchema: GenEnum<SearchAccountType> = /*@__PURE__*/
  * ContactService handles friend requests, contact management, and blocklist.
  * Authenticated via Access Token.
  * 
- * Update box integration:
+ * update stream integration:
  * All state-changing operations in this service produce SnUpdate entries
- * delivered to the relevant users' update boxes. This ensures clients
+ * delivered to the relevant users' update stream. This ensures clients
  * can reliably sync contact state changes via the SyncService.GetDifference
  * mechanism.
  * 
@@ -650,7 +650,7 @@ export const ContactService: GenService<{
    * Side effects:
    *   - Creates a pending friend request record.
    *   - Delivers a FriendRequestReceivedEvent to the target
-   *     user's update box, containing the requester's info and greeting.
+   *     user's update stream, containing the requester's info and greeting.
    *   - If the target user is online, the update is pushed in real-time
    *     via the long connection.
    * 
@@ -685,9 +685,8 @@ export const ContactService: GenService<{
    *   - Updates the request status from PENDING to ACCEPTED.
    *   - Creates a mutual contact relationship between both users.
    *   - Delivers a FriendRequestAcceptedEvent to both
-   *     parties' update boxes, containing each other's brief info.
-   *   - The SnUpdate delivery triggers creation of a PRIVATE
-   *     conversation if one does not already exist.
+   *     parties' update stream, containing each other's brief info.
+   *   - A PRIVATE conversation is created if one does not already exist.
    * 
    * Error conditions:
    *   - NOT_FOUND: Request does not exist.
@@ -706,7 +705,7 @@ export const ContactService: GenService<{
    * Side effects:
    *   - Updates the request status from PENDING to REJECTED.
    *   - Delivers a FriendRequestRejectedEvent to the
-   *     requester's update box.
+   *     requester's update stream.
    * 
    * Error conditions:
    *   - NOT_FOUND: Request does not exist.
@@ -724,11 +723,10 @@ export const ContactService: GenService<{
    * Currently supports adding public agents and private agents (creator only).
    * 
    * Side effects:
-   *   - Creates bidirectional contact rows in contacts table.
-   *   - Delivers a ContactAddedEvent SnUpdate to the caller's update box
+   *   - Creates bidirectional contact relationships.
+   *   - Delivers a ContactAddedEvent SnUpdate to the caller's update stream
    *     (multi-device sync). Clients use this to create the local contact
    *     record and the PRIVATE conversation.
-   *   - Increments the agent's user_count in agent_profiles.
    *   - Delivers a contact.added webhook event to the agent.
    * 
    * Error conditions:
@@ -761,7 +759,7 @@ export const ContactService: GenService<{
    * is removed. The other party's contact list is not affected.
    * 
    * Side effects:
-   *   - Delivers a ContactDeletedEvent to the caller's own update box
+   *   - Delivers a ContactDeletedEvent to the caller's own update stream
    *     (multi-device sync). The other party is not notified.
    *   - The private conversation is NOT deleted; it remains accessible
    *     but new messages cannot be sent until re-friended.
@@ -818,7 +816,7 @@ export const ContactService: GenService<{
    *   - If the blocked user is a contact, the contact relationship is
    *     removed (equivalent to DeleteContact + block).
    *   - Delivers a UserBlockToggledEvent (is_blocked=true) to
-   *     the blocker's own update box (for multi-device sync). The
+   *     the blocker's own update stream (for multi-device sync). The
    *     blocked user is NOT notified.
    *   - Any pending friend requests between the two users are cancelled.
    *   - The blocked user can no longer send messages or friend requests
@@ -841,7 +839,7 @@ export const ContactService: GenService<{
    * 
    * Side effects:
    *   - Delivers a UserBlockToggledEvent (is_blocked=false) to
-   *     the unblocker's own update box (for multi-device sync). The
+   *     the unblocker's own update stream (for multi-device sync). The
    *     unblocked user is NOT notified.
    *   - Unblocking does NOT restore the contact relationship; the user
    *     must send a new friend request.

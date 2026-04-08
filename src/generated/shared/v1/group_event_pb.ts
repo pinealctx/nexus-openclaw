@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file shared/v1/group_event.proto.
  */
 export const file_shared_v1_group_event: GenFile = /*@__PURE__*/
-  fileDesc("ChtzaGFyZWQvdjEvZ3JvdXBfZXZlbnQucHJvdG8SCXNoYXJlZC52MSKMAgoMR3JvdXBDb250ZW50EhAKCGdyb3VwX2lkGAcgASgFEjUKDW1lbWJlcl9qb2luZWQYASABKAsyHC5zaGFyZWQudjEuTWVtYmVySm9pbmVkRXZlbnRIABIxCgttZW1iZXJfbGVmdBgCIAEoCzIaLnNoYXJlZC52MS5NZW1iZXJMZWZ0RXZlbnRIABI3Cg5tZW1iZXJfcmVtb3ZlZBgDIAEoCzIdLnNoYXJlZC52MS5NZW1iZXJSZW1vdmVkRXZlbnRIABI+ChJncm91cF9pbmZvX2NoYW5nZWQYBCABKAsyIC5zaGFyZWQudjEuR3JvdXBJbmZvQ2hhbmdlZEV2ZW50SABCBwoFZXZlbnQiYwoRTWVtYmVySm9pbmVkRXZlbnQSJgoHbWVtYmVycxgBIAMoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvEiYKB2ludml0ZXIYAiABKAsyFS5zaGFyZWQudjEuTWVtYmVySW5mbyI4Cg9NZW1iZXJMZWZ0RXZlbnQSJQoGbWVtYmVyGAEgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8iZAoSTWVtYmVyUmVtb3ZlZEV2ZW50EiUKBm1lbWJlchgBIAEoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvEicKCG9wZXJhdG9yGAIgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8iTwoVR3JvdXBJbmZvQ2hhbmdlZEV2ZW50EicKCG9wZXJhdG9yGAEgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8SDQoFZmllbGQYAiABKAlCoQEKDWNvbS5zaGFyZWQudjFCD0dyb3VwRXZlbnRQcm90b1ABWjpnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1haS9wa2cvcHJvdG8vc2hhcmVkL3YxO3NoYXJlZHYxogIDU1hYqgIJU2hhcmVkLlYxygIJU2hhcmVkXFYx4gIVU2hhcmVkXFYxXEdQQk1ldGFkYXRh6gIKU2hhcmVkOjpWMWIGcHJvdG8z", [file_shared_v1_group]);
+  fileDesc("ChtzaGFyZWQvdjEvZ3JvdXBfZXZlbnQucHJvdG8SCXNoYXJlZC52MSKMAgoMR3JvdXBDb250ZW50EhAKCGdyb3VwX2lkGAcgASgFEjUKDW1lbWJlcl9qb2luZWQYASABKAsyHC5zaGFyZWQudjEuTWVtYmVySm9pbmVkRXZlbnRIABIxCgttZW1iZXJfbGVmdBgCIAEoCzIaLnNoYXJlZC52MS5NZW1iZXJMZWZ0RXZlbnRIABI3Cg5tZW1iZXJfcmVtb3ZlZBgDIAEoCzIdLnNoYXJlZC52MS5NZW1iZXJSZW1vdmVkRXZlbnRIABI+ChJncm91cF9pbmZvX2NoYW5nZWQYBCABKAsyIC5zaGFyZWQudjEuR3JvdXBJbmZvQ2hhbmdlZEV2ZW50SABCBwoFZXZlbnQiYwoRTWVtYmVySm9pbmVkRXZlbnQSJgoHbWVtYmVycxgBIAMoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvEiYKB2ludml0ZXIYAiABKAsyFS5zaGFyZWQudjEuTWVtYmVySW5mbyI4Cg9NZW1iZXJMZWZ0RXZlbnQSJQoGbWVtYmVyGAEgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8iZAoSTWVtYmVyUmVtb3ZlZEV2ZW50EiUKBm1lbWJlchgBIAEoCzIVLnNoYXJlZC52MS5NZW1iZXJJbmZvEicKCG9wZXJhdG9yGAIgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8iTwoVR3JvdXBJbmZvQ2hhbmdlZEV2ZW50EicKCG9wZXJhdG9yGAEgASgLMhUuc2hhcmVkLnYxLk1lbWJlckluZm8SDQoFZmllbGQYAiABKAlCoQEKDWNvbS5zaGFyZWQudjFCD0dyb3VwRXZlbnRQcm90b1ABWjpnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vc2hhcmVkL3YxO3NoYXJlZHYxogIDU1hYqgIJU2hhcmVkLlYxygIJU2hhcmVkXFYx4gIVU2hhcmVkXFYxXEdQQk1ldGFkYXRh6gIKU2hhcmVkOjpWMWIGcHJvdG8z", [file_shared_v1_group]);
 
 /**
  * GroupContent carries structured group event data as the body of a
@@ -27,8 +27,7 @@ export const file_shared_v1_group_event: GenFile = /*@__PURE__*/
  */
 export type GroupContent = Message<"shared.v1.GroupContent"> & {
   /**
-   * Group ID this event belongs to, allowing update consumers to
-   * identify the group without deriving it from conversation_id.
+   * Group ID this event belongs to.
    *
    * @generated from field: int32 group_id = 7;
    */
@@ -137,13 +136,11 @@ export const MemberLeftEventSchema: GenMessage<MemberLeftEvent> = /*@__PURE__*/
 
 /**
  * MemberRemovedEvent is produced when a member (user or agent) is removed
- * by the group owner. Unified event replacing the old MemberKickedEvent,
- * AgentRemovedEvent, KickedFromGroupEvent, and RemovedFromGroupEvent.
+ * by the group owner.
  * 
- * Dual delivery:
+ * Delivery:
  *   - GROUP conversation: visible to all remaining members.
- *   - Removed member's update box: via RemovedFromGroupEvent SnUpdate
- *     (the member is no longer in the group).
+ *   - Removed member: receives a RemovedFromGroupEvent SnUpdate.
  *
  * @generated from message shared.v1.MemberRemovedEvent
  */

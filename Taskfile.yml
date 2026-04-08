@@ -5,7 +5,7 @@ tasks:
 
   proto:
     desc: Generate TypeScript from protobuf definitions
-    dir: ../nexus-ai/proto
+    dir: ../nexus-proto/proto
     cmds:
       - buf generate --template ../../nexus-openclaw/buf.gen.ts.yaml --include-imports -o ../../nexus-openclaw
 

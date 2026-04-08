@@ -17,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v1/conversation_service.proto.
  */
 export const file_api_v1_conversation_service: GenFile = /*@__PURE__*/
-  fileDesc("CiFhcGkvdjEvY29udmVyc2F0aW9uX3NlcnZpY2UucHJvdG8SBmFwaS52MSI6ChZHZXRDb252ZXJzYXRpb25SZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgACJMChdHZXRDb252ZXJzYXRpb25SZXNwb25zZRIxCgxjb252ZXJzYXRpb24YASABKAsyGy5zaGFyZWQudjEuQ29udmVyc2F0aW9uSW5mbyJeChhMaXN0Q29udmVyc2F0aW9uc1JlcXVlc3QSGAoLYmVmb3JlX3RpbWUYASABKANIAIgBARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCgAQg4KDF9iZWZvcmVfdGltZSK7AQoZTGlzdENvbnZlcnNhdGlvbnNSZXNwb25zZRIyCg1jb252ZXJzYXRpb25zGAEgAygLMhsuc2hhcmVkLnYxLkNvbnZlcnNhdGlvbkluZm8SKgoNcmVsYXRlZF91c2VycxgCIAMoCzITLnNoYXJlZC52MS5Vc2VySW5mbxIsCg5yZWxhdGVkX2dyb3VwcxgDIAMoCzIULnNoYXJlZC52MS5Hcm91cEluZm8SEAoIaGFzX21vcmUYBCABKAgimgEKH1VwZGF0ZUNvbnZlcnNhdGlvbkFjdGlvblJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEj0KBmFjdGlvbhgCIAEoDjIhLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25UeXBlQgq6SAeCAQQQASAAEhYKDmNsZWFyX21lc3NhZ2VzGAMgASgIIiIKIFVwZGF0ZUNvbnZlcnNhdGlvbkFjdGlvblJlc3BvbnNlIlgKEU1hcmtBc1JlYWRSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIhChB1cF90b19tZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAIhQKEk1hcmtBc1JlYWRSZXNwb25zZTL3AgoTQ29udmVyc2F0aW9uU2VydmljZRJSCg9HZXRDb252ZXJzYXRpb24SHi5hcGkudjEuR2V0Q29udmVyc2F0aW9uUmVxdWVzdBofLmFwaS52MS5HZXRDb252ZXJzYXRpb25SZXNwb25zZRJYChFMaXN0Q29udmVyc2F0aW9ucxIgLmFwaS52MS5MaXN0Q29udmVyc2F0aW9uc1JlcXVlc3QaIS5hcGkudjEuTGlzdENvbnZlcnNhdGlvbnNSZXNwb25zZRJtChhVcGRhdGVDb252ZXJzYXRpb25BY3Rpb24SJy5hcGkudjEuVXBkYXRlQ29udmVyc2F0aW9uQWN0aW9uUmVxdWVzdBooLmFwaS52MS5VcGRhdGVDb252ZXJzYXRpb25BY3Rpb25SZXNwb25zZRJDCgpNYXJrQXNSZWFkEhkuYXBpLnYxLk1hcmtBc1JlYWRSZXF1ZXN0GhouYXBpLnYxLk1hcmtBc1JlYWRSZXNwb25zZUKVAQoKY29tLmFwaS52MUIYQ29udmVyc2F0aW9uU2VydmljZVByb3RvUAFaNGdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLWFpL3BrZy9wcm90by9hcGkvdjE7YXBpdjGiAgNBWFiqAgZBcGkuVjHKAgZBcGlcVjHiAhJBcGlcVjFcR1BCTWV0YWRhdGHqAgdBcGk6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_shared_v1_conversation, file_shared_v1_group, file_shared_v1_user]);
+  fileDesc("CiFhcGkvdjEvY29udmVyc2F0aW9uX3NlcnZpY2UucHJvdG8SBmFwaS52MSI6ChZHZXRDb252ZXJzYXRpb25SZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgACJMChdHZXRDb252ZXJzYXRpb25SZXNwb25zZRIxCgxjb252ZXJzYXRpb24YASABKAsyGy5zaGFyZWQudjEuQ29udmVyc2F0aW9uSW5mbyJeChhMaXN0Q29udmVyc2F0aW9uc1JlcXVlc3QSGAoLYmVmb3JlX3RpbWUYASABKANIAIgBARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCgAQg4KDF9iZWZvcmVfdGltZSK7AQoZTGlzdENvbnZlcnNhdGlvbnNSZXNwb25zZRIyCg1jb252ZXJzYXRpb25zGAEgAygLMhsuc2hhcmVkLnYxLkNvbnZlcnNhdGlvbkluZm8SKgoNcmVsYXRlZF91c2VycxgCIAMoCzITLnNoYXJlZC52MS5Vc2VySW5mbxIsCg5yZWxhdGVkX2dyb3VwcxgDIAMoCzIULnNoYXJlZC52MS5Hcm91cEluZm8SEAoIaGFzX21vcmUYBCABKAgimgEKH1VwZGF0ZUNvbnZlcnNhdGlvbkFjdGlvblJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEj0KBmFjdGlvbhgCIAEoDjIhLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25UeXBlQgq6SAeCAQQQASAAEhYKDmNsZWFyX21lc3NhZ2VzGAMgASgIIiIKIFVwZGF0ZUNvbnZlcnNhdGlvbkFjdGlvblJlc3BvbnNlIlgKEU1hcmtBc1JlYWRSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIhChB1cF90b19tZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAIhQKEk1hcmtBc1JlYWRSZXNwb25zZTL3AgoTQ29udmVyc2F0aW9uU2VydmljZRJSCg9HZXRDb252ZXJzYXRpb24SHi5hcGkudjEuR2V0Q29udmVyc2F0aW9uUmVxdWVzdBofLmFwaS52MS5HZXRDb252ZXJzYXRpb25SZXNwb25zZRJYChFMaXN0Q29udmVyc2F0aW9ucxIgLmFwaS52MS5MaXN0Q29udmVyc2F0aW9uc1JlcXVlc3QaIS5hcGkudjEuTGlzdENvbnZlcnNhdGlvbnNSZXNwb25zZRJtChhVcGRhdGVDb252ZXJzYXRpb25BY3Rpb24SJy5hcGkudjEuVXBkYXRlQ29udmVyc2F0aW9uQWN0aW9uUmVxdWVzdBooLmFwaS52MS5VcGRhdGVDb252ZXJzYXRpb25BY3Rpb25SZXNwb25zZRJDCgpNYXJrQXNSZWFkEhkuYXBpLnYxLk1hcmtBc1JlYWRSZXF1ZXN0GhouYXBpLnYxLk1hcmtBc1JlYWRSZXNwb25zZUKVAQoKY29tLmFwaS52MUIYQ29udmVyc2F0aW9uU2VydmljZVByb3RvUAFaNGdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLXByb3RvL2dlbi9nby9hcGkvdjE7YXBpdjGiAgNBWFiqAgZBcGkuVjHKAgZBcGlcVjHiAhJBcGlcVjFcR1BCTWV0YWRhdGHqAgdBcGk6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_shared_v1_conversation, file_shared_v1_group, file_shared_v1_user]);
 
 /**
  * GetConversationRequest requests a single conversation by ID.
@@ -91,7 +91,7 @@ export const ListConversationsRequestSchema: GenMessage<ListConversationsRequest
   messageDesc(file_api_v1_conversation_service, 2);
 
 /**
- * ListConversationsResponse contains conversations with denormalized user and group data.
+ * ListConversationsResponse contains conversations with related user and group data.
  *
  * @generated from message api.v1.ListConversationsResponse
  */
@@ -239,7 +239,7 @@ export const MarkAsReadResponseSchema: GenMessage<MarkAsReadResponse> = /*@__PUR
  * 
  * Conversation list model:
  *   - Conversations are paginated by the `last_message_time` field descending.
- *   - Responses include denormalized related_users to avoid extra
+ *   - Responses include related_users to avoid extra
  *     round-trips for rendering the conversation list UI.
  *
  * @generated from service api.v1.ConversationService
@@ -269,8 +269,7 @@ export const ConversationService: GenService<{
    * MessageService.GetMessageHistory for conversations with a gap.
    * 
    * Note: Deleted conversations that have been auto-restored (due to a new
-   * incoming message) will appear in the results normally, since the server
-   * clears the is_deleted flag upon message arrival.
+   * incoming message) will appear in the results normally.
    *
    * @generated from rpc api.v1.ConversationService.ListConversations
    */
@@ -289,11 +288,9 @@ export const ConversationService: GenService<{
    * 
    * Access control:
    *   - Permission is checked against the underlying relationship (contact
-   *     for PRIVATE, group membership for GROUP), not the user_conversations
-   *     record. This allows users to configure conversations before the
-   *     first message arrives (user_conversations is lazily created).
-   *   - If the user_conversations record doesn't exist yet, the server
-   *     creates it automatically (upsert semantics).
+   *     for PRIVATE, group membership for GROUP).
+   *   - If no per-user conversation state exists yet, it is created
+   *     automatically.
    * 
    * DELETE behavior:
    *   - Sets is_deleted flag for the current user only (per-user soft-delete).
@@ -311,7 +308,7 @@ export const ConversationService: GenService<{
    * 
    * Side effects:
    *   - Delivers a ConversationActionEvent to the current
-   *     user's update box for multi-device sync. Other devices consume
+   *     user's update stream for multi-device sync. Other devices consume
    *     this event to keep conversation list state consistent.
    *
    * @generated from rpc api.v1.ConversationService.UpdateConversationAction
@@ -326,12 +323,12 @@ export const ConversationService: GenService<{
    * 
    * Access control:
    *   - Same as UpdateConversationAction: checks underlying relationship,
-   *     auto-creates user_conversations record if needed (upsert semantics).
+   *     auto-creates per-user conversation state if needed.
    * 
    * Side effects:
    *   - Updates last_read_message_id in the conversation membership.
    *   - Produces a ReadReceiptEvent SnUpdate to the caller's own
-   *     update box (multi-device sync only; the peer is not notified).
+   *     update stream (multi-device sync only; the peer is not notified).
    *   - The server does NOT maintain unread_count. Clients calculate it
    *     locally: unread = last_message_id - last_read_message_id.
    *

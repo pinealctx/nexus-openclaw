@@ -20,7 +20,7 @@ import { create } from "@bufbuild/protobuf";
 function validConfig(): NexusAccountConfig {
   return {
     agentToken: "nxa_test_token_abc",
-    serverUrl: "https://api.nexus-dev.xsyphon.com",
+    serverUrl: "https://api.example.com",
     deliveryMode: "websocket",
   };
 }
@@ -74,14 +74,14 @@ describe("NexusClient", () => {
     // GetClientConfig is called on the no-auth transport.
     fetchSpy.mockResolvedValueOnce(
       mockConnectResponse({
-        gateway: { wsUrl: "wss://ws.nexus-dev.xsyphon.com/ws" },
+        gateway: { wsUrl: "wss://ws.example.com/ws" },
       }),
     );
 
     const client = new NexusClient(validConfig());
     const url = await client.discoverGatewayUrl();
 
-    expect(url).toBe("wss://ws.nexus-dev.xsyphon.com/ws/agent");
+    expect(url).toBe("wss://ws.example.com/ws/agent");
 
     // Verify no Authorization header on GetClientConfig (public endpoint).
     const [rpcUrl, init] = fetchSpy.mock.calls[0] as [string, RequestInit];

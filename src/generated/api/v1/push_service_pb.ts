@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v1/push_service.proto.
  */
 export const file_api_v1_push_service: GenFile = /*@__PURE__*/
-  fileDesc("ChlhcGkvdjEvcHVzaF9zZXJ2aWNlLnByb3RvEgZhcGkudjEilQEKFFJlZ2lzdGVyVG9rZW5SZXF1ZXN0EhoKCWRldmljZV9pZBgBIAEoCUIHukgEcgIQARIWCgV0b2tlbhgCIAEoCUIHukgEcgIQARI1CghwbGF0Zm9ybRgDIAEoDjIXLnNoYXJlZC52MS5QdXNoUGxhdGZvcm1CCrpIB4IBBBABIAASEgoKaXNfc2FuZGJveBgEIAEoCCIXChVSZWdpc3RlclRva2VuUmVzcG9uc2UiNAoWVW5yZWdpc3RlclRva2VuUmVxdWVzdBIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAEiGQoXVW5yZWdpc3RlclRva2VuUmVzcG9uc2UiEwoRQ2xlYXJCYWRnZVJlcXVlc3QiFAoSQ2xlYXJCYWRnZVJlc3BvbnNlMoYCCgtQdXNoU2VydmljZRJSCg1SZWdpc3RlclRva2VuEhwuYXBpLnYxLlJlZ2lzdGVyVG9rZW5SZXF1ZXN0Gh0uYXBpLnYxLlJlZ2lzdGVyVG9rZW5SZXNwb25zZSIEoLUYARJYCg9VbnJlZ2lzdGVyVG9rZW4SHi5hcGkudjEuVW5yZWdpc3RlclRva2VuUmVxdWVzdBofLmFwaS52MS5VbnJlZ2lzdGVyVG9rZW5SZXNwb25zZSIEoLUYARJJCgpDbGVhckJhZGdlEhkuYXBpLnYxLkNsZWFyQmFkZ2VSZXF1ZXN0GhouYXBpLnYxLkNsZWFyQmFkZ2VSZXNwb25zZSIEoLUYAUKNAQoKY29tLmFwaS52MUIQUHVzaFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1haS9wa2cvcHJvdG8vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_options, file_shared_v1_user]);
+  fileDesc("ChlhcGkvdjEvcHVzaF9zZXJ2aWNlLnByb3RvEgZhcGkudjEilQEKFFJlZ2lzdGVyVG9rZW5SZXF1ZXN0EhoKCWRldmljZV9pZBgBIAEoCUIHukgEcgIQARIWCgV0b2tlbhgCIAEoCUIHukgEcgIQARI1CghwbGF0Zm9ybRgDIAEoDjIXLnNoYXJlZC52MS5QdXNoUGxhdGZvcm1CCrpIB4IBBBABIAASEgoKaXNfc2FuZGJveBgEIAEoCCIXChVSZWdpc3RlclRva2VuUmVzcG9uc2UiNAoWVW5yZWdpc3RlclRva2VuUmVxdWVzdBIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAEiGQoXVW5yZWdpc3RlclRva2VuUmVzcG9uc2UiEwoRQ2xlYXJCYWRnZVJlcXVlc3QiFAoSQ2xlYXJCYWRnZVJlc3BvbnNlMoYCCgtQdXNoU2VydmljZRJSCg1SZWdpc3RlclRva2VuEhwuYXBpLnYxLlJlZ2lzdGVyVG9rZW5SZXF1ZXN0Gh0uYXBpLnYxLlJlZ2lzdGVyVG9rZW5SZXNwb25zZSIEoLUYARJYCg9VbnJlZ2lzdGVyVG9rZW4SHi5hcGkudjEuVW5yZWdpc3RlclRva2VuUmVxdWVzdBofLmFwaS52MS5VbnJlZ2lzdGVyVG9rZW5SZXNwb25zZSIEoLUYARJJCgpDbGVhckJhZGdlEhkuYXBpLnYxLkNsZWFyQmFkZ2VSZXF1ZXN0GhouYXBpLnYxLkNsZWFyQmFkZ2VSZXNwb25zZSIEoLUYAUKNAQoKY29tLmFwaS52MUIQUHVzaFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_options, file_shared_v1_user]);
 
 /**
  * RegisterTokenRequest registers a push token.
@@ -141,7 +141,6 @@ export const ClearBadgeResponseSchema: GenMessage<ClearBadgeResponse> = /*@__PUR
 
 /**
  * PushService handles push notification token registration and removal.
- * The full push dispatch logic is in the interservice gRPC layer.
  * Authenticated via Access Token.
  *
  * @generated from service api.v1.PushService
@@ -190,7 +189,6 @@ export const PushService: GenService<{
    * Side effects:
    *   - iOS: Sends a silent push with badge=0 to clear the app icon badge.
    *   - Android: No server-side action needed (client clears locally).
-   *   - Resets the server-side badge cache for this user.
    * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.

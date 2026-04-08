@@ -1,6 +1,6 @@
 .PHONY: proto build test lint clean
 
-PROTO_DIR := ../nexus-ai/proto
+PROTO_DIR := ../nexus-proto/proto
 
 proto:
 	cd $(PROTO_DIR) && buf generate --template $(CURDIR)/buf.gen.ts.yaml --include-imports -o $(CURDIR)
