@@ -8,7 +8,7 @@ import {
 function validWsConfig(): NexusAccountConfig {
   return {
     agentToken: "nxa_test_token_123",
-    serverUrl: "https://api.nexus.ai",
+    serverUrl: "https://api.nexus-dev.xsyphon.com",
     deliveryMode: "websocket",
   };
 }
