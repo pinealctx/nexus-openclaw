@@ -6,10 +6,11 @@ import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2"
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { DeviceInput } from "./auth_service_pb";
 import { file_api_v1_auth_service } from "./auth_service_pb";
-import type { GatewayAuthResponse, GatewayErrorFrame, HeartbeatPing, HeartbeatPong } from "../../shared/v1/gateway_common_pb";
-import { file_shared_v1_gateway_common } from "../../shared/v1/gateway_common_pb";
+import type { ErrorDetail } from "../../shared/v1/error_codes_pb";
+import { file_shared_v1_error_codes } from "../../shared/v1/error_codes_pb";
 import type { GroupInfo } from "../../shared/v1/group_pb";
 import { file_shared_v1_group } from "../../shared/v1/group_pb";
+import { file_shared_v1_options } from "../../shared/v1/options_pb";
 import type { NonSnUpdate, SnUpdate } from "../../shared/v1/updates_pb";
 import { file_shared_v1_updates } from "../../shared/v1/updates_pb";
 import type { UserInfo } from "../../shared/v1/user_pb";
@@ -20,13 +21,13 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v1/gateway_frame.proto.
  */
 export const file_api_v1_gateway_frame: GenFile = /*@__PURE__*/
-  fileDesc("ChphcGkvdjEvZ2F0ZXdheV9mcmFtZS5wcm90bxIGYXBpLnYxIrQBCgtDbGllbnRGcmFtZRISCgpyZXF1ZXN0X2lkGAEgASgDEiUKBHR5cGUYAiABKA4yFy5hcGkudjEuQ2xpZW50RnJhbWVUeXBlEisKDGF1dGhfcmVxdWVzdBgKIAEoCzITLmFwaS52MS5BdXRoUmVxdWVzdEgAEjIKDmhlYXJ0YmVhdF9waW5nGAsgASgLMhguc2hhcmVkLnYxLkhlYXJ0YmVhdFBpbmdIAEIJCgdwYXlsb2FkIs0CCgtTZXJ2ZXJGcmFtZRISCgpyZXF1ZXN0X2lkGAEgASgDEiUKBHR5cGUYAiABKA4yFy5hcGkudjEuU2VydmVyRnJhbWVUeXBlEjcKDWF1dGhfcmVzcG9uc2UYCiABKAsyHi5zaGFyZWQudjEuR2F0ZXdheUF1dGhSZXNwb25zZUgAEiAKBnVwZGF0ZRgLIAEoCzIOLmFwaS52MS5VcGRhdGVIABIyCg5oZWFydGJlYXRfcG9uZxgMIAEoCzIYLnNoYXJlZC52MS5IZWFydGJlYXRQb25nSAASLQoFZXJyb3IYDSABKAsyHC5zaGFyZWQudjEuR2F0ZXdheUVycm9yRnJhbWVIABI6ChJjYXJkX2FjdGlvbl9hbnN3ZXIYDiABKAsyHC5hcGkudjEuQ2FyZEFjdGlvbkFuc3dlclB1c2hIAEIJCgdwYXlsb2FkIkYKC0F1dGhSZXF1ZXN0Eg0KBXRva2VuGAEgASgJEigKC2RldmljZV9pbmZvGAIgASgLMhMuYXBpLnYxLkRldmljZUlucHV0IrcBCgZVcGRhdGUSIgoFdXNlcnMYASADKAsyEy5zaGFyZWQudjEuVXNlckluZm8SJAoGZ3JvdXBzGAIgAygLMhQuc2hhcmVkLnYxLkdyb3VwSW5mbxIoCglzbl91cGRhdGUYCiABKAsyEy5zaGFyZWQudjEuU25VcGRhdGVIABIvCg1ub25fc25fdXBkYXRlGAsgASgLMhYuc2hhcmVkLnYxLk5vblNuVXBkYXRlSABCCAoGdXBkYXRlIksKFENhcmRBY3Rpb25BbnN3ZXJQdXNoEhEKCWFjdGlvbl9pZBgBIAEoCRIMCgR0ZXh0GAIgASgJEhIKCnNob3dfYWxlcnQYAyABKAgqfgoPQ2xpZW50RnJhbWVUeXBlEiEKHUNMSUVOVF9GUkFNRV9UWVBFX1VOU1BFQ0lGSUVEEAASIgoeQ0xJRU5UX0ZSQU1FX1RZUEVfQVVUSF9SRVFVRVNUEAESJAogQ0xJRU5UX0ZSQU1FX1RZUEVfSEVBUlRCRUFUX1BJTkcQAirkAQoPU2VydmVyRnJhbWVUeXBlEiEKHVNFUlZFUl9GUkFNRV9UWVBFX1VOU1BFQ0lGSUVEEAASIwofU0VSVkVSX0ZSQU1FX1RZUEVfQVVUSF9SRVNQT05TRRABEhwKGFNFUlZFUl9GUkFNRV9UWVBFX1VQREFURRACEiQKIFNFUlZFUl9GUkFNRV9UWVBFX0hFQVJUQkVBVF9QT05HEAMSGwoXU0VSVkVSX0ZSQU1FX1RZUEVfRVJST1IQBBIoCiRTRVJWRVJfRlJBTUVfVFlQRV9DQVJEX0FDVElPTl9BTlNXRVIQBUKOAQoKY29tLmFwaS52MUIRR2F0ZXdheUZyYW1lUHJvdG9QAVo0Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtcHJvdG8vZ2VuL2dvL2FwaS92MTthcGl2MaICA0FYWKoCBkFwaS5WMcoCBkFwaVxWMeICEkFwaVxWMVxHUEJNZXRhZGF0YeoCB0FwaTo6VjFiBnByb3RvMw", [file_api_v1_auth_service, file_shared_v1_gateway_common, file_shared_v1_group, file_shared_v1_updates, file_shared_v1_user]);
+  fileDesc("ChphcGkvdjEvZ2F0ZXdheV9mcmFtZS5wcm90bxIGYXBpLnYxIrEBCgtDbGllbnRGcmFtZRISCgpyZXF1ZXN0X2lkGAEgASgDEiUKBHR5cGUYAiABKA4yFy5hcGkudjEuQ2xpZW50RnJhbWVUeXBlEisKDGF1dGhfcmVxdWVzdBgKIAEoCzITLmFwaS52MS5BdXRoUmVxdWVzdEgAEi8KDmhlYXJ0YmVhdF9waW5nGAsgASgLMhUuYXBpLnYxLkhlYXJ0YmVhdFBpbmdIAEIJCgdwYXlsb2FkIogCCgtTZXJ2ZXJGcmFtZRISCgpyZXF1ZXN0X2lkGAEgASgDEiUKBHR5cGUYAiABKA4yFy5hcGkudjEuU2VydmVyRnJhbWVUeXBlEjQKDWF1dGhfcmVzcG9uc2UYCiABKAsyGy5hcGkudjEuR2F0ZXdheUF1dGhSZXNwb25zZUgAEiAKBnVwZGF0ZRgLIAEoCzIOLmFwaS52MS5VcGRhdGVIABIvCg5oZWFydGJlYXRfcG9uZxgMIAEoCzIVLmFwaS52MS5IZWFydGJlYXRQb25nSAASKgoFZXJyb3IYDSABKAsyGS5hcGkudjEuR2F0ZXdheUVycm9yRnJhbWVIAEIJCgdwYXlsb2FkImEKC0F1dGhSZXF1ZXN0EhMKBXRva2VuGAEgASgJQgSQtRgBEi0KC2RldmljZV9pbmZvGAIgASgLMhMuYXBpLnYxLkRldmljZUlucHV0SACIAQFCDgoMX2RldmljZV9pbmZvIrcBCgZVcGRhdGUSIgoFdXNlcnMYASADKAsyEy5zaGFyZWQudjEuVXNlckluZm8SJAoGZ3JvdXBzGAIgAygLMhQuc2hhcmVkLnYxLkdyb3VwSW5mbxIoCglzbl91cGRhdGUYCiABKAsyEy5zaGFyZWQudjEuU25VcGRhdGVIABIvCg1ub25fc25fdXBkYXRlGAsgASgLMhYuc2hhcmVkLnYxLk5vblNuVXBkYXRlSABCCAoGdXBkYXRlIg8KDUhlYXJ0YmVhdFBpbmciJAoNSGVhcnRiZWF0UG9uZxITCgtzZXJ2ZXJfdGltZRgBIAEoAyJeChNHYXRld2F5QXV0aFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHdXNlcl9pZBgCIAEoBRIlCgVlcnJvchgDIAEoCzIWLnNoYXJlZC52MS5FcnJvckRldGFpbCJJChFHYXRld2F5RXJyb3JGcmFtZRIlCgVlcnJvchgBIAEoCzIWLnNoYXJlZC52MS5FcnJvckRldGFpbBINCgVmYXRhbBgCIAEoCCp+Cg9DbGllbnRGcmFtZVR5cGUSIQodQ0xJRU5UX0ZSQU1FX1RZUEVfVU5TUEVDSUZJRUQQABIiCh5DTElFTlRfRlJBTUVfVFlQRV9BVVRIX1JFUVVFU1QQARIkCiBDTElFTlRfRlJBTUVfVFlQRV9IRUFSVEJFQVRfUElORxACKroBCg9TZXJ2ZXJGcmFtZVR5cGUSIQodU0VSVkVSX0ZSQU1FX1RZUEVfVU5TUEVDSUZJRUQQABIjCh9TRVJWRVJfRlJBTUVfVFlQRV9BVVRIX1JFU1BPTlNFEAESHAoYU0VSVkVSX0ZSQU1FX1RZUEVfVVBEQVRFEAISJAogU0VSVkVSX0ZSQU1FX1RZUEVfSEVBUlRCRUFUX1BPTkcQAxIbChdTRVJWRVJfRlJBTUVfVFlQRV9FUlJPUhAEQo4BCgpjb20uYXBpLnYxQhFHYXRld2F5RnJhbWVQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_api_v1_auth_service, file_shared_v1_error_codes, file_shared_v1_group, file_shared_v1_options, file_shared_v1_updates, file_shared_v1_user]);
 
 /**
- * ClientFrame is the transport-agnostic upstream envelope. The long
- * connection is a push-only channel — clients send only authentication
- * and heartbeat frames upstream. All business requests go through
- * Connect RPC (HTTP).
+ * ClientFrame is the transport-agnostic upstream envelope used by both
+ * users and agents. The long connection is a push-only channel — clients
+ * send only authentication and heartbeat frames upstream. All business
+ * requests go through Connect RPC (HTTP).
  *
  * @generated from message api.v1.ClientFrame
  */
@@ -54,6 +55,7 @@ export type ClientFrame = Message<"api.v1.ClientFrame"> & {
   payload: {
     /**
      * Connection authentication. Server responds with ServerFrame.auth_response.
+     * Users send nxs_-prefixed tokens; agents send nxa_-prefixed tokens.
      *
      * @generated from field: api.v1.AuthRequest auth_request = 10;
      */
@@ -63,7 +65,7 @@ export type ClientFrame = Message<"api.v1.ClientFrame"> & {
     /**
      * Heartbeat ping. Server responds with ServerFrame.heartbeat_pong.
      *
-     * @generated from field: shared.v1.HeartbeatPing heartbeat_ping = 11;
+     * @generated from field: api.v1.HeartbeatPing heartbeat_ping = 11;
      */
     value: HeartbeatPing;
     case: "heartbeatPing";
@@ -78,8 +80,9 @@ export const ClientFrameSchema: GenMessage<ClientFrame> = /*@__PURE__*/
   messageDesc(file_api_v1_gateway_frame, 0);
 
 /**
- * ServerFrame is the transport-agnostic downstream envelope. Every message
- * sent by the server on the long connection is wrapped in a ServerFrame.
+ * ServerFrame is the transport-agnostic downstream envelope used by both
+ * users and agents. Every message sent by the server on the long
+ * connection is wrapped in a ServerFrame.
  * 
  * For response frames (auth_response, heartbeat_pong), the request_id
  * matches the originating ClientFrame.request_id.
@@ -113,13 +116,13 @@ export type ServerFrame = Message<"api.v1.ServerFrame"> & {
     /**
      * Authentication result. Response to ClientFrame.auth_request.
      *
-     * @generated from field: shared.v1.GatewayAuthResponse auth_response = 10;
+     * @generated from field: api.v1.GatewayAuthResponse auth_response = 10;
      */
     value: GatewayAuthResponse;
     case: "authResponse";
   } | {
     /**
-     * Update push.
+     * Update push (SnUpdate or NonSnUpdate with related entity info).
      *
      * @generated from field: api.v1.Update update = 11;
      */
@@ -129,7 +132,7 @@ export type ServerFrame = Message<"api.v1.ServerFrame"> & {
     /**
      * Heartbeat pong. Response to ClientFrame.heartbeat_ping.
      *
-     * @generated from field: shared.v1.HeartbeatPong heartbeat_pong = 12;
+     * @generated from field: api.v1.HeartbeatPong heartbeat_pong = 12;
      */
     value: HeartbeatPong;
     case: "heartbeatPong";
@@ -137,18 +140,10 @@ export type ServerFrame = Message<"api.v1.ServerFrame"> & {
     /**
      * Error response or connection-level error push.
      *
-     * @generated from field: shared.v1.GatewayErrorFrame error = 13;
+     * @generated from field: api.v1.GatewayErrorFrame error = 13;
      */
     value: GatewayErrorFrame;
     case: "error";
-  } | {
-    /**
-     * Card action answer push (toast/alert from agent).
-     *
-     * @generated from field: api.v1.CardActionAnswerPush card_action_answer = 14;
-     */
-    value: CardActionAnswerPush;
-    case: "cardActionAnswer";
   } | { case: undefined; value?: undefined };
 };
 
@@ -161,21 +156,24 @@ export const ServerFrameSchema: GenMessage<ServerFrame> = /*@__PURE__*/
 
 /**
  * AuthRequest is the long-connection authentication request frame.
+ * Both users and agents use this message:
+ *   - nxs_ prefix → user session token
+ *   - nxa_ prefix → agent token
  *
  * @generated from message api.v1.AuthRequest
  */
 export type AuthRequest = Message<"api.v1.AuthRequest"> & {
   /**
-   * Access token.
+   * Access token (nxs_ for users, nxa_ for agents).
    *
    * @generated from field: string token = 1;
    */
   token: string;
 
   /**
-   * Client device information.
+   * Client device information (optional).
    *
-   * @generated from field: api.v1.DeviceInput device_info = 2;
+   * @generated from field: optional api.v1.DeviceInput device_info = 2;
    */
   deviceInfo?: DeviceInput;
 };
@@ -223,7 +221,7 @@ export type Update = Message<"api.v1.Update"> & {
     case: "snUpdate";
   } | {
     /**
-     * Non-sequenced update (ephemeral, e.g. stream deltas).
+     * Non-sequenced update (ephemeral, e.g. stream deltas, card actions).
      *
      * @generated from field: shared.v1.NonSnUpdate non_sn_update = 11;
      */
@@ -240,42 +238,109 @@ export const UpdateSchema: GenMessage<Update> = /*@__PURE__*/
   messageDesc(file_api_v1_gateway_frame, 3);
 
 /**
- * CardActionAnswerPush is pushed when an agent responds to an Adaptive
- * Card Action.Submit via AnswerCardAction. The client displays the text
- * as a toast or alert dialog depending on show_alert.
- * This is an ephemeral notification, not persisted as a message.
+ * HeartbeatPing is an empty keepalive frame sent by the client at
+ * regular intervals. Used by both user and agent WebSocket connections.
  *
- * @generated from message api.v1.CardActionAnswerPush
+ * @generated from message api.v1.HeartbeatPing
  */
-export type CardActionAnswerPush = Message<"api.v1.CardActionAnswerPush"> & {
-  /**
-   * Action ID that this answer corresponds to.
-   *
-   * @generated from field: string action_id = 1;
-   */
-  actionId: string;
-
-  /**
-   * Response text to display.
-   *
-   * @generated from field: string text = 2;
-   */
-  text: string;
-
-  /**
-   * Whether to show as alert dialog (true) or toast (false).
-   *
-   * @generated from field: bool show_alert = 3;
-   */
-  showAlert: boolean;
+export type HeartbeatPing = Message<"api.v1.HeartbeatPing"> & {
 };
 
 /**
- * Describes the message api.v1.CardActionAnswerPush.
- * Use `create(CardActionAnswerPushSchema)` to create a new message.
+ * Describes the message api.v1.HeartbeatPing.
+ * Use `create(HeartbeatPingSchema)` to create a new message.
  */
-export const CardActionAnswerPushSchema: GenMessage<CardActionAnswerPush> = /*@__PURE__*/
+export const HeartbeatPingSchema: GenMessage<HeartbeatPing> = /*@__PURE__*/
   messageDesc(file_api_v1_gateway_frame, 4);
+
+/**
+ * HeartbeatPong is the server response to a HeartbeatPing.
+ *
+ * @generated from message api.v1.HeartbeatPong
+ */
+export type HeartbeatPong = Message<"api.v1.HeartbeatPong"> & {
+  /**
+   * Server timestamp (Unix ms). Clients can use this for clock drift
+   * estimation.
+   *
+   * @generated from field: int64 server_time = 1;
+   */
+  serverTime: bigint;
+};
+
+/**
+ * Describes the message api.v1.HeartbeatPong.
+ * Use `create(HeartbeatPongSchema)` to create a new message.
+ */
+export const HeartbeatPongSchema: GenMessage<HeartbeatPong> = /*@__PURE__*/
+  messageDesc(file_api_v1_gateway_frame, 5);
+
+/**
+ * GatewayAuthResponse carries the authentication result for both user
+ * and agent WebSocket connections.
+ *
+ * @generated from message api.v1.GatewayAuthResponse
+ */
+export type GatewayAuthResponse = Message<"api.v1.GatewayAuthResponse"> & {
+  /**
+   * Whether authentication succeeded.
+   *
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * Authenticated user ID (for agents this is agent_user_id).
+   * Only meaningful when success = true.
+   *
+   * @generated from field: int32 user_id = 2;
+   */
+  userId: number;
+
+  /**
+   * Error detail on failure. Only present when success = false.
+   * Uses the same ErrorDetail structure as GatewayErrorFrame for
+   * consistent error handling across all gateway responses.
+   *
+   * @generated from field: shared.v1.ErrorDetail error = 3;
+   */
+  error?: ErrorDetail;
+};
+
+/**
+ * Describes the message api.v1.GatewayAuthResponse.
+ * Use `create(GatewayAuthResponseSchema)` to create a new message.
+ */
+export const GatewayAuthResponseSchema: GenMessage<GatewayAuthResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_gateway_frame, 6);
+
+/**
+ * GatewayErrorFrame carries connection-level error information.
+ *
+ * @generated from message api.v1.GatewayErrorFrame
+ */
+export type GatewayErrorFrame = Message<"api.v1.GatewayErrorFrame"> & {
+  /**
+   * Structured error detail with error_code and error_name.
+   *
+   * @generated from field: shared.v1.ErrorDetail error = 1;
+   */
+  error?: ErrorDetail;
+
+  /**
+   * Whether the client should close the connection after this error.
+   *
+   * @generated from field: bool fatal = 2;
+   */
+  fatal: boolean;
+};
+
+/**
+ * Describes the message api.v1.GatewayErrorFrame.
+ * Use `create(GatewayErrorFrameSchema)` to create a new message.
+ */
+export const GatewayErrorFrameSchema: GenMessage<GatewayErrorFrame> = /*@__PURE__*/
+  messageDesc(file_api_v1_gateway_frame, 7);
 
 /**
  * ClientFrameType enumerates upstream frame types.
@@ -351,13 +416,6 @@ export enum ServerFrameType {
    * @generated from enum value: SERVER_FRAME_TYPE_ERROR = 4;
    */
   ERROR = 4,
-
-  /**
-   * Card action answer (toast/alert from agent).
-   *
-   * @generated from enum value: SERVER_FRAME_TYPE_CARD_ACTION_ANSWER = 5;
-   */
-  CARD_ACTION_ANSWER = 5,
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * MessageNormalizer converts Nexus WebhookEvent into
+ * MessageNormalizer converts Nexus Update objects into
  * NexusMsgContext objects for OpenClaw consumption.
  */
 
@@ -9,10 +9,9 @@ import type { NexusClient } from "../nexus-api/client.js";
 import {
   MessageType,
   MessageEntityType,
-  WebhookEventType,
   GetDownloadURLRequestSchema,
 } from "../nexus-api/index.js";
-import type { WebhookEvent } from "../generated/shared/v1/webhook_events_pb.js";
+import type { Update } from "../generated/api/v1/gateway_frame_pb.js";
 import type { MessageEnvelope, MessageEntity } from "../generated/shared/v1/message_pb.js";
 import type { MediaType, NexusMsgContext } from "../types.js";
 import { buildSessionKey } from "../utils/session-key.js";
@@ -57,46 +56,59 @@ export class MessageNormalizer {
   constructor(private readonly nexusClient: NexusClient) {}
 
   /**
-   * Convert a Nexus WebhookEvent into a NexusMsgContext.
-   * The event is already a deserialized protobuf object from ws-connector's fromBinary.
-   * Returns null for events that should be discarded (e.g. RECALLED).
+   * Convert a Nexus Update into a NexusMsgContext.
+   * The event is an Update object emitted by ws-connector (already deserialized).
+   * Returns null for updates that should be discarded (e.g. RECALLED).
    */
   async normalize(
     event: unknown,
     agentUserId: number,
   ): Promise<NexusMsgContext | null> {
-    // Event is already a deserialized protobuf WebhookEvent from ws-connector's fromBinary
-    const ev = event as WebhookEvent;
-    if (!ev || !ev.eventType) {
+    const update = event as Update;
+    if (!update || !update.update) {
       return null;
     }
 
-    switch (ev.eventType) {
-      case WebhookEventType.MESSAGE:
-        return this.normalizeMessage(ev, agentUserId);
-      case WebhookEventType.CARD_ACTION:
-        return this.normalizeCardAction(ev, agentUserId);
-      case WebhookEventType.CONTACT_ADDED:
-        return this.normalizeContactAdded(ev, agentUserId);
-      case WebhookEventType.REMOVED_FROM_GROUP:
-        return this.normalizeRemovedFromGroup(ev, agentUserId);
-      case WebhookEventType.GROUP_DISSOLVED:
-        return this.normalizeGroupDissolved(ev, agentUserId);
+    switch (update.update.case) {
+      case "snUpdate": {
+        const sn = update.update.value;
+        switch (sn.update.case) {
+          case "messageEnvelope":
+            return this.normalizeMessage(update, agentUserId);
+          case "contactAdded":
+            return this.normalizeContactAdded(update, agentUserId);
+          case "removedFromGroup":
+            return this.normalizeRemovedFromGroup(update, agentUserId);
+          case "groupDissolved":
+            return this.normalizeGroupDissolved(update, agentUserId);
+          default:
+            return null;
+        }
+      }
+      case "nonSnUpdate": {
+        const nonSn = update.update.value;
+        switch (nonSn.update.case) {
+          case "cardAction":
+            return this.normalizeCardAction(update, agentUserId);
+          default:
+            return null;
+        }
+      }
       default:
         return null;
     }
   }
 
   // -------------------------------------------------------------------------
-  // MESSAGE event
+  // MESSAGE event (SnUpdate.messageEnvelope)
   // -------------------------------------------------------------------------
 
   private async normalizeMessage(
-    ev: WebhookEvent,
+    update: Update,
     agentUserId: number,
   ): Promise<NexusMsgContext | null> {
-    if (ev.payload.case !== "messageEvent") return null;
-    const msg = ev.payload.value.message;
+    if (update.update.case !== "snUpdate") return null;
+    const msg = update.update.value.update.value as MessageEnvelope;
     if (!msg?.body) return null;
 
     const bodyType = msg.body.type;
@@ -106,7 +118,7 @@ export class MessageNormalizer {
 
     // GROUP body type → system notification.
     if (bodyType === MessageType.GROUP) {
-      return this.buildSystemNotification(ev, msg, agentUserId, "group_event");
+      return this.buildSystemNotification(update, msg, agentUserId, "group_event");
     }
 
     // STREAM: only process END phase.
@@ -117,11 +129,11 @@ export class MessageNormalizer {
 
     const conversationId = Number(msg.conversationId);
     const senderId = msg.senderId;
-    const senderInfo = ev.relatedUsers.find((u) => u.userId === senderId);
+    const senderInfo = update.users.find((u) => u.userId === senderId);
 
     const ctx: NexusMsgContext = {
       sessionKey: buildSessionKey(agentUserId, conversationId),
-      chatType: this.resolveChatType(msg, ev),
+      chatType: this.resolveChatType(msg, update),
       sender: {
         id: String(senderId),
         name: senderInfo?.nickname ?? "",
@@ -129,12 +141,12 @@ export class MessageNormalizer {
       },
       nexusMessageType: MessageType[bodyType] ?? "UNKNOWN",
       mentionedSelf: false,
-      rawEvent: ev,
+      rawEvent: update,
     };
 
     // Populate group field for GROUP conversations.
     if (ctx.chatType === "group") {
-      this.populateGroup(ctx, ev.relatedGroups, conversationId);
+      this.populateGroup(ctx, update.groups, conversationId);
     }
 
     // Extract reply_to context.
@@ -190,18 +202,20 @@ export class MessageNormalizer {
   }
 
   // -------------------------------------------------------------------------
-  // CARD_ACTION event
+  // CARD_ACTION event (NonSnUpdate.cardAction)
   // -------------------------------------------------------------------------
 
   private normalizeCardAction(
-    ev: WebhookEvent,
+    update: Update,
     agentUserId: number,
   ): NexusMsgContext | null {
-    if (ev.payload.case !== "cardAction") return null;
-    const ca = ev.payload.value;
+    if (update.update.case !== "nonSnUpdate") return null;
+    const nonSn = update.update.value;
+    if (nonSn.update.case !== "cardAction") return null;
+    const ca = nonSn.update.value;
     const conversationId = Number(ca.conversationId);
     const senderId = ca.senderId;
-    const senderInfo = ev.relatedUsers.find((u) => u.userId === senderId);
+    const senderInfo = update.users.find((u) => u.userId === senderId);
 
     return {
       sessionKey: buildSessionKey(agentUserId, conversationId),
@@ -213,28 +227,30 @@ export class MessageNormalizer {
       },
       nexusMessageType: "CARD_ACTION",
       cardAction: {
-        actionId: ca.id,
+        actionId: ca.actionId,
         actionData: ca.actionData,
         verb: ca.verb,
         messageId: Number(ca.messageId),
       },
       mentionedSelf: false,
-      rawEvent: ev,
+      rawEvent: update,
     };
   }
 
   // -------------------------------------------------------------------------
-  // CONTACT_ADDED event
+  // CONTACT_ADDED event (SnUpdate.contactAdded)
   // -------------------------------------------------------------------------
 
   private normalizeContactAdded(
-    ev: WebhookEvent,
+    update: Update,
     agentUserId: number,
   ): NexusMsgContext | null {
-    if (ev.payload.case !== "contactAdded") return null;
-    const payload = ev.payload.value;
-    const userId = payload.userId;
-    const userInfo = ev.relatedUsers.find((u) => u.userId === userId);
+    if (update.update.case !== "snUpdate") return null;
+    const sn = update.update.value;
+    if (sn.update.case !== "contactAdded") return null;
+    const payload = sn.update.value;
+    const userId = payload.peerUserId;
+    const userInfo = update.users.find((u) => u.userId === userId);
 
     return {
       sessionKey: buildSessionKey(agentUserId, 0),
@@ -247,24 +263,26 @@ export class MessageNormalizer {
       nexusMessageType: "CONTACT_ADDED",
       text: "contact_added",
       mentionedSelf: false,
-      rawEvent: ev,
+      rawEvent: update,
     };
   }
 
   // -------------------------------------------------------------------------
-  // REMOVED_FROM_GROUP event
+  // REMOVED_FROM_GROUP event (SnUpdate.removedFromGroup)
   // -------------------------------------------------------------------------
 
   private normalizeRemovedFromGroup(
-    ev: WebhookEvent,
+    update: Update,
     agentUserId: number,
   ): NexusMsgContext | null {
-    if (ev.payload.case !== "removedFromGroup") return null;
-    const payload = ev.payload.value;
+    if (update.update.case !== "snUpdate") return null;
+    const sn = update.update.value;
+    if (sn.update.case !== "removedFromGroup") return null;
+    const payload = sn.update.value;
     const groupId = payload.groupId;
     const operatorId = payload.operatorId;
-    const operatorInfo = ev.relatedUsers.find((u) => u.userId === operatorId);
-    const groupInfo = ev.relatedGroups.find((g) => g.groupId === groupId);
+    const operatorInfo = update.users.find((u) => u.userId === operatorId);
+    const groupInfo = update.groups.find((g) => g.groupId === groupId);
 
     return {
       sessionKey: buildSessionKey(agentUserId, groupId),
@@ -281,24 +299,26 @@ export class MessageNormalizer {
         name: groupInfo?.name ?? "",
       },
       mentionedSelf: false,
-      rawEvent: ev,
+      rawEvent: update,
     };
   }
 
   // -------------------------------------------------------------------------
-  // GROUP_DISSOLVED event
+  // GROUP_DISSOLVED event (SnUpdate.groupDissolved)
   // -------------------------------------------------------------------------
 
   private normalizeGroupDissolved(
-    ev: WebhookEvent,
+    update: Update,
     agentUserId: number,
   ): NexusMsgContext | null {
-    if (ev.payload.case !== "groupDissolved") return null;
-    const payload = ev.payload.value;
+    if (update.update.case !== "snUpdate") return null;
+    const sn = update.update.value;
+    if (sn.update.case !== "groupDissolved") return null;
+    const payload = sn.update.value;
     const groupId = payload.groupId;
     const operatorId = payload.operatorId;
-    const operatorInfo = ev.relatedUsers.find((u) => u.userId === operatorId);
-    const groupInfo = ev.relatedGroups.find((g) => g.groupId === groupId);
+    const operatorInfo = update.users.find((u) => u.userId === operatorId);
+    const groupInfo = update.groups.find((g) => g.groupId === groupId);
 
     return {
       sessionKey: buildSessionKey(agentUserId, groupId),
@@ -315,7 +335,7 @@ export class MessageNormalizer {
         name: groupInfo?.name ?? "",
       },
       mentionedSelf: false,
-      rawEvent: ev,
+      rawEvent: update,
     };
   }
 
@@ -325,10 +345,10 @@ export class MessageNormalizer {
 
   private resolveChatType(
     msg: MessageEnvelope,
-    ev: WebhookEvent,
+    update: Update,
   ): "dm" | "group" {
     const conversationId = Number(msg.conversationId);
-    const isGroup = ev.relatedGroups.some((g) => g.groupId === conversationId);
+    const isGroup = update.groups.some((g) => g.groupId === conversationId);
     return isGroup ? "group" : "dm";
   }
 
@@ -349,14 +369,14 @@ export class MessageNormalizer {
    * as MESSAGE with GROUP body type.
    */
   private buildSystemNotification(
-    ev: WebhookEvent,
+    update: Update,
     msg: MessageEnvelope,
     agentUserId: number,
     notificationType: string,
   ): NexusMsgContext {
     const conversationId = Number(msg.conversationId);
     const senderId = msg.senderId;
-    const senderInfo = ev.relatedUsers.find((u) => u.userId === senderId);
+    const senderInfo = update.users.find((u) => u.userId === senderId);
 
     const ctx: NexusMsgContext = {
       sessionKey: buildSessionKey(agentUserId, conversationId),
@@ -369,10 +389,10 @@ export class MessageNormalizer {
       nexusMessageType: notificationType,
       text: notificationType,
       mentionedSelf: false,
-      rawEvent: ev,
+      rawEvent: update,
     };
 
-    this.populateGroup(ctx, ev.relatedGroups, conversationId);
+    this.populateGroup(ctx, update.groups, conversationId);
     return ctx;
   }
 }

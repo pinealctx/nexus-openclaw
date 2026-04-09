@@ -66,47 +66,47 @@ export type {
   ReplyContext,
 } from "../generated/shared/v1/message_pb.js";
 
-export type { WebhookEvent } from "../generated/shared/v1/webhook_events_pb.js";
-
 export type { MediaFileInfo } from "../generated/shared/v1/media_pb.js";
 
+// Unified gateway frame types (api/v1/gateway_frame_pb)
 export type {
-  AgentClientFrame,
-  AgentServerFrame,
-} from "../generated/shared/v1/gateway_agent_frame_pb.js";
-
-export type {
+  ClientFrame,
+  ServerFrame,
   GatewayAuthResponse,
   GatewayErrorFrame,
-} from "../generated/shared/v1/gateway_common_pb.js";
-
-export type { ErrorDetail } from "../generated/shared/v1/error_codes_pb.js";
-
-export {
-  WebhookEventType,
-} from "../generated/shared/v1/webhook_events_pb.js";
+  Update,
+} from "../generated/api/v1/gateway_frame_pb.js";
 
 export {
-  AgentClientFrameType,
-  AgentServerFrameType,
-} from "../generated/shared/v1/gateway_agent_frame_pb.js";
+  ClientFrameType,
+  ServerFrameType,
+} from "../generated/api/v1/gateway_frame_pb.js";
 
 export {
-  AgentClientFrameSchema,
-  AgentServerFrameSchema,
-  AgentAuthRequestSchema,
-} from "../generated/shared/v1/gateway_agent_frame_pb.js";
-
-export {
+  ClientFrameSchema,
+  ServerFrameSchema,
+  AuthRequestSchema,
+  UpdateSchema,
   HeartbeatPingSchema,
   HeartbeatPongSchema,
   GatewayAuthResponseSchema,
   GatewayErrorFrameSchema,
-} from "../generated/shared/v1/gateway_common_pb.js";
+} from "../generated/api/v1/gateway_frame_pb.js";
+
+// Update sub-types (shared/v1/updates_pb)
+export type {
+  SnUpdate,
+  NonSnUpdate,
+  CardActionPayload,
+  CardActionAnswer,
+} from "../generated/shared/v1/updates_pb.js";
 
 export {
-  WebhookEventSchema,
-} from "../generated/shared/v1/webhook_events_pb.js";
+  SnUpdateSchema,
+  NonSnUpdateSchema,
+} from "../generated/shared/v1/updates_pb.js";
+
+export type { ErrorDetail } from "../generated/shared/v1/error_codes_pb.js";
 
 export {
   MessageEnvelopeSchema,

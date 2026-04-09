@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file shared/v1/updates.proto.
  */
 export const file_shared_v1_updates: GenFile = /*@__PURE__*/
-  fileDesc("ChdzaGFyZWQvdjEvdXBkYXRlcy5wcm90bxIJc2hhcmVkLnYxIuMICghTblVwZGF0ZRIKCgJzbhgBIAEoBRI2ChBtZXNzYWdlX2VudmVsb3BlGAIgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEkgKF2ZyaWVuZF9yZXF1ZXN0X3JlY2VpdmVkGAMgASgLMiUuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50SAASSAoXZnJpZW5kX3JlcXVlc3RfYWNjZXB0ZWQYBCABKAsyJS5zaGFyZWQudjEuRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnRIABJIChdmcmllbmRfcmVxdWVzdF9yZWplY3RlZBgFIAEoCzIlLnNoYXJlZC52MS5GcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudEgAEjkKD2NvbnRhY3RfZGVsZXRlZBgGIAEoCzIeLnNoYXJlZC52MS5Db250YWN0RGVsZXRlZEV2ZW50SAASPgoSdXNlcl9ibG9ja190b2dnbGVkGAcgASgLMiAuc2hhcmVkLnYxLlVzZXJCbG9ja1RvZ2dsZWRFdmVudEgAEkIKFHVzZXJfcHJvZmlsZV91cGRhdGVkGAggASgLMiIuc2hhcmVkLnYxLlVzZXJQcm9maWxlVXBkYXRlZEV2ZW50SAASQQoTY29udmVyc2F0aW9uX2FjdGlvbhgJIAEoCzIiLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25FdmVudEgAEjMKDHJlYWRfcmVjZWlwdBgKIAEoCzIbLnNoYXJlZC52MS5SZWFkUmVjZWlwdEV2ZW50SAASQgoUYWdlbnRfc3RhdHVzX2NoYW5nZWQYCyABKAsyIi5zaGFyZWQudjEuQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnRIABJAChNmcmllbmRfcmVxdWVzdF9zZW50GAwgASgLMiEuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RTZW50RXZlbnRIABJEChVjb250YWN0X2FsaWFzX3VwZGF0ZWQYDSABKAsyIy5zaGFyZWQudjEuQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50SAASOwoQdXNlcm5hbWVfY2hhbmdlZBgOIAEoCzIfLnNoYXJlZC52MS5Vc2VybmFtZUNoYW5nZWRFdmVudEgAEj4KEnJlbW92ZWRfZnJvbV9ncm91cBgRIAEoCzIgLnNoYXJlZC52MS5SZW1vdmVkRnJvbUdyb3VwRXZlbnRIABI5Cg9ncm91cF9kaXNzb2x2ZWQYECABKAsyHi5zaGFyZWQudjEuR3JvdXBEaXNzb2x2ZWRFdmVudEgAEjkKD21lc3NhZ2VfZGVsZXRlZBgSIAEoCzIeLnNoYXJlZC52MS5NZXNzYWdlRGVsZXRlZEV2ZW50SAASNQoNY29udGFjdF9hZGRlZBgTIAEoCzIcLnNoYXJlZC52MS5Db250YWN0QWRkZWRFdmVudEgAQggKBnVwZGF0ZSKKAQoLTm9uU25VcGRhdGUSNgoQbWVzc2FnZV9lbnZlbG9wZRgBIAEoCzIaLnNoYXJlZC52MS5NZXNzYWdlRW52ZWxvcGVIABI5ChJjYXJkX2FjdGlvbl9hbnN3ZXIYAiABKAsyGy5zaGFyZWQudjEuQ2FyZEFjdGlvbkFuc3dlckgAQggKBnVwZGF0ZSJHChBDYXJkQWN0aW9uQW5zd2VyEhEKCWFjdGlvbl9pZBgBIAEoCRIMCgR0ZXh0GAIgASgJEhIKCnNob3dfYWxlcnQYAyABKAgiIAoLVXBkYXRlU3RhdGUSEQoJbGF0ZXN0X3NuGAEgASgFIkwKGkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkwKGkZyaWVuZFJlcXVlc3RBY2NlcHRlZEV2ZW50Ei4KB3JlcXVlc3QYASABKAsyHS5zaGFyZWQudjEuUGVuZGluZ1JlcXVlc3RJdGVtIkUKGkZyaWVuZFJlcXVlc3RSZWplY3RlZEV2ZW50EhIKCnJlcXVlc3RfaWQYASABKAMSEwoLcmVqZWN0b3JfaWQYAiABKAUiRAoWRnJpZW5kUmVxdWVzdFNlbnRFdmVudBISCgpyZXF1ZXN0X2lkGAEgASgDEhYKDnRhcmdldF91c2VyX2lkGAIgASgFIkYKGENvbnRhY3RBbGlhc1VwZGF0ZWRFdmVudBIXCg9jb250YWN0X3VzZXJfaWQYASABKAUSEQoJbmV3X2FsaWFzGAIgASgJIj0KFFVzZXJuYW1lQ2hhbmdlZEV2ZW50Eg8KB3VzZXJfaWQYASABKAUSFAoMbmV3X3VzZXJuYW1lGAIgASgJIisKE0NvbnRhY3REZWxldGVkRXZlbnQSFAoMcGVlcl91c2VyX2lkGAEgASgFIikKEUNvbnRhY3RBZGRlZEV2ZW50EhQKDHBlZXJfdXNlcl9pZBgBIAEoBSJDChVVc2VyQmxvY2tUb2dnbGVkRXZlbnQSFgoOdGFyZ2V0X3VzZXJfaWQYASABKAUSEgoKaXNfYmxvY2tlZBgCIAEoCCK0AQoXVXNlclByb2ZpbGVVcGRhdGVkRXZlbnQSDwoHdXNlcl9pZBgBIAEoBRIZCgxuZXdfbmlja25hbWUYAiABKAlIAIgBARIbCg5uZXdfYXZhdGFyX3VybBgDIAEoCUgBiAEBEhoKDW5ld19zaWduYXR1cmUYBCABKAlIAogBAUIPCg1fbmV3X25pY2tuYW1lQhEKD19uZXdfYXZhdGFyX3VybEIQCg5fbmV3X3NpZ25hdHVyZSJ9ChdDb252ZXJzYXRpb25BY3Rpb25FdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSMQoGYWN0aW9uGAIgASgOMiEuc2hhcmVkLnYxLkNvbnZlcnNhdGlvbkFjdGlvblR5cGUSFgoOY2xlYXJfbWVzc2FnZXMYAyABKAgiXQoTTWVzc2FnZURlbGV0ZWRFdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSEwoLbWVzc2FnZV9pZHMYAiADKAMSGAoQdXBfdG9fbWVzc2FnZV9pZBgDIAEoAyJyChBSZWFkUmVjZWlwdEV2ZW50EhcKD2NvbnZlcnNhdGlvbl9pZBgBIAEoAxIWCg5yZWFkZXJfdXNlcl9pZBgCIAEoBRIcChRsYXN0X3JlYWRfbWVzc2FnZV9pZBgDIAEoAxIPCgdyZWFkX2F0GAQgASgDIj4KFVJlbW92ZWRGcm9tR3JvdXBFdmVudBIQCghncm91cF9pZBgBIAEoBRITCgtvcGVyYXRvcl9pZBgCIAEoBSI8ChNHcm91cERpc3NvbHZlZEV2ZW50EhMKC29wZXJhdG9yX2lkGAEgASgFEhAKCGdyb3VwX2lkGAIgASgFIlwKF0FnZW50U3RhdHVzQ2hhbmdlZEV2ZW50EhUKDWFnZW50X3VzZXJfaWQYASABKAUSKgoKbmV3X3N0YXR1cxgCIAEoDjIWLnNoYXJlZC52MS5BZ2VudFN0YXR1c0KeAQoNY29tLnNoYXJlZC52MUIMVXBkYXRlc1Byb3RvUAFaOmdpdGh1Yi5jb20vcGluZWFsY3R4L25leHVzLXByb3RvL2dlbi9nby9zaGFyZWQvdjE7c2hhcmVkdjGiAgNTWFiqAglTaGFyZWQuVjHKAglTaGFyZWRcVjHiAhVTaGFyZWRcVjFcR1BCTWV0YWRhdGHqAgpTaGFyZWQ6OlYxYgZwcm90bzM", [file_shared_v1_agent, file_shared_v1_contact, file_shared_v1_conversation, file_shared_v1_message]);
+  fileDesc("ChdzaGFyZWQvdjEvdXBkYXRlcy5wcm90bxIJc2hhcmVkLnYxIuMICghTblVwZGF0ZRIKCgJzbhgBIAEoBRI2ChBtZXNzYWdlX2VudmVsb3BlGAIgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZUgAEkgKF2ZyaWVuZF9yZXF1ZXN0X3JlY2VpdmVkGAMgASgLMiUuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RSZWNlaXZlZEV2ZW50SAASSAoXZnJpZW5kX3JlcXVlc3RfYWNjZXB0ZWQYBCABKAsyJS5zaGFyZWQudjEuRnJpZW5kUmVxdWVzdEFjY2VwdGVkRXZlbnRIABJIChdmcmllbmRfcmVxdWVzdF9yZWplY3RlZBgFIAEoCzIlLnNoYXJlZC52MS5GcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudEgAEjkKD2NvbnRhY3RfZGVsZXRlZBgGIAEoCzIeLnNoYXJlZC52MS5Db250YWN0RGVsZXRlZEV2ZW50SAASPgoSdXNlcl9ibG9ja190b2dnbGVkGAcgASgLMiAuc2hhcmVkLnYxLlVzZXJCbG9ja1RvZ2dsZWRFdmVudEgAEkIKFHVzZXJfcHJvZmlsZV91cGRhdGVkGAggASgLMiIuc2hhcmVkLnYxLlVzZXJQcm9maWxlVXBkYXRlZEV2ZW50SAASQQoTY29udmVyc2F0aW9uX2FjdGlvbhgJIAEoCzIiLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25FdmVudEgAEjMKDHJlYWRfcmVjZWlwdBgKIAEoCzIbLnNoYXJlZC52MS5SZWFkUmVjZWlwdEV2ZW50SAASQgoUYWdlbnRfc3RhdHVzX2NoYW5nZWQYCyABKAsyIi5zaGFyZWQudjEuQWdlbnRTdGF0dXNDaGFuZ2VkRXZlbnRIABJAChNmcmllbmRfcmVxdWVzdF9zZW50GAwgASgLMiEuc2hhcmVkLnYxLkZyaWVuZFJlcXVlc3RTZW50RXZlbnRIABJEChVjb250YWN0X2FsaWFzX3VwZGF0ZWQYDSABKAsyIy5zaGFyZWQudjEuQ29udGFjdEFsaWFzVXBkYXRlZEV2ZW50SAASOwoQdXNlcm5hbWVfY2hhbmdlZBgOIAEoCzIfLnNoYXJlZC52MS5Vc2VybmFtZUNoYW5nZWRFdmVudEgAEj4KEnJlbW92ZWRfZnJvbV9ncm91cBgRIAEoCzIgLnNoYXJlZC52MS5SZW1vdmVkRnJvbUdyb3VwRXZlbnRIABI5Cg9ncm91cF9kaXNzb2x2ZWQYECABKAsyHi5zaGFyZWQudjEuR3JvdXBEaXNzb2x2ZWRFdmVudEgAEjkKD21lc3NhZ2VfZGVsZXRlZBgSIAEoCzIeLnNoYXJlZC52MS5NZXNzYWdlRGVsZXRlZEV2ZW50SAASNQoNY29udGFjdF9hZGRlZBgTIAEoCzIcLnNoYXJlZC52MS5Db250YWN0QWRkZWRFdmVudEgAQggKBnVwZGF0ZSK/AQoLTm9uU25VcGRhdGUSNgoQbWVzc2FnZV9lbnZlbG9wZRgBIAEoCzIaLnNoYXJlZC52MS5NZXNzYWdlRW52ZWxvcGVIABI5ChJjYXJkX2FjdGlvbl9hbnN3ZXIYAiABKAsyGy5zaGFyZWQudjEuQ2FyZEFjdGlvbkFuc3dlckgAEjMKC2NhcmRfYWN0aW9uGAMgASgLMhwuc2hhcmVkLnYxLkNhcmRBY3Rpb25QYXlsb2FkSABCCAoGdXBkYXRlIosBChBDYXJkQWN0aW9uQW5zd2VyEhEKCWFjdGlvbl9pZBgBIAEoCRIXCg9jb252ZXJzYXRpb25faWQYAiABKAMSEgoKbWVzc2FnZV9pZBgDIAEoAxIVCg1hZ2VudF91c2VyX2lkGAQgASgFEgwKBHRleHQYBSABKAkSEgoKc2hvd19hbGVydBgGIAEoCCKJAQoRQ2FyZEFjdGlvblBheWxvYWQSEQoJYWN0aW9uX2lkGAEgASgJEhcKD2NvbnZlcnNhdGlvbl9pZBgCIAEoAxISCgptZXNzYWdlX2lkGAMgASgDEhEKCXNlbmRlcl9pZBgEIAEoBRITCgthY3Rpb25fZGF0YRgFIAEoCRIMCgR2ZXJiGAYgASgJIiAKC1VwZGF0ZVN0YXRlEhEKCWxhdGVzdF9zbhgBIAEoBSJMChpGcmllbmRSZXF1ZXN0UmVjZWl2ZWRFdmVudBIuCgdyZXF1ZXN0GAEgASgLMh0uc2hhcmVkLnYxLlBlbmRpbmdSZXF1ZXN0SXRlbSJMChpGcmllbmRSZXF1ZXN0QWNjZXB0ZWRFdmVudBIuCgdyZXF1ZXN0GAEgASgLMh0uc2hhcmVkLnYxLlBlbmRpbmdSZXF1ZXN0SXRlbSJFChpGcmllbmRSZXF1ZXN0UmVqZWN0ZWRFdmVudBISCgpyZXF1ZXN0X2lkGAEgASgDEhMKC3JlamVjdG9yX2lkGAIgASgFIkQKFkZyaWVuZFJlcXVlc3RTZW50RXZlbnQSEgoKcmVxdWVzdF9pZBgBIAEoAxIWCg50YXJnZXRfdXNlcl9pZBgCIAEoBSJGChhDb250YWN0QWxpYXNVcGRhdGVkRXZlbnQSFwoPY29udGFjdF91c2VyX2lkGAEgASgFEhEKCW5ld19hbGlhcxgCIAEoCSI9ChRVc2VybmFtZUNoYW5nZWRFdmVudBIPCgd1c2VyX2lkGAEgASgFEhQKDG5ld191c2VybmFtZRgCIAEoCSIrChNDb250YWN0RGVsZXRlZEV2ZW50EhQKDHBlZXJfdXNlcl9pZBgBIAEoBSIpChFDb250YWN0QWRkZWRFdmVudBIUCgxwZWVyX3VzZXJfaWQYASABKAUiQwoVVXNlckJsb2NrVG9nZ2xlZEV2ZW50EhYKDnRhcmdldF91c2VyX2lkGAEgASgFEhIKCmlzX2Jsb2NrZWQYAiABKAgitAEKF1VzZXJQcm9maWxlVXBkYXRlZEV2ZW50Eg8KB3VzZXJfaWQYASABKAUSGQoMbmV3X25pY2tuYW1lGAIgASgJSACIAQESGwoObmV3X2F2YXRhcl91cmwYAyABKAlIAYgBARIaCg1uZXdfc2lnbmF0dXJlGAQgASgJSAKIAQFCDwoNX25ld19uaWNrbmFtZUIRCg9fbmV3X2F2YXRhcl91cmxCEAoOX25ld19zaWduYXR1cmUifQoXQ29udmVyc2F0aW9uQWN0aW9uRXZlbnQSFwoPY29udmVyc2F0aW9uX2lkGAEgASgDEjEKBmFjdGlvbhgCIAEoDjIhLnNoYXJlZC52MS5Db252ZXJzYXRpb25BY3Rpb25UeXBlEhYKDmNsZWFyX21lc3NhZ2VzGAMgASgIIl0KE01lc3NhZ2VEZWxldGVkRXZlbnQSFwoPY29udmVyc2F0aW9uX2lkGAEgASgDEhMKC21lc3NhZ2VfaWRzGAIgAygDEhgKEHVwX3RvX21lc3NhZ2VfaWQYAyABKAMicgoQUmVhZFJlY2VpcHRFdmVudBIXCg9jb252ZXJzYXRpb25faWQYASABKAMSFgoOcmVhZGVyX3VzZXJfaWQYAiABKAUSHAoUbGFzdF9yZWFkX21lc3NhZ2VfaWQYAyABKAMSDwoHcmVhZF9hdBgEIAEoAyI+ChVSZW1vdmVkRnJvbUdyb3VwRXZlbnQSEAoIZ3JvdXBfaWQYASABKAUSEwoLb3BlcmF0b3JfaWQYAiABKAUiPAoTR3JvdXBEaXNzb2x2ZWRFdmVudBITCgtvcGVyYXRvcl9pZBgBIAEoBRIQCghncm91cF9pZBgCIAEoBSJcChdBZ2VudFN0YXR1c0NoYW5nZWRFdmVudBIVCg1hZ2VudF91c2VyX2lkGAEgASgFEioKCm5ld19zdGF0dXMYAiABKA4yFi5zaGFyZWQudjEuQWdlbnRTdGF0dXNCngEKDWNvbS5zaGFyZWQudjFCDFVwZGF0ZXNQcm90b1ABWjpnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vc2hhcmVkL3YxO3NoYXJlZHYxogIDU1hYqgIJU2hhcmVkLlYxygIJU2hhcmVkXFYx4gIVU2hhcmVkXFYxXEdQQk1ldGFkYXRh6gIKU2hhcmVkOjpWMWIGcHJvdG8z", [file_shared_v1_agent, file_shared_v1_contact, file_shared_v1_conversation, file_shared_v1_message]);
 
 /**
  * SnUpdate is a sequenced update delivered to a user's update stream.
@@ -189,7 +189,10 @@ export const SnUpdateSchema: GenMessage<SnUpdate> = /*@__PURE__*/
 
 /**
  * NonSnUpdate is a non-sequenced, ephemeral update pushed in real time.
- * Clients do not track sn for these.
+ * Clients and agents do not track sn for these. Used for:
+ *   - Stream DELTA (real-time text generation push)
+ *   - CardActionAnswer (agent's toast/alert response to a card action)
+ *   - CardActionPayload (user's card action submission, delivered to agent)
  *
  * @generated from message shared.v1.NonSnUpdate
  */
@@ -215,6 +218,14 @@ export type NonSnUpdate = Message<"shared.v1.NonSnUpdate"> & {
      */
     value: CardActionAnswer;
     case: "cardActionAnswer";
+  } | {
+    /**
+     * Card action submission from a user (delivered to agent, ephemeral).
+     *
+     * @generated from field: shared.v1.CardActionPayload card_action = 3;
+     */
+    value: CardActionPayload;
+    case: "cardAction";
   } | { case: undefined; value?: undefined };
 };
 
@@ -233,23 +244,44 @@ export const NonSnUpdateSchema: GenMessage<NonSnUpdate> = /*@__PURE__*/
  */
 export type CardActionAnswer = Message<"shared.v1.CardActionAnswer"> & {
   /**
-   * Action ID.
+   * Server-assigned action ID (matches CardActionPayload.action_id).
    *
    * @generated from field: string action_id = 1;
    */
   actionId: string;
 
   /**
+   * Conversation where the card action was submitted.
+   *
+   * @generated from field: int64 conversation_id = 2;
+   */
+  conversationId: bigint;
+
+  /**
+   * Card message ID that the action belongs to.
+   *
+   * @generated from field: int64 message_id = 3;
+   */
+  messageId: bigint;
+
+  /**
+   * Agent user ID that produced this answer.
+   *
+   * @generated from field: int32 agent_user_id = 4;
+   */
+  agentUserId: number;
+
+  /**
    * Response text to display.
    *
-   * @generated from field: string text = 2;
+   * @generated from field: string text = 5;
    */
   text: string;
 
   /**
    * Whether to show as alert dialog (true) or toast (false).
    *
-   * @generated from field: bool show_alert = 3;
+   * @generated from field: bool show_alert = 6;
    */
   showAlert: boolean;
 };
@@ -260,6 +292,64 @@ export type CardActionAnswer = Message<"shared.v1.CardActionAnswer"> & {
  */
 export const CardActionAnswerSchema: GenMessage<CardActionAnswer> = /*@__PURE__*/
   messageDesc(file_shared_v1_updates, 2);
+
+/**
+ * CardActionPayload contains an Adaptive Card Action.Submit event.
+ * Pushed as NonSnUpdate to the agent that owns the card.
+ * This is an ephemeral event — not sequenced and not persisted.
+ *
+ * @generated from message shared.v1.CardActionPayload
+ */
+export type CardActionPayload = Message<"shared.v1.CardActionPayload"> & {
+  /**
+   * Server-assigned action ID (use in AnswerCardAction).
+   *
+   * @generated from field: string action_id = 1;
+   */
+  actionId: string;
+
+  /**
+   * Conversation ID.
+   *
+   * @generated from field: int64 conversation_id = 2;
+   */
+  conversationId: bigint;
+
+  /**
+   * Card message ID.
+   *
+   * @generated from field: int64 message_id = 3;
+   */
+  messageId: bigint;
+
+  /**
+   * User who submitted the action.
+   *
+   * @generated from field: int32 sender_id = 4;
+   */
+  senderId: number;
+
+  /**
+   * Action data (JSON string from Action.Submit).
+   *
+   * @generated from field: string action_data = 5;
+   */
+  actionData: string;
+
+  /**
+   * Action verb identifier.
+   *
+   * @generated from field: string verb = 6;
+   */
+  verb: string;
+};
+
+/**
+ * Describes the message shared.v1.CardActionPayload.
+ * Use `create(CardActionPayloadSchema)` to create a new message.
+ */
+export const CardActionPayloadSchema: GenMessage<CardActionPayload> = /*@__PURE__*/
+  messageDesc(file_shared_v1_updates, 3);
 
 /**
  * UpdateState holds the server's current sync state for a user.
@@ -280,7 +370,7 @@ export type UpdateState = Message<"shared.v1.UpdateState"> & {
  * Use `create(UpdateStateSchema)` to create a new message.
  */
 export const UpdateStateSchema: GenMessage<UpdateState> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 3);
+  messageDesc(file_shared_v1_updates, 4);
 
 /**
  * FriendRequestReceivedEvent is produced when a friend request is sent.
@@ -304,7 +394,7 @@ export type FriendRequestReceivedEvent = Message<"shared.v1.FriendRequestReceive
  * Use `create(FriendRequestReceivedEventSchema)` to create a new message.
  */
 export const FriendRequestReceivedEventSchema: GenMessage<FriendRequestReceivedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 4);
+  messageDesc(file_shared_v1_updates, 5);
 
 /**
  * FriendRequestAcceptedEvent is produced when a friend request is accepted.
@@ -328,7 +418,7 @@ export type FriendRequestAcceptedEvent = Message<"shared.v1.FriendRequestAccepte
  * Use `create(FriendRequestAcceptedEventSchema)` to create a new message.
  */
 export const FriendRequestAcceptedEventSchema: GenMessage<FriendRequestAcceptedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 5);
+  messageDesc(file_shared_v1_updates, 6);
 
 /**
  * FriendRequestRejectedEvent is produced when a friend request is rejected.
@@ -357,7 +447,7 @@ export type FriendRequestRejectedEvent = Message<"shared.v1.FriendRequestRejecte
  * Use `create(FriendRequestRejectedEventSchema)` to create a new message.
  */
 export const FriendRequestRejectedEventSchema: GenMessage<FriendRequestRejectedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 6);
+  messageDesc(file_shared_v1_updates, 7);
 
 /**
  * FriendRequestSentEvent is produced when the current user sends a friend
@@ -386,7 +476,7 @@ export type FriendRequestSentEvent = Message<"shared.v1.FriendRequestSentEvent">
  * Use `create(FriendRequestSentEventSchema)` to create a new message.
  */
 export const FriendRequestSentEventSchema: GenMessage<FriendRequestSentEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 7);
+  messageDesc(file_shared_v1_updates, 8);
 
 /**
  * ContactAliasUpdatedEvent is produced when a contact alias is changed.
@@ -416,7 +506,7 @@ export type ContactAliasUpdatedEvent = Message<"shared.v1.ContactAliasUpdatedEve
  * Use `create(ContactAliasUpdatedEventSchema)` to create a new message.
  */
 export const ContactAliasUpdatedEventSchema: GenMessage<ContactAliasUpdatedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 8);
+  messageDesc(file_shared_v1_updates, 9);
 
 /**
  * UsernameChangedEvent is produced when a user sets their username.
@@ -446,7 +536,7 @@ export type UsernameChangedEvent = Message<"shared.v1.UsernameChangedEvent"> & {
  * Use `create(UsernameChangedEventSchema)` to create a new message.
  */
 export const UsernameChangedEventSchema: GenMessage<UsernameChangedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 9);
+  messageDesc(file_shared_v1_updates, 10);
 
 /**
  * ContactDeletedEvent is produced when a contact is removed.
@@ -469,7 +559,7 @@ export type ContactDeletedEvent = Message<"shared.v1.ContactDeletedEvent"> & {
  * Use `create(ContactDeletedEventSchema)` to create a new message.
  */
 export const ContactDeletedEventSchema: GenMessage<ContactDeletedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 10);
+  messageDesc(file_shared_v1_updates, 11);
 
 /**
  * ContactAddedEvent is produced when a user adds an agent as a contact
@@ -491,7 +581,7 @@ export type ContactAddedEvent = Message<"shared.v1.ContactAddedEvent"> & {
  * Use `create(ContactAddedEventSchema)` to create a new message.
  */
 export const ContactAddedEventSchema: GenMessage<ContactAddedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 11);
+  messageDesc(file_shared_v1_updates, 12);
 
 /**
  * UserBlockToggledEvent is produced when a user blocks or unblocks another.
@@ -521,7 +611,7 @@ export type UserBlockToggledEvent = Message<"shared.v1.UserBlockToggledEvent"> &
  * Use `create(UserBlockToggledEventSchema)` to create a new message.
  */
 export const UserBlockToggledEventSchema: GenMessage<UserBlockToggledEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 12);
+  messageDesc(file_shared_v1_updates, 13);
 
 /**
  * UserProfileUpdatedEvent is produced when a user updates their profile.
@@ -565,7 +655,7 @@ export type UserProfileUpdatedEvent = Message<"shared.v1.UserProfileUpdatedEvent
  * Use `create(UserProfileUpdatedEventSchema)` to create a new message.
  */
 export const UserProfileUpdatedEventSchema: GenMessage<UserProfileUpdatedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 13);
+  messageDesc(file_shared_v1_updates, 14);
 
 /**
  * ConversationActionEvent is produced when a user performs a conversation
@@ -603,7 +693,7 @@ export type ConversationActionEvent = Message<"shared.v1.ConversationActionEvent
  * Use `create(ConversationActionEventSchema)` to create a new message.
  */
 export const ConversationActionEventSchema: GenMessage<ConversationActionEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 14);
+  messageDesc(file_shared_v1_updates, 15);
 
 /**
  * MessageDeletedEvent is produced when a user deletes messages locally
@@ -642,7 +732,7 @@ export type MessageDeletedEvent = Message<"shared.v1.MessageDeletedEvent"> & {
  * Use `create(MessageDeletedEventSchema)` to create a new message.
  */
 export const MessageDeletedEventSchema: GenMessage<MessageDeletedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 15);
+  messageDesc(file_shared_v1_updates, 16);
 
 /**
  * ReadReceiptEvent is produced when a user marks messages as read.
@@ -686,7 +776,7 @@ export type ReadReceiptEvent = Message<"shared.v1.ReadReceiptEvent"> & {
  * Use `create(ReadReceiptEventSchema)` to create a new message.
  */
 export const ReadReceiptEventSchema: GenMessage<ReadReceiptEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 16);
+  messageDesc(file_shared_v1_updates, 17);
 
 /**
  * RemovedFromGroupEvent is delivered as an SnUpdate to the removed
@@ -716,7 +806,7 @@ export type RemovedFromGroupEvent = Message<"shared.v1.RemovedFromGroupEvent"> &
  * Use `create(RemovedFromGroupEventSchema)` to create a new message.
  */
 export const RemovedFromGroupEventSchema: GenMessage<RemovedFromGroupEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 17);
+  messageDesc(file_shared_v1_updates, 18);
 
 /**
  * GroupDissolvedEvent is produced when the group owner dissolves the group.
@@ -745,7 +835,7 @@ export type GroupDissolvedEvent = Message<"shared.v1.GroupDissolvedEvent"> & {
  * Use `create(GroupDissolvedEventSchema)` to create a new message.
  */
 export const GroupDissolvedEventSchema: GenMessage<GroupDissolvedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 18);
+  messageDesc(file_shared_v1_updates, 19);
 
 /**
  * AgentStatusChangedEvent is produced when an agent is deleted by its
@@ -775,5 +865,5 @@ export type AgentStatusChangedEvent = Message<"shared.v1.AgentStatusChangedEvent
  * Use `create(AgentStatusChangedEventSchema)` to create a new message.
  */
 export const AgentStatusChangedEventSchema: GenMessage<AgentStatusChangedEvent> = /*@__PURE__*/
-  messageDesc(file_shared_v1_updates, 19);
+  messageDesc(file_shared_v1_updates, 20);
 

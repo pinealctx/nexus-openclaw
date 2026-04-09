@@ -127,10 +127,11 @@ export class NexusClient {
   // -----------------------------------------------------------------------
 
   /**
-   * Discover the agent WebSocket gateway URL.
+   * Discover the WebSocket gateway URL.
    *
    * Calls AuthService.GetClientConfig (no auth) to obtain
-   * GatewayEndpoints.ws_url, then replaces /ws with /ws/agent.
+   * GatewayEndpoints.ws_url. The unified gateway serves both
+   * users and agents on the same /ws endpoint.
    */
   async discoverGatewayUrl(): Promise<string> {
     const res = await this.authClient.getClientConfig(
@@ -144,8 +145,7 @@ export class NexusClient {
       );
     }
 
-    // Replace trailing /ws with /ws/agent.
-    return wsUrl.replace(/\/ws\/?$/, "/ws/agent");
+    return wsUrl;
   }
 
   // -----------------------------------------------------------------------

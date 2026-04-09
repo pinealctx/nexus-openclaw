@@ -1,10 +1,11 @@
 /**
  * WebSocket connector for Nexus AI Gateway.
  *
- * Manages the WebSocket connection to /ws/agent, handling authentication,
- * heartbeat keepalive, event dispatch, and exponential backoff reconnection.
+ * Manages the WebSocket connection to /ws (unified endpoint), handling
+ * authentication, heartbeat keepalive, event dispatch, and exponential
+ * backoff reconnection.
  *
- * Frame protocol uses binary protobuf (AgentClientFrame / AgentServerFrame).
+ * Frame protocol uses binary protobuf (ClientFrame / ServerFrame).
  */
 
 import WebSocket from "ws";
@@ -13,14 +14,14 @@ import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
 import type { NexusAccountConfig } from "../config.js";
 import type { NexusClient } from "../nexus-api/client.js";
 import {
-  AgentClientFrameSchema,
-  AgentServerFrameSchema,
-  AgentAuthRequestSchema,
+  ClientFrameSchema,
+  ServerFrameSchema,
+  AuthRequestSchema,
   HeartbeatPingSchema,
-  AgentClientFrameType,
-  AgentServerFrameType,
+  ClientFrameType,
+  ServerFrameType,
 } from "../nexus-api/index.js";
-import type { AgentServerFrame, AgentClientFrame } from "../generated/shared/v1/gateway_agent_frame_pb.js";
+import type { ServerFrame, ClientFrame } from "../generated/api/v1/gateway_frame_pb.js";
 
 // ---------------------------------------------------------------------------
 // Defaults
@@ -115,7 +116,7 @@ export class WebSocketConnector {
     );
   }
 
-  /** Register a handler for incoming WebhookEvent payloads. */
+  /** Register a handler for incoming Update payloads. */
   onEvent(handler: (event: unknown) => void): void {
     this.eventHandler = handler;
   }
@@ -204,7 +205,7 @@ export class WebSocketConnector {
         if (!frame) return;
 
         switch (frame.type) {
-          case AgentServerFrameType.AUTH_RESPONSE:
+          case ServerFrameType.AUTH_RESPONSE:
             this.handleAuthResponse(frame);
             if (!settled) {
               settled = true;
@@ -212,22 +213,22 @@ export class WebSocketConnector {
                 resolve();
               } else {
                 const errMsg = frame.payload.case === "authResponse"
-                  ? frame.payload.value.errorMessage ?? "unknown error"
+                  ? frame.payload.value.error?.errorName ?? "unknown error"
                   : "unexpected frame payload";
                 reject(new Error(`Authentication failed: ${errMsg}`));
               }
             }
             break;
 
-          case AgentServerFrameType.HEARTBEAT_PONG:
+          case ServerFrameType.HEARTBEAT_PONG:
             this.handleHeartbeatPong();
             break;
 
-          case AgentServerFrameType.EVENT_PUSH:
-            this.handleEventPush(frame);
+          case ServerFrameType.UPDATE:
+            this.handleUpdate(frame);
             break;
 
-          case AgentServerFrameType.ERROR:
+          case ServerFrameType.ERROR:
             this.handleErrorFrame(frame);
             break;
 
@@ -271,12 +272,12 @@ export class WebSocketConnector {
   // -----------------------------------------------------------------------
 
   private sendAuthRequest(): void {
-    const frame = create(AgentClientFrameSchema, {
+    const frame = create(ClientFrameSchema, {
       requestId: BigInt(0),
-      type: AgentClientFrameType.AUTH_REQUEST,
+      type: ClientFrameType.AUTH_REQUEST,
       payload: {
         case: "authRequest",
-        value: create(AgentAuthRequestSchema, {
+        value: create(AuthRequestSchema, {
           token: this.config.agentToken,
         }),
       },
@@ -284,7 +285,7 @@ export class WebSocketConnector {
     this.sendFrame(frame);
   }
 
-  private handleAuthResponse(frame: AgentServerFrame): void {
+  private handleAuthResponse(frame: ServerFrame): void {
     if (frame.payload.case === "authResponse" && frame.payload.value.success) {
       this.authenticated = true;
       this.reconnectAttempt = 0;
@@ -298,7 +299,7 @@ export class WebSocketConnector {
       // Auth failure is non-recoverable — stop reconnection.
       this.stopping = true;
       const errMsg = frame.payload.case === "authResponse"
-        ? frame.payload.value.errorMessage ?? "unknown"
+        ? frame.payload.value.error?.errorName ?? "unknown"
         : "unexpected payload";
       console.error("[nexus-ws] auth failed:", errMsg);
       this.emitError(new Error(`Authentication failed: ${errMsg}`));
@@ -316,9 +317,9 @@ export class WebSocketConnector {
     // Send HEARTBEAT_PING at the configured interval.
     this.heartbeatTimer = setInterval(() => {
       if (this.ws?.readyState === WebSocket.OPEN) {
-        const frame = create(AgentClientFrameSchema, {
+        const frame = create(ClientFrameSchema, {
           requestId: BigInt(0),
-          type: AgentClientFrameType.HEARTBEAT_PING,
+          type: ClientFrameType.HEARTBEAT_PING,
           payload: {
             case: "heartbeatPing",
             value: create(HeartbeatPingSchema, {}),
@@ -353,13 +354,13 @@ export class WebSocketConnector {
   }
 
   // -----------------------------------------------------------------------
-  // Event dispatch
+  // Update dispatch
   // -----------------------------------------------------------------------
 
-  private handleEventPush(frame: AgentServerFrame): void {
-    if (frame.payload.case === "eventPush" && frame.payload.value.event) {
-      console.log("[nexus-ws] event received, type:", frame.type);
-      this.eventHandler?.(frame.payload.value.event);
+  private handleUpdate(frame: ServerFrame): void {
+    if (frame.payload.case === "update") {
+      console.log("[nexus-ws] update received, type:", frame.type);
+      this.eventHandler?.(frame.payload.value);
     }
   }
 
@@ -367,7 +368,7 @@ export class WebSocketConnector {
   // Error handling
   // -----------------------------------------------------------------------
 
-  private handleErrorFrame(frame: AgentServerFrame): void {
+  private handleErrorFrame(frame: ServerFrame): void {
     if (frame.payload.case !== "error") return;
 
     const errorDetail = frame.payload.value.error;
@@ -428,19 +429,19 @@ export class WebSocketConnector {
   // Frame I/O helpers
   // -----------------------------------------------------------------------
 
-  private sendFrame(frame: AgentClientFrame): void {
+  private sendFrame(frame: ClientFrame): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
-      const binary = toBinary(AgentClientFrameSchema, frame);
+      const binary = toBinary(ClientFrameSchema, frame);
       this.ws.send(binary);
     }
   }
 
-  private parseFrame(data: WebSocket.Data): AgentServerFrame | null {
+  private parseFrame(data: WebSocket.Data): ServerFrame | null {
     try {
       const buf = typeof data === "string"
         ? new TextEncoder().encode(data)
         : new Uint8Array(data as ArrayBuffer);
-      return fromBinary(AgentServerFrameSchema, buf);
+      return fromBinary(ServerFrameSchema, buf);
     } catch {
       return null;
     }

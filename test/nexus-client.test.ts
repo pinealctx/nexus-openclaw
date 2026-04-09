@@ -70,7 +70,7 @@ describe("NexusClient", () => {
 
   // -- discoverGatewayUrl --
 
-  it("discovers gateway URL and replaces /ws with /ws/agent", async () => {
+  it("discovers the unified gateway URL from GetClientConfig", async () => {
     // GetClientConfig is called on the no-auth transport.
     fetchSpy.mockResolvedValueOnce(
       mockConnectResponse({
@@ -81,7 +81,7 @@ describe("NexusClient", () => {
     const client = new NexusClient(validConfig());
     const url = await client.discoverGatewayUrl();
 
-    expect(url).toBe("wss://ws.example.com/ws/agent");
+    expect(url).toBe("wss://ws.example.com/ws");
 
     // Verify no Authorization header on GetClientConfig (public endpoint).
     const [rpcUrl, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
