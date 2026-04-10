@@ -490,12 +490,12 @@ export const ListGroupsResponseSchema: GenMessage<ListGroupsResponse> = /*@__PUR
 /**
  * GroupService handles group lifecycle, membership, and settings.
  * Authenticated via Access Token.
- * 
+ *
  * Group lifecycle:
  *   - CreateGroup creates a GROUP conversation and adds the creator as
  *     owner.
  *   - DissolveGroup permanently removes the group (owner only).
- * 
+ *
  * System message integration:
  *   All state-changing operations produce GroupContent system messages
  *   delivered to the group conversation. See shared/v1/group_event.proto
@@ -511,11 +511,11 @@ export const ListGroupsResponseSchema: GenMessage<ListGroupsResponse> = /*@__PUR
 export const GroupService: GenService<{
   /**
    * CreateGroup creates a new group conversation.
-   * 
+   *
    * Side effects:
    *   - Creates a GROUP conversation and adds the creator as owner.
    *   - Delivers a single MemberJoinedEvent containing all initial members.
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: Name is empty or fewer than 2 member_ids.
    *   - FAILED_PRECONDITION: After filtering invalid/blocked users,
@@ -532,12 +532,12 @@ export const GroupService: GenService<{
   },
   /**
    * DissolveGroup permanently dissolves a group.
-   * 
+   *
    * Side effects:
    *   - Marks the group as DISSOLVED; no further messages can be sent.
    *   - Removes all members from the group.
    *   - Delivers GroupDissolvedEvent SnUpdate to every member's update stream.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
    *   - FAILED_PRECONDITION: Group is already dissolved.
@@ -552,11 +552,11 @@ export const GroupService: GenService<{
   },
   /**
    * UpdateGroupName updates the group display name.
-   * 
+   *
    * Side effects:
    *   - Delivers GroupInfoChangedEvent (field="name") to the group
    *     conversation.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
    *   - FAILED_PRECONDITION: Group is dissolved.
@@ -572,11 +572,11 @@ export const GroupService: GenService<{
   },
   /**
    * UpdateGroupAvatar updates the group avatar.
-   * 
+   *
    * Side effects:
    *   - Delivers GroupInfoChangedEvent (field="avatar") to the group
    *     conversation.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
    *   - FAILED_PRECONDITION: Group is dissolved.
@@ -591,11 +591,11 @@ export const GroupService: GenService<{
   },
   /**
    * UpdateGroupDescription updates the group description.
-   * 
+   *
    * Side effects:
    *   - Delivers GroupInfoChangedEvent (field="description") to the group
    *     conversation.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
    *   - FAILED_PRECONDITION: Group is dissolved.
@@ -611,18 +611,18 @@ export const GroupService: GenService<{
   /**
    * InviteMembers invites one or more users or agents to join the group.
    * The server auto-detects member type (user vs agent) by account_type.
-   * 
+   *
    * Side effects:
    *   - Adds the invited members to the group.
    *   - Delivers a single MemberJoinedEvent containing all newly added members.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
    *   - FAILED_PRECONDITION: Group is dissolved.
    *   - PERMISSION_DENIED: Caller is not the owner.
    *   - RESOURCE_EXHAUSTED: Adding these members would exceed the group
    *     member limit or agent limit.
-   * 
+   *
    * Skipped silently (no error):
    *   - User IDs that do not exist.
    *   - Users who have blocked the inviter (or vice versa).
@@ -638,13 +638,13 @@ export const GroupService: GenService<{
   },
   /**
    * RemoveMember removes a member (user or agent) from the group (owner only).
-   * 
+   *
    * Side effects:
    *   - Removes the target from the group.
    *   - Delivers MemberRemovedEvent to the group conversation.
    *   - Delivers RemovedFromGroupEvent SnUpdate to the removed member's
    *     update stream.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist, or target is not a member.
    *   - FAILED_PRECONDITION: Group is dissolved.
@@ -661,11 +661,11 @@ export const GroupService: GenService<{
   /**
    * LeaveGroup allows a member to voluntarily leave the group.
    * The group owner cannot leave; use DissolveGroup instead.
-   * 
+   *
    * Side effects:
    *   - Removes the caller from the group.
    *   - Delivers MemberLeftEvent to the group conversation.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist, or caller is not a member.
    *   - FAILED_PRECONDITION: Group is dissolved.
@@ -680,7 +680,7 @@ export const GroupService: GenService<{
   },
   /**
    * GetGroupInfo returns group details with all members and their user info.
-   * 
+   *
    * Error conditions:
    *   - NOT_FOUND: Group does not exist.
    *   - FAILED_PRECONDITION: Group is dissolved.

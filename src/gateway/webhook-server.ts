@@ -103,7 +103,7 @@ export class WebhookServer {
     }
 
     // Verify HMAC-SHA256 signature
-    if (!verifySignature(this.config.webhookSecret, timestamp, rawBody, signature)) {
+    if (!verifySignature(this.config.secretKey, timestamp, rawBody, signature)) {
       res.writeHead(401, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "invalid signature" }));
       return;

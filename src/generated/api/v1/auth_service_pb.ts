@@ -787,13 +787,13 @@ export const IdentityTypeSchema: GenEnum<IdentityType> = /*@__PURE__*/
 export const AuthService: GenService<{
   /**
    * RequestVerifyCode sends a verification code to the given identity.
-   * 
+   *
    * Side effects:
    *   - Generates a time-limited verification code and sends it via
    *     the appropriate channel (SMS for phone, email for email).
    *   - Creates a verification session referenced by verify_token.
    *   - Rate-limited: max 1 code per identity per 60 seconds.
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: Identity type or value is invalid.
    *   - RESOURCE_EXHAUSTED: Rate limit exceeded for this identity.
@@ -807,12 +807,12 @@ export const AuthService: GenService<{
   },
   /**
    * VerifyCode validates the code and returns auth tokens.
-   * 
+   *
    * Side effects:
    *   - If the identity is new, creates a user account (is_new_user=true).
    *   - Creates a device session and issues access + refresh tokens.
    *   - Invalidates the verification session (single-use).
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: Code is incorrect or verify_token is malformed.
    *   - NOT_FOUND: Verification session does not exist or has expired.
@@ -827,10 +827,10 @@ export const AuthService: GenService<{
   },
   /**
    * LoginPassword authenticates with password credentials.
-   * 
+   *
    * Side effects:
    *   - Creates a device session and issues access + refresh tokens.
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: Identity type or value is invalid.
    *   - NOT_FOUND: No account exists for this identity.
@@ -847,10 +847,10 @@ export const AuthService: GenService<{
   },
   /**
    * RefreshToken exchanges a refresh token for a new access token.
-   * 
+   *
    * Side effects:
    *   - Issues a new access token with a fresh expiration.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Refresh token is invalid, expired, or revoked.
    *
@@ -863,11 +863,11 @@ export const AuthService: GenService<{
   },
   /**
    * Logout signs out the current device session.
-   * 
+   *
    * Side effects:
    *   - Revokes the access and refresh tokens for the current device.
    *   - Closes the long connection for this device if active.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *
@@ -880,11 +880,11 @@ export const AuthService: GenService<{
   },
   /**
    * LogoutAll signs out all device sessions for the user.
-   * 
+   *
    * Side effects:
    *   - Revokes all access and refresh tokens across all devices.
    *   - Closes all active long connections for the user.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *
@@ -897,11 +897,11 @@ export const AuthService: GenService<{
   },
   /**
    * SetupPassword sets a password for a passwordless account.
-   * 
+   *
    * Side effects:
    *   - Stores the password securely for the user account.
    *   - Enables password-based login for this account.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - FAILED_PRECONDITION: Account already has a password set.
@@ -916,11 +916,11 @@ export const AuthService: GenService<{
   },
   /**
    * ChangePassword changes the current password.
-   * 
+   *
    * Side effects:
    *   - Updates the stored password.
    *   - Revokes all other device sessions (forces re-login).
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - INVALID_ARGUMENT: New password does not meet complexity requirements.
@@ -936,21 +936,21 @@ export const AuthService: GenService<{
   },
   /**
    * ResetPasswordRequest initiates a password reset flow (step 1 of 2).
-   * 
+   *
    * Sends a verification code to the identity and returns a verify_token.
    * The client then calls ResetPasswordVerify to exchange the code for a
    * one-time reset_token, and finally ResetPasswordConfirm to set the
    * new password.
-   * 
+   *
    * The verification code session is independent from RequestVerifyCode
    * (login flow). They use separate sessions, so a login code cannot
    * be used for password reset and vice versa.
-   * 
+   *
    * Side effects:
    *   - Generates a verification code and sends it via SMS or email.
    *   - Creates a reset verification session referenced by verify_token.
    *   - Rate-limited: same limits as RequestVerifyCode per identity.
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: Identity type or value is invalid.
    *   - NOT_FOUND: No account exists for this identity.
@@ -965,14 +965,14 @@ export const AuthService: GenService<{
   },
   /**
    * ResetPasswordVerify validates the reset verification code (step 2 of 2a).
-   * 
+   *
    * On success, returns a one-time reset_token (TTL 10 min) that the
    * client uses in ResetPasswordConfirm.
-   * 
+   *
    * Side effects:
    *   - Invalidates the verification session (single-use).
    *   - Issues a one-time reset_token (TTL 10 min).
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: Code is incorrect.
    *   - NOT_FOUND: Verification session does not exist or has expired.
@@ -987,12 +987,12 @@ export const AuthService: GenService<{
   },
   /**
    * ResetPasswordConfirm sets the new password using a reset_token (step 2 of 2b).
-   * 
+   *
    * Side effects:
    *   - Updates the stored password.
    *   - Revokes all existing device sessions (forces re-login).
    *   - Invalidates the reset_token (single-use).
-   * 
+   *
    * Error conditions:
    *   - INVALID_ARGUMENT: New password does not meet complexity requirements.
    *   - NOT_FOUND: reset_token does not exist, has expired, or was already used.
@@ -1007,9 +1007,9 @@ export const AuthService: GenService<{
   /**
    * GetClientConfig returns client-facing configuration such as gateway
    * endpoints. Clients call this before login to discover service addresses.
-   * 
+   *
    * Side effects: none.
-   * 
+   *
    * Error conditions: none (always succeeds).
    *
    * @generated from rpc api.v1.AuthService.GetClientConfig

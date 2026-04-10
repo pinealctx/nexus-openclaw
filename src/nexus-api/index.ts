@@ -27,10 +27,6 @@ export {
   GetDownloadURLRequestSchema,
 } from "./client.js";
 
-export {
-  SetDeliveryConfigRequestSchema,
-} from "./client.js";
-
 // Re-export generated message types
 export type {
   SendMessageRequest,
@@ -49,11 +45,6 @@ export type {
   GetDownloadURLRequest,
   GetDownloadURLResponse,
 } from "../generated/api/v1/media_service_pb.js";
-
-export type {
-  SetDeliveryConfigRequest,
-  SetDeliveryConfigResponse,
-} from "../generated/api/v1/agent_service_pb.js";
 
 export type {
   MessageBody,
@@ -111,15 +102,3 @@ export type { ErrorDetail } from "../generated/shared/v1/error_codes_pb.js";
 export {
   MessageEnvelopeSchema,
 } from "../generated/shared/v1/message_pb.js";
-
-export type {
-  WebhookDeliveryConfig,
-  WebSocketDeliveryConfig,
-  NoDeliveryConfig,
-} from "../generated/shared/v1/agent_pb.js";
-
-export {
-  WebhookDeliveryConfigSchema,
-  WebSocketDeliveryConfigSchema,
-  NoDeliveryConfigSchema,
-} from "../generated/shared/v1/agent_pb.js";

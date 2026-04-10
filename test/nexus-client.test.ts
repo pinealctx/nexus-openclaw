@@ -12,8 +12,6 @@ import {
   SendMessageRequestSchema,
   GetDownloadURLRequestSchema,
   UploadFileRequestSchema,
-  WebhookDeliveryConfigSchema,
-  SetDeliveryConfigRequestSchema,
 } from "../src/nexus-api/index.js";
 import { create } from "@bufbuild/protobuf";
 
@@ -169,33 +167,6 @@ describe("NexusClient", () => {
 
     const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toContain("api.v1.MediaService/GetDownloadURL");
-  });
-
-  // -- setDeliveryConfig --
-
-  it("setDeliveryConfig calls AgentService/SetDeliveryConfig", async () => {
-    fetchSpy.mockResolvedValueOnce(
-      mockConnectResponse({
-        webhookSecret: "secret123",
-      }),
-    );
-
-    const client = new NexusClient(validConfig());
-    const res = await client.setDeliveryConfig(
-      create(SetDeliveryConfigRequestSchema, {
-        config: {
-          case: "webhook",
-          value: create(WebhookDeliveryConfigSchema, {
-            url: "https://my.hook/endpoint",
-          }),
-        },
-      }),
-    );
-
-    expect(res.webhookSecret).toBe("secret123");
-
-    const [url] = fetchSpy.mock.calls[0] as [string, RequestInit];
-    expect(url).toContain("api.v1.AgentService/SetDeliveryConfig");
   });
 
   // -- Connect RPC error handling --

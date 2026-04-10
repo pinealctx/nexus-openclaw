@@ -20,7 +20,7 @@ function validWhConfig(): NexusAccountConfig {
     serverUrl: "http://localhost:8443",
     deliveryMode: "webhook",
     webhook: {
-      webhookSecret: "secret123",
+      secretKey: "secret123",
       port: 3000,
     },
   };
@@ -126,17 +126,17 @@ describe("validateConfig", () => {
     }
   });
 
-  it("rejects webhook mode with missing webhookSecret", () => {
+  it("rejects webhook mode with missing secretKey", () => {
     const result = validateConfig({
       ...validWsConfig(),
       deliveryMode: "webhook",
-      webhook: { webhookSecret: "", port: 3000 },
+      webhook: { secretKey: "", port: 3000 },
     });
     expect(result.valid).toBe(false);
     if (!result.valid) {
       expect(result.errors).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ field: "webhook.webhookSecret" }),
+          expect.objectContaining({ field: "webhook.secretKey" }),
         ]),
       );
     }
@@ -146,7 +146,7 @@ describe("validateConfig", () => {
     const result = validateConfig({
       ...validWsConfig(),
       deliveryMode: "webhook",
-      webhook: { webhookSecret: "secret", port: 0 },
+      webhook: { secretKey: "secret", port: 0 },
     });
     expect(result.valid).toBe(false);
     if (!result.valid) {

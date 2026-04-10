@@ -15,12 +15,12 @@ export const file_shared_v1_conversation: GenFile = /*@__PURE__*/
 /**
  * ConversationInfo represents a conversation entry in a user's or agent's
  * conversation list. Covers private and group conversation types.
- * 
+ *
  * Sync model:
  * Each conversation maintains an independent message_id sequence.
  * Clients compare their local last_message_id with the server's value
  * to determine whether incremental message fetching is needed.
- * 
+ *
  * Unread count:
  * The server does NOT return unread_count. Clients calculate it locally:
  *   unread = last_message_id - last_read_message_id

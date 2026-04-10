@@ -41,9 +41,6 @@ import {
 } from "../generated/api/v1/media_service_pb.js";
 import {
   AgentService,
-  type SetDeliveryConfigRequest,
-  type SetDeliveryConfigResponse,
-  SetDeliveryConfigRequestSchema,
 } from "../generated/api/v1/agent_service_pb.js";
 import { MessageType, StreamPhase, MessageBodySchema, MessageEntityType } from "../generated/shared/v1/message_pb.js";
 import { MediaPurpose } from "../generated/shared/v1/media_pb.js";
@@ -197,14 +194,6 @@ export class NexusClient {
   }
 
   // -----------------------------------------------------------------------
-  // Agent
-  // -----------------------------------------------------------------------
-
-  async setDeliveryConfig(req: SetDeliveryConfigRequest): Promise<SetDeliveryConfigResponse> {
-    return this.agentClient.setDeliveryConfig(req);
-  }
-
-  // -----------------------------------------------------------------------
   // Diagnostics (safe for logging)
   // -----------------------------------------------------------------------
 
@@ -228,4 +217,3 @@ export { MessageType, StreamPhase, MessageBodySchema, MessageEntityType } from "
 export { MediaPurpose } from "../generated/shared/v1/media_pb.js";
 export { SendMessageRequestSchema, EditMessageRequestSchema, PushStreamDeltaRequestSchema, EndStreamRequestSchema, ErrorStreamRequestSchema, AnswerCardActionRequestSchema } from "../generated/api/v1/message_service_pb.js";
 export { UploadFileRequestSchema, GetDownloadURLRequestSchema } from "../generated/api/v1/media_service_pb.js";
-export { SetDeliveryConfigRequestSchema } from "../generated/api/v1/agent_service_pb.js";

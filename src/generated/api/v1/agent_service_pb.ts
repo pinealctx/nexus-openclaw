@@ -5,18 +5,16 @@
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
-import type { AgentCommandList, AgentDetail, AgentProfile, AgentVisibility, NoDeliveryConfig, WebhookDeliveryConfig, WebSocketDeliveryConfig } from "../../shared/v1/agent_pb";
+import type { AgentCommandList, AgentDeliveryMode, AgentInfo, AgentProfile, AgentVisibility } from "../../shared/v1/agent_pb";
 import { file_shared_v1_agent } from "../../shared/v1/agent_pb";
 import { file_shared_v1_options } from "../../shared/v1/options_pb";
-import type { UserInfo } from "../../shared/v1/user_pb";
-import { file_shared_v1_user } from "../../shared/v1/user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file api/v1/agent_service.proto.
  */
 export const file_api_v1_agent_service: GenFile = /*@__PURE__*/
-  fileDesc("ChphcGkvdjEvYWdlbnRfc2VydmljZS5wcm90bxIGYXBpLnYxIjUKGUxpc3RGZWF0dXJlZEFnZW50c1JlcXVlc3QSGAoFbGltaXQYASABKAVCCbpIBhoEGDIoACJBChpMaXN0RmVhdHVyZWRBZ2VudHNSZXNwb25zZRIjCgZhZ2VudHMYASADKAsyEy5zaGFyZWQudjEuVXNlckluZm8iNwoVR2V0QWdlbnREZXRhaWxSZXF1ZXN0Eh4KDWFnZW50X3VzZXJfaWQYASABKAVCB7pIBBoCIAAiPwoWR2V0QWdlbnREZXRhaWxSZXNwb25zZRIlCgVhZ2VudBgBIAEoCzIWLnNoYXJlZC52MS5BZ2VudERldGFpbCIVChNHZXRTZWxmQWdlbnRSZXF1ZXN0ImMKFEdldFNlbGZBZ2VudFJlc3BvbnNlEiEKBHVzZXIYASABKAsyEy5zaGFyZWQudjEuVXNlckluZm8SKAoHcHJvZmlsZRgCIAEoCzIXLnNoYXJlZC52MS5BZ2VudFByb2ZpbGUilAIKFlVwZGF0ZVNlbGZBZ2VudFJlcXVlc3QSGgoEbmFtZRgBIAEoCUIHukgEcgIYQEgAiAEBEiEKCmF2YXRhcl91cmwYAiABKAlCCLpIBXIDGIAQSAGIAQESMwoKdmlzaWJpbGl0eRgDIAEoDjIaLnNoYXJlZC52MS5BZ2VudFZpc2liaWxpdHlIAogBARIeCgxpcF93aGl0ZWxpc3QYBCADKAlCCLpIBZIBAhAyEjIKCGNvbW1hbmRzGAUgASgLMhsuc2hhcmVkLnYxLkFnZW50Q29tbWFuZExpc3RIA4gBAUIHCgVfbmFtZUINCgtfYXZhdGFyX3VybEINCgtfdmlzaWJpbGl0eUILCglfY29tbWFuZHMiGQoXVXBkYXRlU2VsZkFnZW50UmVzcG9uc2UiGAoWRGVsZXRlU2VsZkFnZW50UmVxdWVzdCIZChdEZWxldGVTZWxmQWdlbnRSZXNwb25zZSIYChZSZXZva2VTZWxmVG9rZW5SZXF1ZXN0IjIKF1Jldm9rZVNlbGZUb2tlblJlc3BvbnNlEhcKCW5ld190b2tlbhgBIAEoCUIEkLUYASK/AQoYU2V0RGVsaXZlcnlDb25maWdSZXF1ZXN0EjMKB3dlYmhvb2sYASABKAsyIC5zaGFyZWQudjEuV2ViaG9va0RlbGl2ZXJ5Q29uZmlnSAASNwoJd2Vic29ja2V0GAIgASgLMiIuc2hhcmVkLnYxLldlYlNvY2tldERlbGl2ZXJ5Q29uZmlnSAASKwoEbm9uZRgDIAEoCzIbLnNoYXJlZC52MS5Ob0RlbGl2ZXJ5Q29uZmlnSABCCAoGY29uZmlnIlEKGVNldERlbGl2ZXJ5Q29uZmlnUmVzcG9uc2USIQoOd2ViaG9va19zZWNyZXQYASABKAlCBJC1GAFIAIgBAUIRCg9fd2ViaG9va19zZWNyZXQy+wQKDEFnZW50U2VydmljZRJbChJMaXN0RmVhdHVyZWRBZ2VudHMSIS5hcGkudjEuTGlzdEZlYXR1cmVkQWdlbnRzUmVxdWVzdBoiLmFwaS52MS5MaXN0RmVhdHVyZWRBZ2VudHNSZXNwb25zZRJPCg5HZXRBZ2VudERldGFpbBIdLmFwaS52MS5HZXRBZ2VudERldGFpbFJlcXVlc3QaHi5hcGkudjEuR2V0QWdlbnREZXRhaWxSZXNwb25zZRJPCgxHZXRTZWxmQWdlbnQSGy5hcGkudjEuR2V0U2VsZkFnZW50UmVxdWVzdBocLmFwaS52MS5HZXRTZWxmQWdlbnRSZXNwb25zZSIEmLUYARJYCg9VcGRhdGVTZWxmQWdlbnQSHi5hcGkudjEuVXBkYXRlU2VsZkFnZW50UmVxdWVzdBofLmFwaS52MS5VcGRhdGVTZWxmQWdlbnRSZXNwb25zZSIEmLUYARJYCg9EZWxldGVTZWxmQWdlbnQSHi5hcGkudjEuRGVsZXRlU2VsZkFnZW50UmVxdWVzdBofLmFwaS52MS5EZWxldGVTZWxmQWdlbnRSZXNwb25zZSIEmLUYARJYCg9SZXZva2VTZWxmVG9rZW4SHi5hcGkudjEuUmV2b2tlU2VsZlRva2VuUmVxdWVzdBofLmFwaS52MS5SZXZva2VTZWxmVG9rZW5SZXNwb25zZSIEmLUYARJeChFTZXREZWxpdmVyeUNvbmZpZxIgLmFwaS52MS5TZXREZWxpdmVyeUNvbmZpZ1JlcXVlc3QaIS5hcGkudjEuU2V0RGVsaXZlcnlDb25maWdSZXNwb25zZSIEmLUYAUKOAQoKY29tLmFwaS52MUIRQWdlbnRTZXJ2aWNlUHJvdG9QAVo0Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtcHJvdG8vZ2VuL2dvL2FwaS92MTthcGl2MaICA0FYWKoCBkFwaS5WMcoCBkFwaVxWMeICEkFwaVxWMVxHUEJNZXRhZGF0YeoCB0FwaTo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_shared_v1_agent, file_shared_v1_options, file_shared_v1_user]);
+  fileDesc("ChphcGkvdjEvYWdlbnRfc2VydmljZS5wcm90bxIGYXBpLnYxIjUKGUxpc3RGZWF0dXJlZEFnZW50c1JlcXVlc3QSGAoFbGltaXQYASABKAVCCbpIBhoEGDIoACJCChpMaXN0RmVhdHVyZWRBZ2VudHNSZXNwb25zZRIkCgZhZ2VudHMYASADKAsyFC5zaGFyZWQudjEuQWdlbnRJbmZvIjUKE0dldEFnZW50SW5mb1JlcXVlc3QSHgoNYWdlbnRfdXNlcl9pZBgBIAEoBUIHukgEGgIgACI7ChRHZXRBZ2VudEluZm9SZXNwb25zZRIjCgVhZ2VudBgBIAEoCzIULnNoYXJlZC52MS5BZ2VudEluZm8ifQobR2V0TWluaUFwcExhdW5jaERhdGFSZXF1ZXN0Eh4KDWFnZW50X3VzZXJfaWQYASABKAVCB7pIBBoCIAASFwoPY29udmVyc2F0aW9uX2lkGAIgASgDEhMKC3N0YXJ0X3BhcmFtGAMgASgJEhAKCHBsYXRmb3JtGAQgASgJIkcKHEdldE1pbmlBcHBMYXVuY2hEYXRhUmVzcG9uc2USEQoJaW5pdF9kYXRhGAEgASgJEhQKDG1pbmlfYXBwX3VybBgCIAEoCSJnChJDcmVhdGVBZ2VudFJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAUYIBIXCgRuYW1lGAIgASgJQgm6SAZyBBABGEASGwoJc2lnbmF0dXJlGAMgASgJQgi6SAVyAxiAAiJuChNDcmVhdGVBZ2VudFJlc3BvbnNlEigKB3Byb2ZpbGUYASABKAsyFy5zaGFyZWQudjEuQWdlbnRQcm9maWxlEhMKBXRva2VuGAIgASgJQgSQtRgBEhgKCnNlY3JldF9rZXkYAyABKAlCBJC1GAEiFQoTTGlzdE15QWdlbnRzUmVxdWVzdCI/ChRMaXN0TXlBZ2VudHNSZXNwb25zZRInCgZhZ2VudHMYASADKAsyFy5zaGFyZWQudjEuQWdlbnRQcm9maWxlIjMKEUdldE15QWdlbnRSZXF1ZXN0Eh4KDWFnZW50X3VzZXJfaWQYASABKAVCB7pIBBoCIAAiPgoSR2V0TXlBZ2VudFJlc3BvbnNlEigKB3Byb2ZpbGUYASABKAsyFy5zaGFyZWQudjEuQWdlbnRQcm9maWxlItwCChVTZXRBZ2VudENvbmZpZ1JlcXVlc3QSHgoNYWdlbnRfdXNlcl9pZBgBIAEoBUIHukgEGgIgABIzCgp2aXNpYmlsaXR5GAIgASgOMhouc2hhcmVkLnYxLkFnZW50VmlzaWJpbGl0eUgAiAEBEh4KDGlwX3doaXRlbGlzdBgDIAMoCUIIukgFkgECEDISMgoIY29tbWFuZHMYBCABKAsyGy5zaGFyZWQudjEuQWdlbnRDb21tYW5kTGlzdEgBiAEBEjgKDWRlbGl2ZXJ5X21vZGUYBSABKA4yHC5zaGFyZWQudjEuQWdlbnREZWxpdmVyeU1vZGVIAogBARIiCgt3ZWJob29rX3VybBgGIAEoCUIIukgFcgMYgBBIA4gBAUINCgtfdmlzaWJpbGl0eUILCglfY29tbWFuZHNCEAoOX2RlbGl2ZXJ5X21vZGVCDgoMX3dlYmhvb2tfdXJsIhgKFlNldEFnZW50Q29uZmlnUmVzcG9uc2UiNgoURGVsZXRlTXlBZ2VudFJlcXVlc3QSHgoNYWdlbnRfdXNlcl9pZBgBIAEoBUIHukgEGgIgACIXChVEZWxldGVNeUFnZW50UmVzcG9uc2UiPQobUmVnZW5lcmF0ZUFnZW50VG9rZW5SZXF1ZXN0Eh4KDWFnZW50X3VzZXJfaWQYASABKAVCB7pIBBoCIAAiMwocUmVnZW5lcmF0ZUFnZW50VG9rZW5SZXNwb25zZRITCgV0b2tlbhgBIAEoCUIEkLUYASJBCh9SZWdlbmVyYXRlQWdlbnRTZWNyZXRLZXlSZXF1ZXN0Eh4KDWFnZW50X3VzZXJfaWQYASABKAVCB7pIBBoCIAAiPAogUmVnZW5lcmF0ZUFnZW50U2VjcmV0S2V5UmVzcG9uc2USGAoKc2VjcmV0X2tleRgBIAEoCUIEkLUYASKEAQoWU2V0QWdlbnRNaW5pQXBwUmVxdWVzdBIeCg1hZ2VudF91c2VyX2lkGAEgASgFQge6SAQaAiAAEg8KB2VuYWJsZWQYAiABKAgSCwoDdXJsGAMgASgJEhcKD2FsbG93ZWRfb3JpZ2lucxgEIAMoCRITCgtwZXJtaXNzaW9ucxgFIAEoBSIZChdTZXRBZ2VudE1pbmlBcHBSZXNwb25zZTLsBwoMQWdlbnRTZXJ2aWNlElsKEkxpc3RGZWF0dXJlZEFnZW50cxIhLmFwaS52MS5MaXN0RmVhdHVyZWRBZ2VudHNSZXF1ZXN0GiIuYXBpLnYxLkxpc3RGZWF0dXJlZEFnZW50c1Jlc3BvbnNlEkkKDEdldEFnZW50SW5mbxIbLmFwaS52MS5HZXRBZ2VudEluZm9SZXF1ZXN0GhwuYXBpLnYxLkdldEFnZW50SW5mb1Jlc3BvbnNlEmcKFEdldE1pbmlBcHBMYXVuY2hEYXRhEiMuYXBpLnYxLkdldE1pbmlBcHBMYXVuY2hEYXRhUmVxdWVzdBokLmFwaS52MS5HZXRNaW5pQXBwTGF1bmNoRGF0YVJlc3BvbnNlIgSgtRgBEkwKC0NyZWF0ZUFnZW50EhouYXBpLnYxLkNyZWF0ZUFnZW50UmVxdWVzdBobLmFwaS52MS5DcmVhdGVBZ2VudFJlc3BvbnNlIgSgtRgBEk8KDExpc3RNeUFnZW50cxIbLmFwaS52MS5MaXN0TXlBZ2VudHNSZXF1ZXN0GhwuYXBpLnYxLkxpc3RNeUFnZW50c1Jlc3BvbnNlIgSgtRgBEkkKCkdldE15QWdlbnQSGS5hcGkudjEuR2V0TXlBZ2VudFJlcXVlc3QaGi5hcGkudjEuR2V0TXlBZ2VudFJlc3BvbnNlIgSgtRgBElUKDlNldEFnZW50Q29uZmlnEh0uYXBpLnYxLlNldEFnZW50Q29uZmlnUmVxdWVzdBoeLmFwaS52MS5TZXRBZ2VudENvbmZpZ1Jlc3BvbnNlIgSgtRgBElIKDURlbGV0ZU15QWdlbnQSHC5hcGkudjEuRGVsZXRlTXlBZ2VudFJlcXVlc3QaHS5hcGkudjEuRGVsZXRlTXlBZ2VudFJlc3BvbnNlIgSgtRgBEmcKFFJlZ2VuZXJhdGVBZ2VudFRva2VuEiMuYXBpLnYxLlJlZ2VuZXJhdGVBZ2VudFRva2VuUmVxdWVzdBokLmFwaS52MS5SZWdlbmVyYXRlQWdlbnRUb2tlblJlc3BvbnNlIgSgtRgBEnMKGFJlZ2VuZXJhdGVBZ2VudFNlY3JldEtleRInLmFwaS52MS5SZWdlbmVyYXRlQWdlbnRTZWNyZXRLZXlSZXF1ZXN0GiguYXBpLnYxLlJlZ2VuZXJhdGVBZ2VudFNlY3JldEtleVJlc3BvbnNlIgSgtRgBElgKD1NldEFnZW50TWluaUFwcBIeLmFwaS52MS5TZXRBZ2VudE1pbmlBcHBSZXF1ZXN0Gh8uYXBpLnYxLlNldEFnZW50TWluaUFwcFJlc3BvbnNlIgSgtRgBQo4BCgpjb20uYXBpLnYxQhFBZ2VudFNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_agent, file_shared_v1_options]);
 
 /**
  * ListFeaturedAgentsRequest requests a batch of recommended agents.
@@ -48,9 +46,9 @@ export type ListFeaturedAgentsResponse = Message<"api.v1.ListFeaturedAgentsRespo
   /**
    * Recommended agents.
    *
-   * @generated from field: repeated shared.v1.UserInfo agents = 1;
+   * @generated from field: repeated shared.v1.AgentInfo agents = 1;
    */
-  agents: UserInfo[];
+  agents: AgentInfo[];
 };
 
 /**
@@ -61,11 +59,11 @@ export const ListFeaturedAgentsResponseSchema: GenMessage<ListFeaturedAgentsResp
   messageDesc(file_api_v1_agent_service, 1);
 
 /**
- * GetAgentDetailRequest requests detailed info for a specific agent.
+ * GetAgentInfoRequest requests public profile info for a specific agent.
  *
- * @generated from message api.v1.GetAgentDetailRequest
+ * @generated from message api.v1.GetAgentInfoRequest
  */
-export type GetAgentDetailRequest = Message<"api.v1.GetAgentDetailRequest"> & {
+export type GetAgentInfoRequest = Message<"api.v1.GetAgentInfoRequest"> & {
   /**
    * Agent user ID.
    *
@@ -75,108 +73,276 @@ export type GetAgentDetailRequest = Message<"api.v1.GetAgentDetailRequest"> & {
 };
 
 /**
- * Describes the message api.v1.GetAgentDetailRequest.
- * Use `create(GetAgentDetailRequestSchema)` to create a new message.
+ * Describes the message api.v1.GetAgentInfoRequest.
+ * Use `create(GetAgentInfoRequestSchema)` to create a new message.
  */
-export const GetAgentDetailRequestSchema: GenMessage<GetAgentDetailRequest> = /*@__PURE__*/
+export const GetAgentInfoRequestSchema: GenMessage<GetAgentInfoRequest> = /*@__PURE__*/
   messageDesc(file_api_v1_agent_service, 2);
 
 /**
- * GetAgentDetailResponse contains the agent detail.
+ * GetAgentInfoResponse contains the agent public profile.
  *
- * @generated from message api.v1.GetAgentDetailResponse
+ * @generated from message api.v1.GetAgentInfoResponse
  */
-export type GetAgentDetailResponse = Message<"api.v1.GetAgentDetailResponse"> & {
+export type GetAgentInfoResponse = Message<"api.v1.GetAgentInfoResponse"> & {
   /**
-   * Agent detail info.
+   * Agent public profile info.
    *
-   * @generated from field: shared.v1.AgentDetail agent = 1;
+   * @generated from field: shared.v1.AgentInfo agent = 1;
    */
-  agent?: AgentDetail;
+  agent?: AgentInfo;
 };
 
 /**
- * Describes the message api.v1.GetAgentDetailResponse.
- * Use `create(GetAgentDetailResponseSchema)` to create a new message.
+ * Describes the message api.v1.GetAgentInfoResponse.
+ * Use `create(GetAgentInfoResponseSchema)` to create a new message.
  */
-export const GetAgentDetailResponseSchema: GenMessage<GetAgentDetailResponse> = /*@__PURE__*/
+export const GetAgentInfoResponseSchema: GenMessage<GetAgentInfoResponse> = /*@__PURE__*/
   messageDesc(file_api_v1_agent_service, 3);
 
 /**
- * GetSelfAgentRequest requests the current agent profile.
+ * GetMiniAppLaunchDataRequest requests signed initData for launching a Mini App.
  *
- * @generated from message api.v1.GetSelfAgentRequest
+ * @generated from message api.v1.GetMiniAppLaunchDataRequest
  */
-export type GetSelfAgentRequest = Message<"api.v1.GetSelfAgentRequest"> & {
+export type GetMiniAppLaunchDataRequest = Message<"api.v1.GetMiniAppLaunchDataRequest"> & {
+  /**
+   * Target agent user ID.
+   *
+   * @generated from field: int32 agent_user_id = 1;
+   */
+  agentUserId: number;
+
+  /**
+   * Conversation ID (private chat or group chat). Zero means no conversation context.
+   *
+   * @generated from field: int64 conversation_id = 2;
+   */
+  conversationId: bigint;
+
+  /**
+   * Start parameter (from Direct Link or Card Action).
+   *
+   * @generated from field: string start_param = 3;
+   */
+  startParam: string;
+
+  /**
+   * Client platform ("ios" / "android" / "desktop").
+   *
+   * @generated from field: string platform = 4;
+   */
+  platform: string;
 };
 
 /**
- * Describes the message api.v1.GetSelfAgentRequest.
- * Use `create(GetSelfAgentRequestSchema)` to create a new message.
+ * Describes the message api.v1.GetMiniAppLaunchDataRequest.
+ * Use `create(GetMiniAppLaunchDataRequestSchema)` to create a new message.
  */
-export const GetSelfAgentRequestSchema: GenMessage<GetSelfAgentRequest> = /*@__PURE__*/
+export const GetMiniAppLaunchDataRequestSchema: GenMessage<GetMiniAppLaunchDataRequest> = /*@__PURE__*/
   messageDesc(file_api_v1_agent_service, 4);
 
 /**
- * GetSelfAgentResponse contains the full agent profile (developer self-view).
+ * GetMiniAppLaunchDataResponse contains the signed initData and Mini App URL.
  *
- * @generated from message api.v1.GetSelfAgentResponse
+ * @generated from message api.v1.GetMiniAppLaunchDataResponse
  */
-export type GetSelfAgentResponse = Message<"api.v1.GetSelfAgentResponse"> & {
+export type GetMiniAppLaunchDataResponse = Message<"api.v1.GetMiniAppLaunchDataResponse"> & {
   /**
-   * Agent user info (public fields).
+   * Signed initData query string.
    *
-   * @generated from field: shared.v1.UserInfo user = 1;
+   * @generated from field: string init_data = 1;
    */
-  user?: UserInfo;
+  initData: string;
 
   /**
-   * Agent profile (developer-visible fields).
+   * Mini App entry URL.
    *
-   * @generated from field: shared.v1.AgentProfile profile = 2;
+   * @generated from field: string mini_app_url = 2;
+   */
+  miniAppUrl: string;
+};
+
+/**
+ * Describes the message api.v1.GetMiniAppLaunchDataResponse.
+ * Use `create(GetMiniAppLaunchDataResponseSchema)` to create a new message.
+ */
+export const GetMiniAppLaunchDataResponseSchema: GenMessage<GetMiniAppLaunchDataResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 5);
+
+/**
+ * CreateAgentRequest creates a new agent.
+ *
+ * @generated from message api.v1.CreateAgentRequest
+ */
+export type CreateAgentRequest = Message<"api.v1.CreateAgentRequest"> & {
+  /**
+   * Agent unique username.
+   *
+   * @generated from field: string username = 1;
+   */
+  username: string;
+
+  /**
+   * Agent display name.
+   *
+   * @generated from field: string name = 2;
+   */
+  name: string;
+
+  /**
+   * Agent signature / description.
+   *
+   * @generated from field: string signature = 3;
+   */
+  signature: string;
+};
+
+/**
+ * Describes the message api.v1.CreateAgentRequest.
+ * Use `create(CreateAgentRequestSchema)` to create a new message.
+ */
+export const CreateAgentRequestSchema: GenMessage<CreateAgentRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 6);
+
+/**
+ * CreateAgentResponse contains the created agent credentials and profile.
+ *
+ * @generated from message api.v1.CreateAgentResponse
+ */
+export type CreateAgentResponse = Message<"api.v1.CreateAgentResponse"> & {
+  /**
+   * Full agent profile.
+   *
+   * @generated from field: shared.v1.AgentProfile profile = 1;
+   */
+  profile?: AgentProfile;
+
+  /**
+   * Generated API token (plaintext, returned only once).
+   *
+   * @generated from field: string token = 2;
+   */
+  token: string;
+
+  /**
+   * Generated HMAC secret key (plaintext, returned only once).
+   *
+   * @generated from field: string secret_key = 3;
+   */
+  secretKey: string;
+};
+
+/**
+ * Describes the message api.v1.CreateAgentResponse.
+ * Use `create(CreateAgentResponseSchema)` to create a new message.
+ */
+export const CreateAgentResponseSchema: GenMessage<CreateAgentResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 7);
+
+/**
+ * ListMyAgentsRequest lists agents owned by the authenticated user.
+ *
+ * @generated from message api.v1.ListMyAgentsRequest
+ */
+export type ListMyAgentsRequest = Message<"api.v1.ListMyAgentsRequest"> & {
+};
+
+/**
+ * Describes the message api.v1.ListMyAgentsRequest.
+ * Use `create(ListMyAgentsRequestSchema)` to create a new message.
+ */
+export const ListMyAgentsRequestSchema: GenMessage<ListMyAgentsRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 8);
+
+/**
+ * ListMyAgentsResponse contains the agent list.
+ *
+ * @generated from message api.v1.ListMyAgentsResponse
+ */
+export type ListMyAgentsResponse = Message<"api.v1.ListMyAgentsResponse"> & {
+  /**
+   * Agent profiles (developer-visible details).
+   *
+   * @generated from field: repeated shared.v1.AgentProfile agents = 1;
+   */
+  agents: AgentProfile[];
+};
+
+/**
+ * Describes the message api.v1.ListMyAgentsResponse.
+ * Use `create(ListMyAgentsResponseSchema)` to create a new message.
+ */
+export const ListMyAgentsResponseSchema: GenMessage<ListMyAgentsResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 9);
+
+/**
+ * GetMyAgentRequest requests the full profile of a specific agent.
+ *
+ * @generated from message api.v1.GetMyAgentRequest
+ */
+export type GetMyAgentRequest = Message<"api.v1.GetMyAgentRequest"> & {
+  /**
+   * Target agent user ID.
+   *
+   * @generated from field: int32 agent_user_id = 1;
+   */
+  agentUserId: number;
+};
+
+/**
+ * Describes the message api.v1.GetMyAgentRequest.
+ * Use `create(GetMyAgentRequestSchema)` to create a new message.
+ */
+export const GetMyAgentRequestSchema: GenMessage<GetMyAgentRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 10);
+
+/**
+ * GetMyAgentResponse contains the full agent profile.
+ *
+ * @generated from message api.v1.GetMyAgentResponse
+ */
+export type GetMyAgentResponse = Message<"api.v1.GetMyAgentResponse"> & {
+  /**
+   * Agent profile (developer-visible fields, includes user info).
+   *
+   * @generated from field: shared.v1.AgentProfile profile = 1;
    */
   profile?: AgentProfile;
 };
 
 /**
- * Describes the message api.v1.GetSelfAgentResponse.
- * Use `create(GetSelfAgentResponseSchema)` to create a new message.
+ * Describes the message api.v1.GetMyAgentResponse.
+ * Use `create(GetMyAgentResponseSchema)` to create a new message.
  */
-export const GetSelfAgentResponseSchema: GenMessage<GetSelfAgentResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 5);
+export const GetMyAgentResponseSchema: GenMessage<GetMyAgentResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 11);
 
 /**
- * UpdateSelfAgentRequest updates agent profile fields.
- * All fields are optional; only provided fields are updated.
+ * SetAgentConfigRequest updates agent configuration fields.
+ * Only provided fields are updated; omitted fields remain unchanged.
  *
- * @generated from message api.v1.UpdateSelfAgentRequest
+ * @generated from message api.v1.SetAgentConfigRequest
  */
-export type UpdateSelfAgentRequest = Message<"api.v1.UpdateSelfAgentRequest"> & {
+export type SetAgentConfigRequest = Message<"api.v1.SetAgentConfigRequest"> & {
   /**
-   * New display name.
+   * Target agent user ID.
    *
-   * @generated from field: optional string name = 1;
+   * @generated from field: int32 agent_user_id = 1;
    */
-  name?: string;
+  agentUserId: number;
 
   /**
-   * New avatar URL.
+   * Visibility setting.
    *
-   * @generated from field: optional string avatar_url = 2;
-   */
-  avatarUrl?: string;
-
-  /**
-   * New visibility setting.
-   *
-   * @generated from field: optional shared.v1.AgentVisibility visibility = 3;
+   * @generated from field: optional shared.v1.AgentVisibility visibility = 2;
    */
   visibility?: AgentVisibility;
 
   /**
-   * New IP whitelist (replaces existing). Pass empty list to clear.
+   * IP whitelist (replaces existing). Pass empty list to clear.
    *
-   * @generated from field: repeated string ip_whitelist = 4;
+   * @generated from field: repeated string ip_whitelist = 3;
    */
   ipWhitelist: string[];
 
@@ -184,186 +350,252 @@ export type UpdateSelfAgentRequest = Message<"api.v1.UpdateSelfAgentRequest"> & 
    * Slash commands (replaces existing, max 100). When set, replaces all
    * commands; omit to leave commands unchanged.
    *
-   * @generated from field: optional shared.v1.AgentCommandList commands = 5;
+   * @generated from field: optional shared.v1.AgentCommandList commands = 4;
    */
   commands?: AgentCommandList;
-};
 
-/**
- * Describes the message api.v1.UpdateSelfAgentRequest.
- * Use `create(UpdateSelfAgentRequestSchema)` to create a new message.
- */
-export const UpdateSelfAgentRequestSchema: GenMessage<UpdateSelfAgentRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 6);
-
-/**
- * UpdateSelfAgentResponse is returned after the agent is updated.
- *
- * @generated from message api.v1.UpdateSelfAgentResponse
- */
-export type UpdateSelfAgentResponse = Message<"api.v1.UpdateSelfAgentResponse"> & {
-};
-
-/**
- * Describes the message api.v1.UpdateSelfAgentResponse.
- * Use `create(UpdateSelfAgentResponseSchema)` to create a new message.
- */
-export const UpdateSelfAgentResponseSchema: GenMessage<UpdateSelfAgentResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 7);
-
-/**
- * DeleteSelfAgentRequest permanently deletes the current agent.
- *
- * @generated from message api.v1.DeleteSelfAgentRequest
- */
-export type DeleteSelfAgentRequest = Message<"api.v1.DeleteSelfAgentRequest"> & {
-};
-
-/**
- * Describes the message api.v1.DeleteSelfAgentRequest.
- * Use `create(DeleteSelfAgentRequestSchema)` to create a new message.
- */
-export const DeleteSelfAgentRequestSchema: GenMessage<DeleteSelfAgentRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 8);
-
-/**
- * DeleteSelfAgentResponse is returned after the agent is deleted.
- *
- * @generated from message api.v1.DeleteSelfAgentResponse
- */
-export type DeleteSelfAgentResponse = Message<"api.v1.DeleteSelfAgentResponse"> & {
-};
-
-/**
- * Describes the message api.v1.DeleteSelfAgentResponse.
- * Use `create(DeleteSelfAgentResponseSchema)` to create a new message.
- */
-export const DeleteSelfAgentResponseSchema: GenMessage<DeleteSelfAgentResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 9);
-
-/**
- * RevokeSelfTokenRequest revokes the current agent token.
- *
- * @generated from message api.v1.RevokeSelfTokenRequest
- */
-export type RevokeSelfTokenRequest = Message<"api.v1.RevokeSelfTokenRequest"> & {
-};
-
-/**
- * Describes the message api.v1.RevokeSelfTokenRequest.
- * Use `create(RevokeSelfTokenRequestSchema)` to create a new message.
- */
-export const RevokeSelfTokenRequestSchema: GenMessage<RevokeSelfTokenRequest> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 10);
-
-/**
- * RevokeSelfTokenResponse contains the new agent token.
- *
- * @generated from message api.v1.RevokeSelfTokenResponse
- */
-export type RevokeSelfTokenResponse = Message<"api.v1.RevokeSelfTokenResponse"> & {
   /**
-   * New agent token (nxa_xxx format).
+   * Event delivery mode.
    *
-   * @generated from field: string new_token = 1;
+   * @generated from field: optional shared.v1.AgentDeliveryMode delivery_mode = 5;
    */
-  newToken: string;
-};
+  deliveryMode?: AgentDeliveryMode;
 
-/**
- * Describes the message api.v1.RevokeSelfTokenResponse.
- * Use `create(RevokeSelfTokenResponseSchema)` to create a new message.
- */
-export const RevokeSelfTokenResponseSchema: GenMessage<RevokeSelfTokenResponse> = /*@__PURE__*/
-  messageDesc(file_api_v1_agent_service, 11);
-
-/**
- * SetDeliveryConfigRequest configures the agent's event delivery mode.
- *
- * @generated from message api.v1.SetDeliveryConfigRequest
- */
-export type SetDeliveryConfigRequest = Message<"api.v1.SetDeliveryConfigRequest"> & {
   /**
-   * Delivery configuration (one of webhook, websocket, or none).
+   * Webhook URL (required when delivery_mode is WEBHOOK, must be HTTPS).
    *
-   * @generated from oneof api.v1.SetDeliveryConfigRequest.config
+   * @generated from field: optional string webhook_url = 6;
    */
-  config: {
-    /**
-     * Switch to WEBHOOK mode with the given URL.
-     *
-     * @generated from field: shared.v1.WebhookDeliveryConfig webhook = 1;
-     */
-    value: WebhookDeliveryConfig;
-    case: "webhook";
-  } | {
-    /**
-     * Switch to WEBSOCKET mode.
-     *
-     * @generated from field: shared.v1.WebSocketDeliveryConfig websocket = 2;
-     */
-    value: WebSocketDeliveryConfig;
-    case: "websocket";
-  } | {
-    /**
-     * Stop all delivery (WEBHOOK mode with no URL).
-     *
-     * @generated from field: shared.v1.NoDeliveryConfig none = 3;
-     */
-    value: NoDeliveryConfig;
-    case: "none";
-  } | { case: undefined; value?: undefined };
+  webhookUrl?: string;
 };
 
 /**
- * Describes the message api.v1.SetDeliveryConfigRequest.
- * Use `create(SetDeliveryConfigRequestSchema)` to create a new message.
+ * Describes the message api.v1.SetAgentConfigRequest.
+ * Use `create(SetAgentConfigRequestSchema)` to create a new message.
  */
-export const SetDeliveryConfigRequestSchema: GenMessage<SetDeliveryConfigRequest> = /*@__PURE__*/
+export const SetAgentConfigRequestSchema: GenMessage<SetAgentConfigRequest> = /*@__PURE__*/
   messageDesc(file_api_v1_agent_service, 12);
 
 /**
- * SetDeliveryConfigResponse is returned after delivery config is set.
+ * SetAgentConfigResponse is returned after the agent config is updated.
  *
- * @generated from message api.v1.SetDeliveryConfigResponse
+ * @generated from message api.v1.SetAgentConfigResponse
  */
-export type SetDeliveryConfigResponse = Message<"api.v1.SetDeliveryConfigResponse"> & {
-  /**
-   * Server-generated HMAC-SHA256 signing secret (webhook mode only).
-   * Empty for websocket and none modes.
-   *
-   * @generated from field: optional string webhook_secret = 1;
-   */
-  webhookSecret?: string;
+export type SetAgentConfigResponse = Message<"api.v1.SetAgentConfigResponse"> & {
 };
 
 /**
- * Describes the message api.v1.SetDeliveryConfigResponse.
- * Use `create(SetDeliveryConfigResponseSchema)` to create a new message.
+ * Describes the message api.v1.SetAgentConfigResponse.
+ * Use `create(SetAgentConfigResponseSchema)` to create a new message.
  */
-export const SetDeliveryConfigResponseSchema: GenMessage<SetDeliveryConfigResponse> = /*@__PURE__*/
+export const SetAgentConfigResponseSchema: GenMessage<SetAgentConfigResponse> = /*@__PURE__*/
   messageDesc(file_api_v1_agent_service, 13);
 
 /**
- * AgentService handles agent discovery (client side) and agent
- * self-management (agent side, agent_only).
- * 
- * Agent lifecycle (client side):
- *   - Users discover agents via ContactService.SearchUsers (account_type=AGENT).
+ * DeleteMyAgentRequest permanently deletes an agent.
+ *
+ * @generated from message api.v1.DeleteMyAgentRequest
+ */
+export type DeleteMyAgentRequest = Message<"api.v1.DeleteMyAgentRequest"> & {
+  /**
+   * Target agent user ID.
+   *
+   * @generated from field: int32 agent_user_id = 1;
+   */
+  agentUserId: number;
+};
+
+/**
+ * Describes the message api.v1.DeleteMyAgentRequest.
+ * Use `create(DeleteMyAgentRequestSchema)` to create a new message.
+ */
+export const DeleteMyAgentRequestSchema: GenMessage<DeleteMyAgentRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 14);
+
+/**
+ * DeleteMyAgentResponse is returned after the agent is deleted.
+ *
+ * @generated from message api.v1.DeleteMyAgentResponse
+ */
+export type DeleteMyAgentResponse = Message<"api.v1.DeleteMyAgentResponse"> & {
+};
+
+/**
+ * Describes the message api.v1.DeleteMyAgentResponse.
+ * Use `create(DeleteMyAgentResponseSchema)` to create a new message.
+ */
+export const DeleteMyAgentResponseSchema: GenMessage<DeleteMyAgentResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 15);
+
+/**
+ * RegenerateAgentTokenRequest regenerates an agent API token.
+ *
+ * @generated from message api.v1.RegenerateAgentTokenRequest
+ */
+export type RegenerateAgentTokenRequest = Message<"api.v1.RegenerateAgentTokenRequest"> & {
+  /**
+   * Target agent user ID.
+   *
+   * @generated from field: int32 agent_user_id = 1;
+   */
+  agentUserId: number;
+};
+
+/**
+ * Describes the message api.v1.RegenerateAgentTokenRequest.
+ * Use `create(RegenerateAgentTokenRequestSchema)` to create a new message.
+ */
+export const RegenerateAgentTokenRequestSchema: GenMessage<RegenerateAgentTokenRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 16);
+
+/**
+ * RegenerateAgentTokenResponse contains the new token.
+ *
+ * @generated from message api.v1.RegenerateAgentTokenResponse
+ */
+export type RegenerateAgentTokenResponse = Message<"api.v1.RegenerateAgentTokenResponse"> & {
+  /**
+   * New API token (nxa_xxx format).
+   *
+   * @generated from field: string token = 1;
+   */
+  token: string;
+};
+
+/**
+ * Describes the message api.v1.RegenerateAgentTokenResponse.
+ * Use `create(RegenerateAgentTokenResponseSchema)` to create a new message.
+ */
+export const RegenerateAgentTokenResponseSchema: GenMessage<RegenerateAgentTokenResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 17);
+
+/**
+ * RegenerateAgentSecretKeyRequest regenerates an agent HMAC secret key.
+ *
+ * @generated from message api.v1.RegenerateAgentSecretKeyRequest
+ */
+export type RegenerateAgentSecretKeyRequest = Message<"api.v1.RegenerateAgentSecretKeyRequest"> & {
+  /**
+   * Target agent user ID.
+   *
+   * @generated from field: int32 agent_user_id = 1;
+   */
+  agentUserId: number;
+};
+
+/**
+ * Describes the message api.v1.RegenerateAgentSecretKeyRequest.
+ * Use `create(RegenerateAgentSecretKeyRequestSchema)` to create a new message.
+ */
+export const RegenerateAgentSecretKeyRequestSchema: GenMessage<RegenerateAgentSecretKeyRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 18);
+
+/**
+ * RegenerateAgentSecretKeyResponse contains the new secret key.
+ *
+ * @generated from message api.v1.RegenerateAgentSecretKeyResponse
+ */
+export type RegenerateAgentSecretKeyResponse = Message<"api.v1.RegenerateAgentSecretKeyResponse"> & {
+  /**
+   * New HMAC secret key (plaintext).
+   *
+   * @generated from field: string secret_key = 1;
+   */
+  secretKey: string;
+};
+
+/**
+ * Describes the message api.v1.RegenerateAgentSecretKeyResponse.
+ * Use `create(RegenerateAgentSecretKeyResponseSchema)` to create a new message.
+ */
+export const RegenerateAgentSecretKeyResponseSchema: GenMessage<RegenerateAgentSecretKeyResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 19);
+
+/**
+ * SetAgentMiniAppRequest configures the Mini App for an agent.
+ *
+ * @generated from message api.v1.SetAgentMiniAppRequest
+ */
+export type SetAgentMiniAppRequest = Message<"api.v1.SetAgentMiniAppRequest"> & {
+  /**
+   * Target agent user ID.
+   *
+   * @generated from field: int32 agent_user_id = 1;
+   */
+  agentUserId: number;
+
+  /**
+   * Whether to enable Mini App.
+   *
+   * @generated from field: bool enabled = 2;
+   */
+  enabled: boolean;
+
+  /**
+   * Mini App entry URL (must be HTTPS).
+   *
+   * @generated from field: string url = 3;
+   */
+  url: string;
+
+  /**
+   * Allowed web origins for security validation.
+   *
+   * @generated from field: repeated string allowed_origins = 4;
+   */
+  allowedOrigins: string[];
+
+  /**
+   * Permission bitmask.
+   *
+   * @generated from field: int32 permissions = 5;
+   */
+  permissions: number;
+};
+
+/**
+ * Describes the message api.v1.SetAgentMiniAppRequest.
+ * Use `create(SetAgentMiniAppRequestSchema)` to create a new message.
+ */
+export const SetAgentMiniAppRequestSchema: GenMessage<SetAgentMiniAppRequest> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 20);
+
+/**
+ * SetAgentMiniAppResponse is returned after Mini App config is set.
+ *
+ * @generated from message api.v1.SetAgentMiniAppResponse
+ */
+export type SetAgentMiniAppResponse = Message<"api.v1.SetAgentMiniAppResponse"> & {
+};
+
+/**
+ * Describes the message api.v1.SetAgentMiniAppResponse.
+ * Use `create(SetAgentMiniAppResponseSchema)` to create a new message.
+ */
+export const SetAgentMiniAppResponseSchema: GenMessage<SetAgentMiniAppResponse> = /*@__PURE__*/
+  messageDesc(file_api_v1_agent_service, 21);
+
+/**
+ * AgentService handles agent discovery, Mini App launch, and developer
+ * management of agents.
+ *
+ * Discovery (any authenticated identity):
  *   - Users browse featured agents via ListFeaturedAgents.
- *   - Users view agent details via GetAgentDetail.
- *   - Users add agents as contacts via ContactService.AddContact.
- *   - Users remove agent contacts via ContactService.DeleteContact.
- *   - Users list their agent contacts via ContactService.ListContacts
- *     (filtered by account_type = "agent").
- * 
- * Agent self-management (agent_only):
- *   - Agents view their own profile via GetSelfAgent.
- *   - Agents update profile fields via UpdateSelfAgent.
- *   - Agents permanently delete themselves via DeleteSelfAgent.
- *   - Agents regenerate their token via RevokeSelfToken.
- *   - Agents configure event delivery via SetDeliveryConfig.
- * 
+ *   - Users view agent public profile via GetAgentInfo.
+ *
+ * Mini App launch (user_only):
+ *   - Users obtain signed initData to launch a Mini App via GetMiniAppLaunchData.
+ *
+ * Developer management (user_only):
+ *   - Developers create agents via CreateAgent.
+ *   - Developers list their agents via ListMyAgents.
+ *   - Developers view full agent profile via GetMyAgent.
+ *   - Developers update agent config via SetAgentConfig.
+ *   - Developers delete agents via DeleteMyAgent.
+ *   - Developers regenerate agent token via RegenerateAgentToken.
+ *   - Developers regenerate agent secret key via RegenerateAgentSecretKey.
+ *   - Developers configure Mini App via SetAgentMiniApp.
+ *
  * Relationship to other services:
  *   - Adding an agent creates a conversation (type = AGENT) visible
  *     in ConversationService.ListConversations.
@@ -377,7 +609,6 @@ export const AgentService: GenService<{
   /**
    * ListFeaturedAgents returns a batch of recommended agents for the
    * discovery page. No pagination; call again to get a different batch.
-   * The recommendation strategy may change over time.
    *
    * @generated from rpc api.v1.AgentService.ListFeaturedAgents
    */
@@ -387,112 +618,154 @@ export const AgentService: GenService<{
     output: typeof ListFeaturedAgentsResponseSchema;
   },
   /**
-   * GetAgentDetail returns detailed info for a specific agent.
-   * 
+   * GetAgentInfo returns public profile info for a specific agent.
+   *
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist or has been deleted.
    *
-   * @generated from rpc api.v1.AgentService.GetAgentDetail
+   * @generated from rpc api.v1.AgentService.GetAgentInfo
    */
-  getAgentDetail: {
+  getAgentInfo: {
     methodKind: "unary";
-    input: typeof GetAgentDetailRequestSchema;
-    output: typeof GetAgentDetailResponseSchema;
+    input: typeof GetAgentInfoRequestSchema;
+    output: typeof GetAgentInfoResponseSchema;
   },
   /**
-   * GetSelfAgent returns the current agent's profile.
-   * 
-   * Error conditions:
-   *   - UNAUTHENTICATED: Invalid or expired agent token.
+   * GetMiniAppLaunchData generates signed initData for launching a Mini App.
    *
-   * @generated from rpc api.v1.AgentService.GetSelfAgent
+   * Error conditions:
+   *   - FAILED_PRECONDITION: Agent has not enabled Mini App.
+   *   - PERMISSION_DENIED: User has no access to this agent or conversation_id mismatch.
+   *
+   * @generated from rpc api.v1.AgentService.GetMiniAppLaunchData
    */
-  getSelfAgent: {
+  getMiniAppLaunchData: {
     methodKind: "unary";
-    input: typeof GetSelfAgentRequestSchema;
-    output: typeof GetSelfAgentResponseSchema;
+    input: typeof GetMiniAppLaunchDataRequestSchema;
+    output: typeof GetMiniAppLaunchDataResponseSchema;
   },
   /**
-   * UpdateSelfAgent updates the current agent's profile fields.
-   * 
+   * CreateAgent creates a new agent on behalf of the authenticated user.
+   *
    * Side effects:
-   *   - If visibility changes from PRIVATE to PUBLIC, the agent becomes
-   *     discoverable in the client-facing agent directory.
-   * 
-   * Error conditions:
-   *   - UNAUTHENTICATED: Invalid or expired agent token.
-   *   - INVALID_ARGUMENT: Invalid field values.
+   *   - Establishes bidirectional contact relationship between developer and agent.
+   *   - Auto-generates Agent Token and secret_key.
    *
-   * @generated from rpc api.v1.AgentService.UpdateSelfAgent
+   * Error conditions:
+   *   - ALREADY_EXISTS: Username is taken.
+   *   - INVALID_ARGUMENT: Invalid username or name.
+   *
+   * @generated from rpc api.v1.AgentService.CreateAgent
    */
-  updateSelfAgent: {
+  createAgent: {
     methodKind: "unary";
-    input: typeof UpdateSelfAgentRequestSchema;
-    output: typeof UpdateSelfAgentResponseSchema;
+    input: typeof CreateAgentRequestSchema;
+    output: typeof CreateAgentResponseSchema;
   },
   /**
-   * DeleteSelfAgent permanently deletes the current agent.
-   * 
+   * ListMyAgents lists all agents created by the authenticated user.
+   *
+   * @generated from rpc api.v1.AgentService.ListMyAgents
+   */
+  listMyAgents: {
+    methodKind: "unary";
+    input: typeof ListMyAgentsRequestSchema;
+    output: typeof ListMyAgentsResponseSchema;
+  },
+  /**
+   * GetMyAgent returns the full profile of an agent owned by the authenticated user.
+   *
+   * Error conditions:
+   *   - NOT_FOUND: Agent does not exist.
+   *   - PERMISSION_DENIED: Caller is not the agent creator.
+   *
+   * @generated from rpc api.v1.AgentService.GetMyAgent
+   */
+  getMyAgent: {
+    methodKind: "unary";
+    input: typeof GetMyAgentRequestSchema;
+    output: typeof GetMyAgentResponseSchema;
+  },
+  /**
+   * SetAgentConfig updates configuration fields of an agent.
+   * Only provided fields are updated; omitted fields remain unchanged.
+   * When delivery_mode is set to WEBHOOK, webhook_url must also be provided.
+   *
+   * Error conditions:
+   *   - NOT_FOUND: Agent does not exist.
+   *   - PERMISSION_DENIED: Caller is not the agent creator.
+   *   - INVALID_ARGUMENT: Invalid field values or webhook URL.
+   *
+   * @generated from rpc api.v1.AgentService.SetAgentConfig
+   */
+  setAgentConfig: {
+    methodKind: "unary";
+    input: typeof SetAgentConfigRequestSchema;
+    output: typeof SetAgentConfigResponseSchema;
+  },
+  /**
+   * DeleteMyAgent permanently deletes an agent owned by the authenticated user.
+   *
    * Side effects:
    *   - Sets agent status to DELETED.
    *   - Removes the agent from all group memberships.
-   *   - Existing conversations with this agent become read-only.
-   * 
-   * Error conditions:
-   *   - UNAUTHENTICATED: Invalid or expired agent token.
+   *   - Existing conversations become read-only.
    *
-   * @generated from rpc api.v1.AgentService.DeleteSelfAgent
+   * Error conditions:
+   *   - NOT_FOUND: Agent does not exist.
+   *   - PERMISSION_DENIED: Caller is not the agent creator.
+   *
+   * @generated from rpc api.v1.AgentService.DeleteMyAgent
    */
-  deleteSelfAgent: {
+  deleteMyAgent: {
     methodKind: "unary";
-    input: typeof DeleteSelfAgentRequestSchema;
-    output: typeof DeleteSelfAgentResponseSchema;
+    input: typeof DeleteMyAgentRequestSchema;
+    output: typeof DeleteMyAgentResponseSchema;
   },
   /**
-   * RevokeSelfToken revokes the current agent token and issues a new one.
-   * 
-   * Side effects:
-   *   - The current token becomes invalid immediately.
-   *   - A new token is returned in the response.
-   * 
-   * Error conditions:
-   *   - UNAUTHENTICATED: Invalid or expired agent token.
+   * RegenerateAgentToken regenerates the API token for an agent.
+   * The old token becomes invalid immediately.
    *
-   * @generated from rpc api.v1.AgentService.RevokeSelfToken
+   * Error conditions:
+   *   - NOT_FOUND: Agent does not exist.
+   *   - PERMISSION_DENIED: Caller is not the agent creator.
+   *
+   * @generated from rpc api.v1.AgentService.RegenerateAgentToken
    */
-  revokeSelfToken: {
+  regenerateAgentToken: {
     methodKind: "unary";
-    input: typeof RevokeSelfTokenRequestSchema;
-    output: typeof RevokeSelfTokenResponseSchema;
+    input: typeof RegenerateAgentTokenRequestSchema;
+    output: typeof RegenerateAgentTokenResponseSchema;
   },
   /**
-   * SetDeliveryConfig configures the agent's event delivery mode.
-   * Supports three modes via oneof: webhook (HTTPS POST), websocket
-   * (persistent /ws connection), or none (stop all delivery).
-   * Modes are mutually exclusive; setting one clears the other.
-   * 
-   * Side effects (webhook mode):
-   *   - Verifies the URL with a test request before saving.
-   *   - Generates a new signing secret (replaces any existing secret).
-   *   - Forces delivery_mode to WEBHOOK.
-   * Side effects (websocket mode):
-   *   - Clears any configured webhook URL and secret.
-   *   - Forces delivery_mode to WEBSOCKET.
-   * Side effects (none mode):
-   *   - Clears webhook config and resets delivery_mode to WEBHOOK.
-   *   - Stops all event delivery until reconfigured.
-   * 
-   * Error conditions:
-   *   - FAILED_PRECONDITION: Agent is deleted.
-   *   - INVALID_ARGUMENT: Webhook URL is not a valid HTTPS endpoint.
-   *   - FAILED_PRECONDITION: Webhook URL verification failed.
+   * RegenerateAgentSecretKey regenerates the HMAC secret key for an agent.
+   * The old key becomes invalid immediately.
    *
-   * @generated from rpc api.v1.AgentService.SetDeliveryConfig
+   * Error conditions:
+   *   - NOT_FOUND: Agent does not exist.
+   *   - PERMISSION_DENIED: Caller is not the agent creator.
+   *
+   * @generated from rpc api.v1.AgentService.RegenerateAgentSecretKey
    */
-  setDeliveryConfig: {
+  regenerateAgentSecretKey: {
     methodKind: "unary";
-    input: typeof SetDeliveryConfigRequestSchema;
-    output: typeof SetDeliveryConfigResponseSchema;
+    input: typeof RegenerateAgentSecretKeyRequestSchema;
+    output: typeof RegenerateAgentSecretKeyResponseSchema;
+  },
+  /**
+   * SetAgentMiniApp configures the Mini App for an agent.
+   *
+   * Error conditions:
+   *   - NOT_FOUND: Agent does not exist.
+   *   - PERMISSION_DENIED: Caller is not the agent creator.
+   *   - INVALID_ARGUMENT: URL is not a valid HTTPS URL.
+   *
+   * @generated from rpc api.v1.AgentService.SetAgentMiniApp
+   */
+  setAgentMiniApp: {
+    methodKind: "unary";
+    input: typeof SetAgentMiniAppRequestSchema;
+    output: typeof SetAgentMiniAppResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_api_v1_agent_service, 0);

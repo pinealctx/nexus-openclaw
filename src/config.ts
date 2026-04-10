@@ -18,8 +18,8 @@ export interface WebSocketConfig {
 }
 
 export interface WebhookConfig {
-  /** HMAC-SHA256 signing secret. */
-  webhookSecret: string;
+  /** HMAC-SHA256 signing secret (the agent's secret_key). */
+  secretKey: string;
   /** Listening port. */
   port: number;
   /** Listening path (default "/webhook"). */
@@ -125,12 +125,12 @@ export function validateConfig(
       });
     } else {
       if (
-        typeof config.webhook.webhookSecret !== "string" ||
-        config.webhook.webhookSecret.length === 0
+        typeof config.webhook.secretKey !== "string" ||
+        config.webhook.secretKey.length === 0
       ) {
         errors.push({
-          field: "webhook.webhookSecret",
-          message: "webhook.webhookSecret is required when deliveryMode is webhook",
+          field: "webhook.secretKey",
+          message: "webhook.secretKey is required when deliveryMode is webhook",
         });
       }
       if (!isPositiveInteger(config.webhook.port)) {

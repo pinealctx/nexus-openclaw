@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file shared/v1/agent.proto.
  */
 export const file_shared_v1_agent: GenFile = /*@__PURE__*/
-  fileDesc("ChVzaGFyZWQvdjEvYWdlbnQucHJvdG8SCXNoYXJlZC52MSJPChBBZ2VudENvbW1hbmRJbmZvEhoKB2NvbW1hbmQYASABKAlCCbpIBnIEEAEYIBIfCgtkZXNjcmlwdGlvbhgCIAEoCUIKukgHcgUQARiAAiI+ChBBZ2VudENvbW1hbmRMaXN0EioKBWl0ZW1zGAEgAygLMhsuc2hhcmVkLnYxLkFnZW50Q29tbWFuZEluZm8iwQEKC0FnZW50RGV0YWlsEiEKBHVzZXIYASABKAsyEy5zaGFyZWQudjEuVXNlckluZm8SLQoIY29tbWFuZHMYAiADKAsyGy5zaGFyZWQudjEuQWdlbnRDb21tYW5kSW5mbxIkCgdjcmVhdG9yGAMgASgLMhMuc2hhcmVkLnYxLlVzZXJJbmZvEiYKBnN0YXR1cxgEIAEoDjIWLnNoYXJlZC52MS5BZ2VudFN0YXR1cxISCgpjcmVhdGVkX2F0GAUgASgDItMCCgxBZ2VudFByb2ZpbGUSJgoGc3RhdHVzGAEgASgOMhYuc2hhcmVkLnYxLkFnZW50U3RhdHVzEi4KCnZpc2liaWxpdHkYAiABKA4yGi5zaGFyZWQudjEuQWdlbnRWaXNpYmlsaXR5EhQKDGlwX3doaXRlbGlzdBgDIAMoCRItCghjb21tYW5kcxgEIAMoCzIbLnNoYXJlZC52MS5BZ2VudENvbW1hbmRJbmZvEhQKDHRva2VuX3ByZWZpeBgFIAEoCRIaChJ3ZWJob29rX2NvbmZpZ3VyZWQYBiABKAgSFwoPaXNfc3lzdGVtX2FnZW50GAcgASgIEhIKCmNyZWF0ZWRfYXQYCCABKAMSEgoKdXBkYXRlZF9hdBgJIAEoAxIzCg1kZWxpdmVyeV9tb2RlGAogASgOMhwuc2hhcmVkLnYxLkFnZW50RGVsaXZlcnlNb2RlIjAKFVdlYmhvb2tEZWxpdmVyeUNvbmZpZxIXCgN1cmwYASABKAlCCrpIB3IFEAEYgBAiGQoXV2ViU29ja2V0RGVsaXZlcnlDb25maWciEgoQTm9EZWxpdmVyeUNvbmZpZypeCgtBZ2VudFN0YXR1cxIcChhBR0VOVF9TVEFUVVNfVU5TUEVDSUZJRUQQABIXChNBR0VOVF9TVEFUVVNfQUNUSVZFEAESGAoUQUdFTlRfU1RBVFVTX0RFTEVURUQQAipuCg9BZ2VudFZpc2liaWxpdHkSIAocQUdFTlRfVklTSUJJTElUWV9VTlNQRUNJRklFRBAAEhsKF0FHRU5UX1ZJU0lCSUxJVFlfUFVCTElDEAESHAoYQUdFTlRfVklTSUJJTElUWV9QUklWQVRFEAIqfAoRQWdlbnREZWxpdmVyeU1vZGUSIwofQUdFTlRfREVMSVZFUllfTU9ERV9VTlNQRUNJRklFRBAAEh8KG0FHRU5UX0RFTElWRVJZX01PREVfV0VCSE9PSxABEiEKHUFHRU5UX0RFTElWRVJZX01PREVfV0VCU09DS0VUEAJCnAEKDWNvbS5zaGFyZWQudjFCCkFnZW50UHJvdG9QAVo6Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtcHJvdG8vZ2VuL2dvL3NoYXJlZC92MTtzaGFyZWR2MaICA1NYWKoCCVNoYXJlZC5WMcoCCVNoYXJlZFxWMeICFVNoYXJlZFxWMVxHUEJNZXRhZGF0YeoCClNoYXJlZDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_shared_v1_user]);
+  fileDesc("ChVzaGFyZWQvdjEvYWdlbnQucHJvdG8SCXNoYXJlZC52MSJPChBBZ2VudENvbW1hbmRJbmZvEhoKB2NvbW1hbmQYASABKAlCCbpIBnIEEAEYIBIfCgtkZXNjcmlwdGlvbhgCIAEoCUIKukgHcgUQARiAAiI+ChBBZ2VudENvbW1hbmRMaXN0EioKBWl0ZW1zGAEgAygLMhsuc2hhcmVkLnYxLkFnZW50Q29tbWFuZEluZm8i1gIKCUFnZW50SW5mbxIhCgR1c2VyGAEgASgLMhMuc2hhcmVkLnYxLlVzZXJJbmZvEiQKB2NyZWF0b3IYAiABKAsyEy5zaGFyZWQudjEuVXNlckluZm8SJgoGc3RhdHVzGAMgASgOMhYuc2hhcmVkLnYxLkFnZW50U3RhdHVzEi4KCnZpc2liaWxpdHkYBCABKA4yGi5zaGFyZWQudjEuQWdlbnRWaXNpYmlsaXR5EhcKD2lzX3N5c3RlbV9hZ2VudBgFIAEoCBItCghjb21tYW5kcxgGIAMoCzIbLnNoYXJlZC52MS5BZ2VudENvbW1hbmRJbmZvEhgKEG1pbmlfYXBwX2VuYWJsZWQYByABKAgSFAoMbWluaV9hcHBfdXJsGAggASgJEhwKFG1pbmlfYXBwX3Blcm1pc3Npb25zGAkgASgFEhIKCmNyZWF0ZWRfYXQYCiABKAMi5QMKDEFnZW50UHJvZmlsZRIhCgR1c2VyGAEgASgLMhMuc2hhcmVkLnYxLlVzZXJJbmZvEiYKBnN0YXR1cxgCIAEoDjIWLnNoYXJlZC52MS5BZ2VudFN0YXR1cxIuCgp2aXNpYmlsaXR5GAMgASgOMhouc2hhcmVkLnYxLkFnZW50VmlzaWJpbGl0eRIXCg9pc19zeXN0ZW1fYWdlbnQYBCABKAgSMwoNZGVsaXZlcnlfbW9kZRgFIAEoDjIcLnNoYXJlZC52MS5BZ2VudERlbGl2ZXJ5TW9kZRIUCgx0b2tlbl9wcmVmaXgYBiABKAkSGQoRc2VjcmV0X2tleV9wcmVmaXgYByABKAkSFAoMaXBfd2hpdGVsaXN0GAggAygJEi0KCGNvbW1hbmRzGAkgAygLMhsuc2hhcmVkLnYxLkFnZW50Q29tbWFuZEluZm8SGAoQbWluaV9hcHBfZW5hYmxlZBgKIAEoCBIUCgxtaW5pX2FwcF91cmwYCyABKAkSIAoYbWluaV9hcHBfYWxsb3dlZF9vcmlnaW5zGAwgAygJEhwKFG1pbmlfYXBwX3Blcm1pc3Npb25zGA0gASgFEhIKCmNyZWF0ZWRfYXQYDiABKAMSEgoKdXBkYXRlZF9hdBgPIAEoAypeCgtBZ2VudFN0YXR1cxIcChhBR0VOVF9TVEFUVVNfVU5TUEVDSUZJRUQQABIXChNBR0VOVF9TVEFUVVNfQUNUSVZFEAESGAoUQUdFTlRfU1RBVFVTX0RFTEVURUQQAipuCg9BZ2VudFZpc2liaWxpdHkSIAocQUdFTlRfVklTSUJJTElUWV9VTlNQRUNJRklFRBAAEhsKF0FHRU5UX1ZJU0lCSUxJVFlfUFVCTElDEAESHAoYQUdFTlRfVklTSUJJTElUWV9QUklWQVRFEAIqfAoRQWdlbnREZWxpdmVyeU1vZGUSIwofQUdFTlRfREVMSVZFUllfTU9ERV9VTlNQRUNJRklFRBAAEh8KG0FHRU5UX0RFTElWRVJZX01PREVfV0VCSE9PSxABEiEKHUFHRU5UX0RFTElWRVJZX01PREVfV0VCU09DS0VUEAJCnAEKDWNvbS5zaGFyZWQudjFCCkFnZW50UHJvdG9QAVo6Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtcHJvdG8vZ2VuL2dvL3NoYXJlZC92MTtzaGFyZWR2MaICA1NYWKoCCVNoYXJlZC5WMcoCCVNoYXJlZFxWMeICFVNoYXJlZFxWMVxHUEJNZXRhZGF0YeoCClNoYXJlZDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_shared_v1_user]);
 
 /**
  * AgentCommandInfo represents a registered agent slash command.
@@ -66,11 +66,11 @@ export const AgentCommandListSchema: GenMessage<AgentCommandList> = /*@__PURE__*
   messageDesc(file_shared_v1_agent, 1);
 
 /**
- * AgentDetail is the full detail view of an agent for profile pages.
+ * AgentInfo is the public profile view of an agent, visible to all users.
  *
- * @generated from message shared.v1.AgentDetail
+ * @generated from message shared.v1.AgentInfo
  */
-export type AgentDetail = Message<"shared.v1.AgentDetail"> & {
+export type AgentInfo = Message<"shared.v1.AgentInfo"> & {
   /**
    * Agent user info (user_id, username, nickname, avatar_url, account_type).
    * The signature field in UserInfo serves as the agent description.
@@ -80,117 +80,186 @@ export type AgentDetail = Message<"shared.v1.AgentDetail"> & {
   user?: UserInfo;
 
   /**
-   * Registered slash commands.
-   *
-   * @generated from field: repeated shared.v1.AgentCommandInfo commands = 2;
-   */
-  commands: AgentCommandInfo[];
-
-  /**
    * Agent creator info.
    *
-   * @generated from field: shared.v1.UserInfo creator = 3;
+   * @generated from field: shared.v1.UserInfo creator = 2;
    */
   creator?: UserInfo;
 
   /**
    * Agent status (active/deleted).
    *
-   * @generated from field: shared.v1.AgentStatus status = 4;
+   * @generated from field: shared.v1.AgentStatus status = 3;
    */
   status: AgentStatus;
 
   /**
+   * Agent visibility (public/private).
+   *
+   * @generated from field: shared.v1.AgentVisibility visibility = 4;
+   */
+  visibility: AgentVisibility;
+
+  /**
+   * Whether this is a system agent (e.g. AgentRoot).
+   *
+   * @generated from field: bool is_system_agent = 5;
+   */
+  isSystemAgent: boolean;
+
+  /**
+   * Registered slash commands.
+   *
+   * @generated from field: repeated shared.v1.AgentCommandInfo commands = 6;
+   */
+  commands: AgentCommandInfo[];
+
+  /**
+   * Whether Mini App is enabled for this agent.
+   *
+   * @generated from field: bool mini_app_enabled = 7;
+   */
+  miniAppEnabled: boolean;
+
+  /**
+   * Mini App entry URL (HTTPS).
+   *
+   * @generated from field: string mini_app_url = 8;
+   */
+  miniAppUrl: string;
+
+  /**
+   * Mini App permission bitmask.
+   *
+   * @generated from field: int32 mini_app_permissions = 9;
+   */
+  miniAppPermissions: number;
+
+  /**
    * Agent creation time (Unix ms).
    *
-   * @generated from field: int64 created_at = 5;
+   * @generated from field: int64 created_at = 10;
    */
   createdAt: bigint;
 };
 
 /**
- * Describes the message shared.v1.AgentDetail.
- * Use `create(AgentDetailSchema)` to create a new message.
+ * Describes the message shared.v1.AgentInfo.
+ * Use `create(AgentInfoSchema)` to create a new message.
  */
-export const AgentDetailSchema: GenMessage<AgentDetail> = /*@__PURE__*/
+export const AgentInfoSchema: GenMessage<AgentInfo> = /*@__PURE__*/
   messageDesc(file_shared_v1_agent, 2);
 
 /**
- * AgentProfile is the self-view of an agent's profile, returned to the
- * agent developer via AgentService.GetSelfAgent.
+ * AgentProfile is the developer-facing full detail of an agent's profile.
  *
  * @generated from message shared.v1.AgentProfile
  */
 export type AgentProfile = Message<"shared.v1.AgentProfile"> & {
   /**
+   * Agent user info (user_id, username, nickname, avatar_url, account_type, signature).
+   *
+   * @generated from field: shared.v1.UserInfo user = 1;
+   */
+  user?: UserInfo;
+
+  /**
    * Agent status.
    *
-   * @generated from field: shared.v1.AgentStatus status = 1;
+   * @generated from field: shared.v1.AgentStatus status = 2;
    */
   status: AgentStatus;
 
   /**
    * Agent visibility.
    *
-   * @generated from field: shared.v1.AgentVisibility visibility = 2;
+   * @generated from field: shared.v1.AgentVisibility visibility = 3;
    */
   visibility: AgentVisibility;
 
   /**
+   * Whether this is a system agent.
+   *
+   * @generated from field: bool is_system_agent = 4;
+   */
+  isSystemAgent: boolean;
+
+  /**
+   * Agent event delivery mode.
+   *
+   * @generated from field: shared.v1.AgentDeliveryMode delivery_mode = 5;
+   */
+  deliveryMode: AgentDeliveryMode;
+
+  /**
+   * Agent token prefix (e.g. "nxa_xxxx") for identification.
+   *
+   * @generated from field: string token_prefix = 6;
+   */
+  tokenPrefix: string;
+
+  /**
+   * Secret key prefix for identification (e.g. "abcd1234...").
+   *
+   * @generated from field: string secret_key_prefix = 7;
+   */
+  secretKeyPrefix: string;
+
+  /**
    * Allowed IP addresses for API access.
    *
-   * @generated from field: repeated string ip_whitelist = 3;
+   * @generated from field: repeated string ip_whitelist = 8;
    */
   ipWhitelist: string[];
 
   /**
    * Registered slash commands.
    *
-   * @generated from field: repeated shared.v1.AgentCommandInfo commands = 4;
+   * @generated from field: repeated shared.v1.AgentCommandInfo commands = 9;
    */
   commands: AgentCommandInfo[];
 
   /**
-   * Agent token prefix (e.g. "nxa_xxxx") for identification.
+   * Whether Mini App is enabled.
    *
-   * @generated from field: string token_prefix = 5;
+   * @generated from field: bool mini_app_enabled = 10;
    */
-  tokenPrefix: string;
+  miniAppEnabled: boolean;
 
   /**
-   * Whether a webhook URL is configured.
+   * Mini App entry URL.
    *
-   * @generated from field: bool webhook_configured = 6;
+   * @generated from field: string mini_app_url = 11;
    */
-  webhookConfigured: boolean;
+  miniAppUrl: string;
 
   /**
-   * Whether this is a system agent.
+   * Allowed web origins for Mini App security validation.
    *
-   * @generated from field: bool is_system_agent = 7;
+   * @generated from field: repeated string mini_app_allowed_origins = 12;
    */
-  isSystemAgent: boolean;
+  miniAppAllowedOrigins: string[];
+
+  /**
+   * Mini App permission bitmask.
+   *
+   * @generated from field: int32 mini_app_permissions = 13;
+   */
+  miniAppPermissions: number;
 
   /**
    * Agent creation time (Unix ms).
    *
-   * @generated from field: int64 created_at = 8;
+   * @generated from field: int64 created_at = 14;
    */
   createdAt: bigint;
 
   /**
    * Agent last update time (Unix ms).
    *
-   * @generated from field: int64 updated_at = 9;
+   * @generated from field: int64 updated_at = 15;
    */
   updatedAt: bigint;
-
-  /**
-   * Agent event delivery mode.
-   *
-   * @generated from field: shared.v1.AgentDeliveryMode delivery_mode = 10;
-   */
-  deliveryMode: AgentDeliveryMode;
 };
 
 /**
@@ -199,57 +268,6 @@ export type AgentProfile = Message<"shared.v1.AgentProfile"> & {
  */
 export const AgentProfileSchema: GenMessage<AgentProfile> = /*@__PURE__*/
   messageDesc(file_shared_v1_agent, 3);
-
-/**
- * WebhookDeliveryConfig configures webhook delivery.
- *
- * @generated from message shared.v1.WebhookDeliveryConfig
- */
-export type WebhookDeliveryConfig = Message<"shared.v1.WebhookDeliveryConfig"> & {
-  /**
-   * Webhook URL (must be HTTPS).
-   *
-   * @generated from field: string url = 1;
-   */
-  url: string;
-};
-
-/**
- * Describes the message shared.v1.WebhookDeliveryConfig.
- * Use `create(WebhookDeliveryConfigSchema)` to create a new message.
- */
-export const WebhookDeliveryConfigSchema: GenMessage<WebhookDeliveryConfig> = /*@__PURE__*/
-  messageDesc(file_shared_v1_agent, 4);
-
-/**
- * WebSocketDeliveryConfig enables WebSocket delivery.
- *
- * @generated from message shared.v1.WebSocketDeliveryConfig
- */
-export type WebSocketDeliveryConfig = Message<"shared.v1.WebSocketDeliveryConfig"> & {
-};
-
-/**
- * Describes the message shared.v1.WebSocketDeliveryConfig.
- * Use `create(WebSocketDeliveryConfigSchema)` to create a new message.
- */
-export const WebSocketDeliveryConfigSchema: GenMessage<WebSocketDeliveryConfig> = /*@__PURE__*/
-  messageDesc(file_shared_v1_agent, 5);
-
-/**
- * NoDeliveryConfig stops all event delivery.
- *
- * @generated from message shared.v1.NoDeliveryConfig
- */
-export type NoDeliveryConfig = Message<"shared.v1.NoDeliveryConfig"> & {
-};
-
-/**
- * Describes the message shared.v1.NoDeliveryConfig.
- * Use `create(NoDeliveryConfigSchema)` to create a new message.
- */
-export const NoDeliveryConfigSchema: GenMessage<NoDeliveryConfig> = /*@__PURE__*/
-  messageDesc(file_shared_v1_agent, 6);
 
 /**
  * AgentStatus defines agent lifecycle states.

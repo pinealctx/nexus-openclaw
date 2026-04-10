@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v1/user_service.proto.
  */
 export const file_api_v1_user_service: GenFile = /*@__PURE__*/
-  fileDesc("ChlhcGkvdjEvdXNlcl9zZXJ2aWNlLnByb3RvEgZhcGkudjEi5QEKBFVzZXISDwoHdXNlcl9pZBgBIAEoBRIQCgh1c2VybmFtZRgCIAEoCRISCgVwaG9uZRgDIAEoCUgAiAEBEhIKBWVtYWlsGAQgASgJSAGIAQESEAoIbmlja25hbWUYBSABKAkSEgoKYXZhdGFyX3VybBgGIAEoCRIRCglzaWduYXR1cmUYByABKAkSFAoMaGFzX3Bhc3N3b3JkGAggASgIEhIKCmNyZWF0ZWRfYXQYCSABKAMSGwoTY2FuX2NoYW5nZV91c2VybmFtZRgKIAEoCEIICgZfcGhvbmVCCAoGX2VtYWlsIusBCgZEZXZpY2USEQoJZGV2aWNlX2lkGAEgASgJEioKC2RldmljZV90eXBlGAIgASgOMhUuc2hhcmVkLnYxLkRldmljZVR5cGUSEwoLZGV2aWNlX25hbWUYAyABKAkSFAoMZGV2aWNlX21vZGVsGAQgASgJEhIKCm9zX3ZlcnNpb24YBSABKAkSEwoLYXBwX3ZlcnNpb24YBiABKAkSEAoIbG9naW5faXAYByABKAkSEAoIbG9naW5fYXQYCCABKAMSFgoObGFzdF9hY3RpdmVfYXQYCSABKAMSEgoKaXNfY3VycmVudBgKIAEoCCITChFHZXRQcm9maWxlUmVxdWVzdCIzChJHZXRQcm9maWxlUmVzcG9uc2USHQoHcHJvZmlsZRgBIAEoCzIMLmFwaS52MS5Vc2VyIqUBChRVcGRhdGVQcm9maWxlUmVxdWVzdBIeCghuaWNrbmFtZRgBIAEoCUIHukgEcgIYQEgAiAEBEiAKCXNpZ25hdHVyZRgCIAEoCUIIukgFcgMYyAFIAYgBARIhCgphdmF0YXJfdXJsGAMgASgJQgi6SAVyAxiAEEgCiAEBQgsKCV9uaWNrbmFtZUIMCgpfc2lnbmF0dXJlQg0KC19hdmF0YXJfdXJsIjYKFVVwZGF0ZVByb2ZpbGVSZXNwb25zZRIdCgdwcm9maWxlGAEgASgLMgwuYXBpLnYxLlVzZXIiFAoSTGlzdERldmljZXNSZXF1ZXN0IjYKE0xpc3REZXZpY2VzUmVzcG9uc2USHwoHZGV2aWNlcxgBIAMoCzIOLmFwaS52MS5EZXZpY2UiMQoTUmVtb3ZlRGV2aWNlUmVxdWVzdBIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAEiFgoUUmVtb3ZlRGV2aWNlUmVzcG9uc2UiRAoSU2V0VXNlcm5hbWVSZXF1ZXN0Ei4KCHVzZXJuYW1lGAEgASgJQhy6SBlyFxAFGCAyEV5bYS16XVthLXowLTlfXSokIjQKE1NldFVzZXJuYW1lUmVzcG9uc2USHQoHcHJvZmlsZRgBIAEoCzIMLmFwaS52MS5Vc2VyIjUKFlJlc29sdmVVc2VybmFtZVJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAUYICJQChdSZXNvbHZlVXNlcm5hbWVSZXNwb25zZRIhCgR1c2VyGAEgASgLMhMuc2hhcmVkLnYxLlVzZXJJbmZvEhIKCmlzX2NvbnRhY3QYAiABKAgiOAoXQmF0Y2hHZXRVc2VySW5mb1JlcXVlc3QSHQoIdXNlcl9pZHMYASADKAVCC7pICJIBBQgBEMgBIpkBChhCYXRjaEdldFVzZXJJbmZvUmVzcG9uc2USOgoFdXNlcnMYASADKAsyKy5hcGkudjEuQmF0Y2hHZXRVc2VySW5mb1Jlc3BvbnNlLlVzZXJzRW50cnkaQQoKVXNlcnNFbnRyeRILCgNrZXkYASABKAUSIgoFdmFsdWUYAiABKAsyEy5zaGFyZWQudjEuVXNlckluZm86AjgBMr4ECgtVc2VyU2VydmljZRJDCgpHZXRQcm9maWxlEhkuYXBpLnYxLkdldFByb2ZpbGVSZXF1ZXN0GhouYXBpLnYxLkdldFByb2ZpbGVSZXNwb25zZRJSCg1VcGRhdGVQcm9maWxlEhwuYXBpLnYxLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0Gh0uYXBpLnYxLlVwZGF0ZVByb2ZpbGVSZXNwb25zZSIEoLUYARJMCgtMaXN0RGV2aWNlcxIaLmFwaS52MS5MaXN0RGV2aWNlc1JlcXVlc3QaGy5hcGkudjEuTGlzdERldmljZXNSZXNwb25zZSIEoLUYARJPCgxSZW1vdmVEZXZpY2USGy5hcGkudjEuUmVtb3ZlRGV2aWNlUmVxdWVzdBocLmFwaS52MS5SZW1vdmVEZXZpY2VSZXNwb25zZSIEoLUYARJMCgtTZXRVc2VybmFtZRIaLmFwaS52MS5TZXRVc2VybmFtZVJlcXVlc3QaGy5hcGkudjEuU2V0VXNlcm5hbWVSZXNwb25zZSIEoLUYARJSCg9SZXNvbHZlVXNlcm5hbWUSHi5hcGkudjEuUmVzb2x2ZVVzZXJuYW1lUmVxdWVzdBofLmFwaS52MS5SZXNvbHZlVXNlcm5hbWVSZXNwb25zZRJVChBCYXRjaEdldFVzZXJJbmZvEh8uYXBpLnYxLkJhdGNoR2V0VXNlckluZm9SZXF1ZXN0GiAuYXBpLnYxLkJhdGNoR2V0VXNlckluZm9SZXNwb25zZUKNAQoKY29tLmFwaS52MUIQVXNlclNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_options, file_shared_v1_user]);
+  fileDesc("ChlhcGkvdjEvdXNlcl9zZXJ2aWNlLnByb3RvEgZhcGkudjEi5QEKBFVzZXISDwoHdXNlcl9pZBgBIAEoBRIQCgh1c2VybmFtZRgCIAEoCRISCgVwaG9uZRgDIAEoCUgAiAEBEhIKBWVtYWlsGAQgASgJSAGIAQESEAoIbmlja25hbWUYBSABKAkSEgoKYXZhdGFyX3VybBgGIAEoCRIRCglzaWduYXR1cmUYByABKAkSFAoMaGFzX3Bhc3N3b3JkGAggASgIEhIKCmNyZWF0ZWRfYXQYCSABKAMSGwoTY2FuX2NoYW5nZV91c2VybmFtZRgKIAEoCEIICgZfcGhvbmVCCAoGX2VtYWlsIusBCgZEZXZpY2USEQoJZGV2aWNlX2lkGAEgASgJEioKC2RldmljZV90eXBlGAIgASgOMhUuc2hhcmVkLnYxLkRldmljZVR5cGUSEwoLZGV2aWNlX25hbWUYAyABKAkSFAoMZGV2aWNlX21vZGVsGAQgASgJEhIKCm9zX3ZlcnNpb24YBSABKAkSEwoLYXBwX3ZlcnNpb24YBiABKAkSEAoIbG9naW5faXAYByABKAkSEAoIbG9naW5fYXQYCCABKAMSFgoObGFzdF9hY3RpdmVfYXQYCSABKAMSEgoKaXNfY3VycmVudBgKIAEoCCITChFHZXRQcm9maWxlUmVxdWVzdCIzChJHZXRQcm9maWxlUmVzcG9uc2USHQoHcHJvZmlsZRgBIAEoCzIMLmFwaS52MS5Vc2VyIqUBChRVcGRhdGVQcm9maWxlUmVxdWVzdBIeCghuaWNrbmFtZRgBIAEoCUIHukgEcgIYQEgAiAEBEiAKCXNpZ25hdHVyZRgCIAEoCUIIukgFcgMYyAFIAYgBARIhCgphdmF0YXJfdXJsGAMgASgJQgi6SAVyAxiAEEgCiAEBQgsKCV9uaWNrbmFtZUIMCgpfc2lnbmF0dXJlQg0KC19hdmF0YXJfdXJsIjYKFVVwZGF0ZVByb2ZpbGVSZXNwb25zZRIdCgdwcm9maWxlGAEgASgLMgwuYXBpLnYxLlVzZXIiFAoSTGlzdERldmljZXNSZXF1ZXN0IjYKE0xpc3REZXZpY2VzUmVzcG9uc2USHwoHZGV2aWNlcxgBIAMoCzIOLmFwaS52MS5EZXZpY2UiMQoTUmVtb3ZlRGV2aWNlUmVxdWVzdBIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAEiFgoUUmVtb3ZlRGV2aWNlUmVzcG9uc2UiRAoSU2V0VXNlcm5hbWVSZXF1ZXN0Ei4KCHVzZXJuYW1lGAEgASgJQhy6SBlyFxAFGCAyEV5bYS16XVthLXowLTlfXSokIjQKE1NldFVzZXJuYW1lUmVzcG9uc2USHQoHcHJvZmlsZRgBIAEoCzIMLmFwaS52MS5Vc2VyIjUKFlJlc29sdmVVc2VybmFtZVJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAUYICJQChdSZXNvbHZlVXNlcm5hbWVSZXNwb25zZRIhCgR1c2VyGAEgASgLMhMuc2hhcmVkLnYxLlVzZXJJbmZvEhIKCmlzX2NvbnRhY3QYAiABKAgiOAoXQmF0Y2hHZXRVc2VySW5mb1JlcXVlc3QSHQoIdXNlcl9pZHMYASADKAVCC7pICJIBBQgBEMgBIpkBChhCYXRjaEdldFVzZXJJbmZvUmVzcG9uc2USOgoFdXNlcnMYASADKAsyKy5hcGkudjEuQmF0Y2hHZXRVc2VySW5mb1Jlc3BvbnNlLlVzZXJzRW50cnkaQQoKVXNlcnNFbnRyeRILCgNrZXkYASABKAUSIgoFdmFsdWUYAiABKAsyEy5zaGFyZWQudjEuVXNlckluZm86AjgBMrgECgtVc2VyU2VydmljZRJDCgpHZXRQcm9maWxlEhkuYXBpLnYxLkdldFByb2ZpbGVSZXF1ZXN0GhouYXBpLnYxLkdldFByb2ZpbGVSZXNwb25zZRJMCg1VcGRhdGVQcm9maWxlEhwuYXBpLnYxLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0Gh0uYXBpLnYxLlVwZGF0ZVByb2ZpbGVSZXNwb25zZRJMCgtMaXN0RGV2aWNlcxIaLmFwaS52MS5MaXN0RGV2aWNlc1JlcXVlc3QaGy5hcGkudjEuTGlzdERldmljZXNSZXNwb25zZSIEoLUYARJPCgxSZW1vdmVEZXZpY2USGy5hcGkudjEuUmVtb3ZlRGV2aWNlUmVxdWVzdBocLmFwaS52MS5SZW1vdmVEZXZpY2VSZXNwb25zZSIEoLUYARJMCgtTZXRVc2VybmFtZRIaLmFwaS52MS5TZXRVc2VybmFtZVJlcXVlc3QaGy5hcGkudjEuU2V0VXNlcm5hbWVSZXNwb25zZSIEoLUYARJSCg9SZXNvbHZlVXNlcm5hbWUSHi5hcGkudjEuUmVzb2x2ZVVzZXJuYW1lUmVxdWVzdBofLmFwaS52MS5SZXNvbHZlVXNlcm5hbWVSZXNwb25zZRJVChBCYXRjaEdldFVzZXJJbmZvEh8uYXBpLnYxLkJhdGNoR2V0VXNlckluZm9SZXF1ZXN0GiAuYXBpLnYxLkJhdGNoR2V0VXNlckluZm9SZXNwb25zZUKNAQoKY29tLmFwaS52MUIQVXNlclNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_options, file_shared_v1_user]);
 
 /**
  * User represents the current user profile (self view, includes private fields).
@@ -490,14 +490,14 @@ export const BatchGetUserInfoResponseSchema: GenMessage<BatchGetUserInfoResponse
 
 /**
  * UserService handles user profile, device sessions, and username resolution.
- * Authenticated via Access Token.
+ * Authenticated via Access Token (User or Agent).
  *
  * @generated from service api.v1.UserService
  */
 export const UserService: GenService<{
   /**
    * GetProfile returns the current user profile.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *
@@ -510,14 +510,14 @@ export const UserService: GenService<{
   },
   /**
    * UpdateProfile updates the current user profile fields.
-   * 
+   *
    * Side effects:
    *   - If avatar_url changes, the old avatar is not deleted (clients
    *     may still cache it).
    *   - Delivers a UserProfileUpdatedEvent as an SnUpdate to the user's
    *     own update stream only (for multi-device sync). Contacts refresh
    *     cached profile data on demand.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - INVALID_ARGUMENT: Nickname exceeds 64 characters or signature
@@ -532,7 +532,7 @@ export const UserService: GenService<{
   },
   /**
    * ListDevices returns all active device sessions.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *
@@ -545,11 +545,11 @@ export const UserService: GenService<{
   },
   /**
    * RemoveDevice removes a specific device session.
-   * 
+   *
    * Side effects:
    *   - Revokes the access and refresh tokens for the target device.
    *   - Closes the long connection for the target device if active.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - NOT_FOUND: Device does not exist or does not belong to the user.
@@ -564,13 +564,13 @@ export const UserService: GenService<{
   },
   /**
    * SetUsername sets the username for the current user (first-time only).
-   * 
+   *
    * Side effects:
    *   - Sets the username globally (unique constraint enforced).
    *   - The username becomes resolvable via ResolveUsername.
    *   - Delivers a UsernameChangedEvent as an SnUpdate to the user's own
    *     update stream only (multi-device sync).
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - FAILED_PRECONDITION: User already has a custom username set.
@@ -587,7 +587,7 @@ export const UserService: GenService<{
   },
   /**
    * ResolveUsername resolves a username to public user info.
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - NOT_FOUND: No user exists with this username.
@@ -603,10 +603,10 @@ export const UserService: GenService<{
    * BatchGetUserInfo returns public user info for a batch of user IDs.
    * Used by clients to populate user caches (e.g., conversation list,
    * group member list, message sender info).
-   * 
+   *
    * IDs that do not exist or belong to deleted accounts are silently
    * omitted from the response (no error raised).
-   * 
+   *
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - INVALID_ARGUMENT: user_ids is empty or exceeds 200 items.
