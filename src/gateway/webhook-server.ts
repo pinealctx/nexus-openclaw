@@ -124,7 +124,11 @@ export class WebhookServer {
     res.end(JSON.stringify({ ok: true }));
 
     for (const handler of this.eventHandlers) {
-      handler(event);
+      try {
+        handler(event);
+      } catch {
+        // Individual handler errors must not block other handlers.
+      }
     }
   }
 }

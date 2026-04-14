@@ -9,6 +9,7 @@
 export const nexusDock = {
   id: "nexus" as const,
   capabilities: {
+    /** OpenClaw dock uses "dm"/"group"; channel plugin uses "direct"/"group". */
     chatTypes: ["dm", "group"] as const,
     media: ["image", "audio", "video", "file"] as const,
     reactions: false as const,

@@ -5,20 +5,204 @@
  * so that OpenClaw can discover, configure, start, and stop the channel.
  */
 
-import type {
-  ChannelPlugin,
-  OpenClawConfig,
-} from "openclaw/plugin-sdk/core";
 import type { ChannelStatusIssue } from "openclaw/plugin-sdk/channel-contract";
-
-import { CHANNEL_ID, DEFAULT_ACCOUNT_ID, TEXT_CHUNK_LIMIT } from "./const.js";
-import { getNexusRuntime } from "./runtime.js";
+import type { ChannelPlugin, OpenClawConfig } from "openclaw/plugin-sdk/core";
 import { type NexusAccountConfig, validateConfig } from "./config.js";
-import { createNexusClient, type NexusClient } from "./nexus-api/client.js";
+import {
+  buildAccountConfig,
+  clearAccountToken,
+  deleteAccount as deleteAccountCfg,
+  getAccountName,
+  getAllowFrom,
+  isAccountEnabled,
+  listAccountIds,
+  setAccountEnabled as setAccountEnabledCfg,
+} from "./config-accessor.js";
+import { CHANNEL_ID, DEFAULT_ACCOUNT_ID, TEXT_CHUNK_LIMIT } from "./const.js";
 import { GatewayManager } from "./gateway/manager.js";
 import { MessageNormalizer } from "./inbound/normalizer.js";
+import type { NexusLogger } from "./logger.js";
+import { createNexusClient, type NexusClient } from "./nexus-api/client.js";
 import { NexusOutboundAdapter } from "./outbound/adapter.js";
-import type { NexusMsgContext } from "./types.js";
+import { NexusStreamAdapter } from "./outbound/stream.js";
+import { getNexusRuntime } from "./runtime.js";
+import type { MediaType, NexusMsgContext, StreamSession } from "./types.js";
+
+// ---------------------------------------------------------------------------
+// Gateway event handler (extracted from startAccount for readability)
+// ---------------------------------------------------------------------------
+
+interface GatewayEventContext {
+  accountId: string;
+  cfg: OpenClawConfig;
+  config: NexusAccountConfig;
+  client: NexusClient;
+  normalizer: MessageNormalizer;
+  channelRuntime: NonNullable<typeof Object.prototype>;
+  logger?: NexusLogger;
+  log?: { info(msg: string): void; warn?(msg: string): void; error(msg: string): void };
+  getAgentUserId: () => number;
+}
+
+async function handleGatewayEvent(event: unknown, gctx: GatewayEventContext): Promise<void> {
+  const agentUserId = gctx.getAgentUserId();
+  if (agentUserId === 0) return;
+
+  const msgCtx = await gctx.normalizer.normalize(event, agentUserId);
+  if (!msgCtx) {
+    gctx.log?.info(`nexus[${gctx.accountId}] event normalized: skipped`);
+    return;
+  }
+
+  gctx.log?.info(
+    `nexus[${gctx.accountId}] normalized event from ${msgCtx.sender?.name ?? "unknown"}: ${(msgCtx.text ?? "").slice(0, 50)}`,
+  );
+
+  const channelRt = gctx.channelRuntime as any;
+  const chatType = msgCtx.chatType === "group" ? "group" : "direct";
+  const route = channelRt.routing.resolveAgentRoute({
+    cfg: gctx.cfg,
+    channel: CHANNEL_ID,
+    accountId: gctx.accountId,
+    peer: { kind: chatType, id: msgCtx.sender.id },
+  });
+
+  gctx.log?.info(`nexus[${gctx.accountId}] resolved route: agent=${route.agentId}, session=${route.sessionKey}`);
+
+  const openClawCtx = buildOpenClawMsgContext(msgCtx, gctx.accountId, route.sessionKey);
+
+  // Record inbound session.
+  const storePath = channelRt.session.resolveStorePath(undefined, { agentId: route.agentId });
+  await channelRt.session.recordInboundSession({
+    storePath,
+    sessionKey: route.sessionKey,
+    ctx: openClawCtx,
+    createIfMissing: true,
+    updateLastRoute: {
+      sessionKey: route.sessionKey,
+      channel: CHANNEL_ID,
+      to: `${CHANNEL_ID}:${msgCtx.sessionKey.split(":").pop() ?? msgCtx.sender.id}`,
+      accountId: gctx.accountId,
+    },
+    onRecordError: (err: unknown) => {
+      gctx.log?.error(`nexus[${gctx.accountId}] session record error: ${err}`);
+    },
+  });
+
+  // Dispatch reply with streaming support.
+  await dispatchStreamingReply(gctx, channelRt, openClawCtx);
+}
+
+async function dispatchStreamingReply(
+  gctx: GatewayEventContext,
+  channelRt: any,
+  openClawCtx: Record<string, unknown>,
+): Promise<void> {
+  const { adapter: outboundAdapter } = getOrCreateOutboundClient(gctx.accountId, gctx.config, gctx.logger);
+  const streamAdapter = new NexusStreamAdapter(gctx.client, gctx.logger);
+
+  let activeStream: StreamSession | null = null;
+  let accumulatedText = "";
+
+  const toField = String(openClawCtx.To ?? "");
+  const convIdStr = toField.replace(new RegExp(`^${CHANNEL_ID}:`), "");
+  const conversationId = Number(convIdStr);
+
+  if (!conversationId || Number.isNaN(conversationId)) {
+    gctx.log?.error(`nexus[${gctx.accountId}] invalid conversationId from To: ${toField}`);
+    return;
+  }
+
+  await channelRt.reply.dispatchReplyWithBufferedBlockDispatcher({
+    ctx: openClawCtx,
+    cfg: gctx.cfg,
+    dispatcherOptions: {
+      deliver: async (payload: { text?: string }) => {
+        const replyText = payload.text;
+        if (!replyText) return;
+
+        try {
+          if (!activeStream) {
+            activeStream = await streamAdapter.startStream({ conversationId });
+            accumulatedText = replyText;
+            await streamAdapter.pushDelta(activeStream, replyText);
+          } else {
+            accumulatedText += replyText;
+            await streamAdapter.pushDelta(activeStream, replyText);
+          }
+        } catch {
+          await outboundAdapter.sendText({ conversationId }, replyText);
+        }
+
+        gctx.log?.info(`nexus[${gctx.accountId}] delivered reply to conversation ${conversationId}`);
+      },
+      onError: (err: unknown, info: { kind: string }) => {
+        gctx.log?.error(`nexus[${gctx.accountId}] reply dispatch error (${info.kind}): ${err}`);
+        if (activeStream) {
+          streamAdapter.errorStream(activeStream, String(err)).catch(() => {});
+          activeStream = null;
+        }
+      },
+      onIdle: () => {
+        if (activeStream) {
+          streamAdapter.endStream(activeStream, accumulatedText).catch((err) => {
+            gctx.log?.error(`nexus[${gctx.accountId}] endStream failed: ${err}`);
+          });
+          activeStream = null;
+          accumulatedText = "";
+        }
+      },
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Gateway lifecycle helpers
+// ---------------------------------------------------------------------------
+
+function adaptLogger(
+  ctxLog: { info(msg: string): void; warn?(msg: string): void; error(msg: string): void } | undefined,
+): NexusLogger | undefined {
+  if (!ctxLog) return undefined;
+  return {
+    info: (msg: string) => ctxLog.info(msg),
+    warn: (msg: string) => ctxLog.warn?.(msg) ?? ctxLog.info(msg),
+    error: (msg: string) => ctxLog.error(msg),
+  };
+}
+
+async function waitForAbort(signal: AbortSignal, cleanup: () => Promise<void>): Promise<void> {
+  await new Promise<void>((resolve) => {
+    if (signal.aborted) {
+      cleanup().then(resolve).catch(resolve);
+      return;
+    }
+    signal.addEventListener(
+      "abort",
+      () => {
+        cleanup().then(resolve).catch(resolve);
+      },
+      { once: true },
+    );
+  });
+}
+
+const IMAGE_EXTS = new Set(["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "ico"]);
+const AUDIO_EXTS = new Set(["mp3", "wav", "ogg", "flac", "aac", "m4a", "wma"]);
+const VIDEO_EXTS = new Set(["mp4", "webm", "avi", "mov", "mkv", "flv", "wmv"]);
+
+function inferMediaType(url: string): MediaType {
+  try {
+    const pathname = new URL(url).pathname;
+    const ext = pathname.split(".").pop()?.toLowerCase() ?? "";
+    if (IMAGE_EXTS.has(ext)) return "image";
+    if (AUDIO_EXTS.has(ext)) return "audio";
+    if (VIDEO_EXTS.has(ext)) return "video";
+  } catch {
+    // Invalid URL — default to file.
+  }
+  return "file";
+}
 
 // ---------------------------------------------------------------------------
 // Resolved account type
@@ -35,70 +219,39 @@ export interface ResolvedNexusAccount {
 // Account resolution helpers
 // ---------------------------------------------------------------------------
 
-/**
- * List all configured Nexus account IDs from the OpenClaw config.
- */
-function listNexusAccountIds(cfg: OpenClawConfig): string[] {
-  const nexusCfg = (cfg as any).channels?.[CHANNEL_ID] as
-    | { accounts?: Record<string, unknown> }
-    | undefined;
-  if (!nexusCfg?.accounts) return [DEFAULT_ACCOUNT_ID];
-  return Object.keys(nexusCfg.accounts);
-}
-
-/**
- * Resolve a single Nexus account from the OpenClaw config.
- */
-function resolveNexusAccount(
-  cfg: OpenClawConfig,
-  accountId?: string | null,
-): ResolvedNexusAccount {
+function resolveNexusAccount(cfg: OpenClawConfig, accountId?: string | null): ResolvedNexusAccount {
   const resolvedId = accountId ?? DEFAULT_ACCOUNT_ID;
-  const nexusCfg = (cfg as any).channels?.[CHANNEL_ID] as
-    | { accounts?: Record<string, Record<string, unknown>>; enabled?: boolean }
-    | undefined;
-
-  const raw = nexusCfg?.accounts?.[resolvedId] ?? {};
-  const enabled = (raw as any).enabled !== false;
-
   return {
     accountId: resolvedId,
-    name: (raw as any).name ?? resolvedId,
-    enabled,
-    config: {
-      agentToken: (raw as any).agentToken ?? "",
-      serverUrl: (raw as any).serverUrl ?? "",
-      deliveryMode: (raw as any).deliveryMode ?? "websocket",
-      gatewayUrl: (raw as any).gatewayUrl,
-      websocket: (raw as any).websocket,
-      webhook: (raw as any).webhook,
-    },
+    name: getAccountName(cfg, resolvedId),
+    enabled: isAccountEnabled(cfg, resolvedId),
+    config: buildAccountConfig(cfg, resolvedId),
   };
 }
 
-function hasMultiAccounts(cfg: OpenClawConfig): boolean {
-  const nexusCfg = (cfg as any).channels?.[CHANNEL_ID] as
-    | { accounts?: Record<string, unknown> }
-    | undefined;
-  return nexusCfg?.accounts
-    ? Object.keys(nexusCfg.accounts).length > 1
-    : false;
-}
-
 // ---------------------------------------------------------------------------
-// Outbound client cache (Issue 3: avoid creating new client on every call)
+// Outbound client cache
 // ---------------------------------------------------------------------------
 
 const outboundClientCache = new Map<string, { client: NexusClient; adapter: NexusOutboundAdapter }>();
 
-function getOrCreateOutboundClient(accountId: string, config: NexusAccountConfig): { client: NexusClient; adapter: NexusOutboundAdapter } {
+function getOrCreateOutboundClient(
+  accountId: string,
+  config: NexusAccountConfig,
+  logger?: NexusLogger,
+): { client: NexusClient; adapter: NexusOutboundAdapter } {
   const cached = outboundClientCache.get(accountId);
   if (cached) return cached;
   const client = createNexusClient(config);
-  const adapter = new NexusOutboundAdapter(client);
+  const adapter = new NexusOutboundAdapter(client, logger);
   const entry = { client, adapter };
   outboundClientCache.set(accountId, entry);
   return entry;
+}
+
+/** Remove a cached outbound client (e.g. on logout or account deletion). */
+export function evictOutboundClient(accountId: string): void {
+  outboundClientCache.delete(accountId);
 }
 
 // ---------------------------------------------------------------------------
@@ -136,6 +289,7 @@ async function sendNexusMessage({
 
   return {
     channel: CHANNEL_ID,
+    // TODO(P1-6): return real server-assigned messageId once sendText is updated
     messageId: `nexus-${Date.now()}`,
     chatId,
   };
@@ -145,16 +299,11 @@ async function sendNexusMessage({
 // MsgContext builder for channelRuntime dispatch
 // ---------------------------------------------------------------------------
 
-/**
- * Convert a NexusMsgContext into the MsgContext shape expected by OpenClaw's
- * dispatchReplyWithBufferedBlockDispatcher.
- */
 function buildOpenClawMsgContext(
   msgCtx: NexusMsgContext,
   accountId: string,
   sessionKey: string,
 ): Record<string, unknown> {
-  // Extract conversation ID from the session key (format: agent:{id}:nexus:{convId})
   const parts = msgCtx.sessionKey.split(":");
   const conversationId = parts[parts.length - 1] ?? msgCtx.sender.id;
 
@@ -211,102 +360,51 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
     blockStreaming: true,
   },
   reload: { configPrefixes: [`channels.${CHANNEL_ID}`] },
+  streaming: {
+    blockStreamingCoalesceDefaults: {
+      minChars: 80,
+      idleMs: 300,
+    },
+  },
   config: {
-    listAccountIds: (cfg) => listNexusAccountIds(cfg),
+    listAccountIds: (cfg) => listAccountIds(cfg),
     resolveAccount: (cfg, accountId) => resolveNexusAccount(cfg, accountId),
     defaultAccountId: (_cfg) => DEFAULT_ACCOUNT_ID,
 
-    setAccountEnabled: ({ cfg, accountId, enabled }) => {
-      const nexusCfg = ((cfg as any).channels?.[CHANNEL_ID] ?? {}) as Record<string, any>;
-      if (!hasMultiAccounts(cfg)) {
-        return {
-          ...cfg,
-          channels: {
-            ...(cfg as any).channels,
-            [CHANNEL_ID]: { ...nexusCfg, enabled },
-          },
-        } as OpenClawConfig;
-      }
-      return {
-        ...cfg,
-        channels: {
-          ...(cfg as any).channels,
-          [CHANNEL_ID]: {
-            ...nexusCfg,
-            accounts: {
-              ...nexusCfg.accounts,
-              [accountId]: { ...nexusCfg.accounts?.[accountId], enabled },
-            },
-          },
-        },
-      } as OpenClawConfig;
-    },
+    setAccountEnabled: ({ cfg, accountId, enabled }) => setAccountEnabledCfg(cfg, accountId, enabled),
 
     deleteAccount: ({ cfg, accountId }) => {
-      if (!hasMultiAccounts(cfg)) {
-        const next = { ...cfg } as any;
-        const nextChannels = { ...(cfg as any).channels };
-        delete nextChannels[CHANNEL_ID];
-        if (Object.keys(nextChannels).length > 0) {
-          next.channels = nextChannels;
-        } else {
-          delete next.channels;
-        }
-        return next as OpenClawConfig;
-      }
-      const nexusCfg = (cfg as any).channels?.[CHANNEL_ID] as Record<string, any> | undefined;
-      const accounts = { ...nexusCfg?.accounts };
-      delete accounts[accountId];
-      return {
-        ...cfg,
-        channels: {
-          ...(cfg as any).channels,
-          [CHANNEL_ID]: {
-            ...nexusCfg,
-            accounts: Object.keys(accounts).length > 0 ? accounts : undefined,
-          },
-        },
-      } as OpenClawConfig;
+      evictOutboundClient(accountId);
+      return deleteAccountCfg(cfg, accountId);
     },
 
-    isConfigured: (account) =>
-      Boolean(account.config.agentToken?.trim() && account.config.serverUrl?.trim()),
+    isConfigured: (account) => Boolean(account.config.agentToken?.trim() && account.config.serverUrl?.trim()),
 
     describeAccount: (account) => ({
       accountId: account.accountId,
       name: account.name,
       enabled: account.enabled,
-      configured: Boolean(
-        account.config.agentToken?.trim() && account.config.serverUrl?.trim(),
-      ),
+      configured: Boolean(account.config.agentToken?.trim() && account.config.serverUrl?.trim()),
       deliveryMode: account.config.deliveryMode,
     }),
 
-    resolveAllowFrom: ({ cfg, accountId }) => {
-      const account = resolveNexusAccount(cfg, accountId);
-      return ((account.config as any).allowFrom ?? []).map((e: any) => String(e));
-    },
+    resolveAllowFrom: ({ cfg, accountId }) => getAllowFrom(cfg, accountId ?? DEFAULT_ACCOUNT_ID),
 
-    formatAllowFrom: ({ allowFrom }) =>
-      allowFrom.map((entry) => String(entry).trim()).filter(Boolean),
+    formatAllowFrom: ({ allowFrom }) => allowFrom.map((entry) => String(entry).trim()).filter(Boolean),
   },
 
   security: {
-    resolveDmPolicy: ({ cfg: _cfg, accountId: _accountId, account: _account }) => {
-      return {
-        policy: "open",
-        allowFrom: [],
-        allowFromPath: `channels.${CHANNEL_ID}.allowFrom`,
-        approveHint: `openclaw pairing approve ${CHANNEL_ID} <code>`,
-      };
-    },
+    resolveDmPolicy: ({ cfg: _cfg, accountId: _accountId, account: _account }) => ({
+      policy: "open",
+      allowFrom: [],
+      allowFromPath: `channels.${CHANNEL_ID}.allowFrom`,
+      approveHint: `openclaw pairing approve ${CHANNEL_ID} <code>`,
+    }),
     collectWarnings: ({ cfg, accountId }) => {
       const warnings: string[] = [];
       const account = resolveNexusAccount(cfg, accountId);
       if (!account.config.agentToken?.trim()) {
-        warnings.push(
-          `- Nexus[${accountId}]: agentToken is not configured.`,
-        );
+        warnings.push(`- Nexus[${accountId}]: agentToken is not configured.`);
       }
       return warnings;
     },
@@ -352,16 +450,49 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
         });
       }
 
-      // For now, send media URL as text link; full media upload can be added later
-      const fallbackContent = text
-        ? `${text}\n📎 ${mediaUrl}`
-        : `📎 ${mediaUrl}`;
-      return sendNexusMessage({
-        to,
-        content: fallbackContent,
-        accountId: resolvedAccountId,
-        cfg,
-      });
+      if (!cfg) {
+        throw new Error(`No config available for account ${resolvedAccountId}`);
+      }
+
+      const account = resolveNexusAccount(cfg, resolvedAccountId);
+      const result = validateConfig(account.config);
+      if (!result.valid) {
+        throw new Error(`Invalid config for account ${resolvedAccountId}`);
+      }
+
+      const channelPrefix = new RegExp(`^${CHANNEL_ID}:`, "i");
+      const chatId = to.replace(channelPrefix, "");
+      const conversationId = Number(chatId);
+      const { adapter: outbound } = getOrCreateOutboundClient(resolvedAccountId, result.config);
+
+      // Infer media type from URL extension; default to "file".
+      const mediaType = inferMediaType(mediaUrl);
+
+      try {
+        await outbound.sendMedia(
+          { conversationId },
+          {
+            url: mediaUrl,
+            type: mediaType,
+          },
+        );
+      } catch {
+        // Fallback: adapter.sendMedia already falls back to text link internally,
+        // but if even that fails, send as plain text.
+        const fallbackContent = text ? `${text}\n${mediaUrl}` : mediaUrl;
+        await outbound.sendText({ conversationId }, fallbackContent);
+      }
+
+      // Send accompanying text if present (media was sent separately).
+      if (text) {
+        await outbound.sendText({ conversationId }, text);
+      }
+
+      return {
+        channel: CHANNEL_ID,
+        messageId: `nexus-${Date.now()}`,
+        chatId,
+      };
     },
   },
 
@@ -398,11 +529,22 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
       lastStopAt: snapshot.lastStopAt ?? null,
       lastError: snapshot.lastError ?? null,
     }),
-    probeAccount: async () => ({ ok: true, status: 200 }),
+    probeAccount: async ({ account }) => {
+      const result = validateConfig(account.config);
+      if (!result.valid) {
+        return { ok: false, status: 0, error: "invalid config" };
+      }
+      try {
+        const client = createNexusClient(result.config);
+        // GetClientConfig is a public endpoint — verifies server reachability.
+        await client.discoverGatewayUrl();
+        return { ok: true, status: 200 };
+      } catch (err) {
+        return { ok: false, status: 0, error: String(err) };
+      }
+    },
     buildAccountSnapshot: ({ account, runtime }) => {
-      const configured = Boolean(
-        account.config.agentToken?.trim() && account.config.serverUrl?.trim(),
-      );
+      const configured = Boolean(account.config.agentToken?.trim() && account.config.serverUrl?.trim());
       return {
         accountId: account.accountId,
         name: account.name,
@@ -422,20 +564,18 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
       const result = validateConfig(account.config);
 
       if (!result.valid) {
-        ctx.log?.error(
-          `Invalid config for nexus[${ctx.accountId}]: ${result.errors.map((e) => e.message).join(", ")}`,
-        );
+        ctx.log?.error(`Invalid config for nexus[${ctx.accountId}]: ${result.errors.map((e) => e.message).join(", ")}`);
         return;
       }
 
       const config = result.config;
-      ctx.log?.info(
-        `starting nexus[${ctx.accountId}] (mode: ${config.deliveryMode})`,
-      );
+      const logger = adaptLogger(ctx.log);
+
+      ctx.log?.info(`starting nexus[${ctx.accountId}] (mode: ${config.deliveryMode})`);
 
       const client = createNexusClient(config);
       const normalizer = new MessageNormalizer(client);
-      const gatewayManager = new GatewayManager(() => config);
+      const gatewayManager = new GatewayManager(() => config, logger);
       let agentUserId = 0;
 
       gatewayManager.onAuthSuccess((_accountId: string, userId: number) => {
@@ -443,86 +583,25 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
         ctx.log?.info(`nexus[${ctx.accountId}] authenticated as userId=${userId}`);
       });
 
+      const gctx: GatewayEventContext = {
+        accountId: ctx.accountId,
+        cfg: ctx.cfg,
+        config,
+        client,
+        normalizer,
+        channelRuntime: ctx.channelRuntime as any,
+        logger,
+        log: ctx.log,
+        getAgentUserId: () => agentUserId,
+      };
+
       gatewayManager.onEvent(async (_accountId: string, event: unknown) => {
-        if (agentUserId === 0) return;
+        if (!ctx.channelRuntime) {
+          ctx.log?.warn?.(`nexus[${ctx.accountId}] channelRuntime not available`);
+          return;
+        }
         try {
-          const msgCtx = await normalizer.normalize(event, agentUserId);
-          if (!msgCtx) {
-            ctx.log?.info(`nexus[${ctx.accountId}] event normalized: skipped`);
-            return;
-          }
-
-          ctx.log?.info(`nexus[${ctx.accountId}] normalized event from ${msgCtx.sender?.name ?? 'unknown'}: ${(msgCtx.text ?? '').slice(0, 50)}`);
-
-          // Use channelRuntime for dispatch (OpenClaw 2026.4 ChannelPlugin SDK)
-          if (!ctx.channelRuntime) {
-            ctx.log?.warn?.(`nexus[${ctx.accountId}] channelRuntime not available - cannot dispatch message`);
-            return;
-          }
-
-          const channelRt = ctx.channelRuntime;
-
-          // Resolve agent route for this conversation
-          const chatType = msgCtx.chatType === "group" ? "group" : "direct";
-          const route = channelRt.routing.resolveAgentRoute({
-            cfg: ctx.cfg,
-            channel: CHANNEL_ID,
-            accountId: ctx.accountId,
-            peer: { kind: chatType, id: msgCtx.sender.id },
-          });
-
-          ctx.log?.info(`nexus[${ctx.accountId}] resolved route: agent=${route.agentId}, session=${route.sessionKey}`);
-
-          // Build OpenClaw MsgContext from NexusMsgContext
-          const openClawCtx = buildOpenClawMsgContext(msgCtx, ctx.accountId, route.sessionKey);
-
-          // Record inbound session
-          const storePath = channelRt.session.resolveStorePath(undefined, { agentId: route.agentId });
-          await channelRt.session.recordInboundSession({
-            storePath,
-            sessionKey: route.sessionKey,
-            ctx: openClawCtx,
-            createIfMissing: true,
-            updateLastRoute: {
-              sessionKey: route.sessionKey,
-              channel: CHANNEL_ID,
-              to: `${CHANNEL_ID}:${msgCtx.sessionKey.split(":").pop() ?? msgCtx.sender.id}`,
-              accountId: ctx.accountId,
-            },
-            onRecordError: (err) => {
-              ctx.log?.error(`nexus[${ctx.accountId}] session record error: ${err}`);
-            },
-          });
-
-          // Get or create outbound adapter for delivering replies
-          const { adapter: outboundAdapter } = getOrCreateOutboundClient(ctx.accountId, config);
-
-          // Dispatch to AI agent via buffered block dispatcher
-          await channelRt.reply.dispatchReplyWithBufferedBlockDispatcher({
-            ctx: openClawCtx,
-            cfg: ctx.cfg,
-            dispatcherOptions: {
-              deliver: async (payload) => {
-                const replyText = payload.text;
-                if (!replyText) return;
-
-                // Extract conversation ID from the session key or To field
-                const toField = String(openClawCtx.To ?? "");
-                const convIdStr = toField.replace(new RegExp(`^${CHANNEL_ID}:`), "");
-                const conversationId = Number(convIdStr);
-                if (!conversationId || isNaN(conversationId)) {
-                  ctx.log?.error(`nexus[${ctx.accountId}] invalid conversationId from To: ${toField}`);
-                  return;
-                }
-
-                await outboundAdapter.sendText({ conversationId }, replyText);
-                ctx.log?.info(`nexus[${ctx.accountId}] delivered reply to conversation ${conversationId}`);
-              },
-              onError: (err, info) => {
-                ctx.log?.error(`nexus[${ctx.accountId}] reply dispatch error (${info.kind}): ${err}`);
-              },
-            },
-          });
+          await handleGatewayEvent(event, gctx);
         } catch (err) {
           ctx.log?.error(`nexus[${ctx.accountId}] event processing error: ${err}`);
         }
@@ -530,31 +609,21 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
 
       try {
         await gatewayManager.start(ctx.accountId);
-        (ctx.setStatus as any)?.({ running: true, lastStartAt: new Date().toISOString() });
+        (ctx.setStatus as (s: Record<string, unknown>) => void)?.({
+          running: true,
+          lastStartAt: new Date().toISOString(),
+        });
       } catch (err) {
         ctx.log?.error(`nexus[${ctx.accountId}] gateway start failed: ${err}`);
-        (ctx.setStatus as any)?.({
+        (ctx.setStatus as (s: Record<string, unknown>) => void)?.({
           running: false,
           lastError: String(err),
         });
       }
 
-      // Wait for abort signal to stop
-      await new Promise<void>((resolve) => {
-        if (ctx.abortSignal.aborted) {
-          gatewayManager.stop(ctx.accountId).then(resolve).catch(resolve);
-          return;
-        }
-        ctx.abortSignal.addEventListener(
-          "abort",
-          () => {
-            gatewayManager.stop(ctx.accountId).then(resolve).catch(resolve);
-          },
-          { once: true },
-        );
-      });
+      await waitForAbort(ctx.abortSignal, () => gatewayManager.stop(ctx.accountId));
 
-      (ctx.setStatus as any)?.({
+      (ctx.setStatus as (s: Record<string, unknown>) => void)?.({
         running: false,
         lastStopAt: new Date().toISOString(),
       });
@@ -562,33 +631,10 @@ export const nexusPlugin: ChannelPlugin<ResolvedNexusAccount> = {
 
     logoutAccount: async ({ cfg, accountId }) => {
       const resolvedAccountId = accountId ?? DEFAULT_ACCOUNT_ID;
-      const nexusCfg = (cfg as any).channels?.[CHANNEL_ID] as Record<string, any> | undefined;
-      let changed = false;
-      let nextCfg = { ...cfg } as any;
+      const { nextCfg, changed } = clearAccountToken(cfg, resolvedAccountId);
 
-      if (!hasMultiAccounts(cfg)) {
-        const channelCfg = { ...nexusCfg } as Record<string, any>;
-        if (channelCfg.agentToken) {
-          delete channelCfg.agentToken;
-          changed = true;
-        }
-        if (changed) {
-          nextCfg.channels = { ...nextCfg.channels, [CHANNEL_ID]: channelCfg };
-        }
-      } else {
-        const accountCfg = { ...nexusCfg?.accounts?.[resolvedAccountId] } as Record<string, any>;
-        if (accountCfg.agentToken) {
-          delete accountCfg.agentToken;
-          changed = true;
-        }
-        if (changed) {
-          const nextAccounts = { ...nexusCfg?.accounts, [resolvedAccountId]: accountCfg };
-          nextCfg.channels = {
-            ...nextCfg.channels,
-            [CHANNEL_ID]: { ...nexusCfg, accounts: nextAccounts },
-          };
-        }
-      }
+      // Evict cached client so stale tokens are not reused.
+      evictOutboundClient(resolvedAccountId);
 
       if (changed) {
         await getNexusRuntime().config.writeConfigFile(nextCfg);

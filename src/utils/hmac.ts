@@ -5,14 +5,8 @@ import { createHmac, timingSafeEqual } from "node:crypto";
  *
  * Signature = HMAC-SHA256(secret, timestamp + "." + body) as hex.
  */
-export function computeSignature(
-  secret: string,
-  timestamp: string,
-  body: string,
-): string {
-  return createHmac("sha256", secret)
-    .update(`${timestamp}.${body}`)
-    .digest("hex");
+export function computeSignature(secret: string, timestamp: string, body: string): string {
+  return createHmac("sha256", secret).update(`${timestamp}.${body}`).digest("hex");
 }
 
 /**
@@ -21,16 +15,9 @@ export function computeSignature(
  * The `signature` parameter may carry a `sha256=` prefix which is
  * stripped before comparison.
  */
-export function verifySignature(
-  secret: string,
-  timestamp: string,
-  body: string,
-  signature: string,
-): boolean {
+export function verifySignature(secret: string, timestamp: string, body: string, signature: string): boolean {
   const expected = computeSignature(secret, timestamp, body);
-  const actual = signature.startsWith("sha256=")
-    ? signature.slice("sha256=".length)
-    : signature;
+  const actual = signature.startsWith("sha256=") ? signature.slice("sha256=".length) : signature;
 
   if (expected.length !== actual.length) {
     return false;

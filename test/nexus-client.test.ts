@@ -1,19 +1,13 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { ConnectError, Code } from "@connectrpc/connect";
-import {
-  NexusClient,
-  createNexusClient,
-  toNum,
-  toBid,
-  toBidOpt,
-} from "../src/nexus-api/client.js";
+import { create } from "@bufbuild/protobuf";
+import { Code, ConnectError } from "@connectrpc/connect";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { NexusAccountConfig } from "../src/config.js";
+import { createNexusClient, NexusClient, toBid, toBidOpt, toNum } from "../src/nexus-api/client.js";
 import {
-  SendMessageRequestSchema,
   GetDownloadURLRequestSchema,
+  SendMessageRequestSchema,
   UploadFileRequestSchema,
 } from "../src/nexus-api/index.js";
-import { create } from "@bufbuild/protobuf";
 
 function validConfig(): NexusAccountConfig {
   return {
@@ -37,11 +31,7 @@ function mockConnectResponse(body: unknown, status = 200): Response {
 /**
  * Build a mock Connect RPC error response.
  */
-function mockConnectError(
-  code: string,
-  message: string,
-  status: number,
-): Response {
+function mockConnectError(code: string, message: string, status: number): Response {
   return new Response(JSON.stringify({ code, message }), {
     status,
     headers: { "Content-Type": "application/json" },
@@ -92,9 +82,7 @@ describe("NexusClient", () => {
     fetchSpy.mockResolvedValueOnce(mockConnectResponse({ gateway: {} }));
 
     const client = new NexusClient(validConfig());
-    await expect(client.discoverGatewayUrl()).rejects.toThrow(
-      "GetClientConfig did not return a gateway ws_url",
-    );
+    await expect(client.discoverGatewayUrl()).rejects.toThrow("GetClientConfig did not return a gateway ws_url");
   });
 
   // -- sendMessage --
@@ -119,9 +107,7 @@ describe("NexusClient", () => {
 
     const [url, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
     expect(url).toContain("api.v1.MessageService/SendMessage");
-    expect((init.headers as Headers).get("Authorization")).toBe(
-      "Bearer nxa_test_token_abc",
-    );
+    expect((init.headers as Headers).get("Authorization")).toBe("Bearer nxa_test_token_abc");
   });
 
   // -- uploadFile --
@@ -172,9 +158,7 @@ describe("NexusClient", () => {
   // -- Connect RPC error handling --
 
   it("throws ConnectError on non-2xx response", async () => {
-    fetchSpy.mockResolvedValueOnce(
-      mockConnectError("not_found", "conversation not found", 404),
-    );
+    fetchSpy.mockResolvedValueOnce(mockConnectError("not_found", "conversation not found", 404));
 
     const client = new NexusClient(validConfig());
 
@@ -195,9 +179,7 @@ describe("NexusClient", () => {
   });
 
   it("throws ConnectError with Unauthenticated code for 401", async () => {
-    fetchSpy.mockResolvedValueOnce(
-      mockConnectError("unauthenticated", "invalid token", 401),
-    );
+    fetchSpy.mockResolvedValueOnce(mockConnectError("unauthenticated", "invalid token", 401));
 
     const client = new NexusClient(validConfig());
 

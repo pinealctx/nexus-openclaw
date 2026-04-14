@@ -6,24 +6,32 @@
  */
 
 import { create } from "@bufbuild/protobuf";
-import { ConnectError, Code as ConnectCode } from "@connectrpc/connect";
-
+import { Code as ConnectCode, ConnectError } from "@connectrpc/connect";
+import {
+  AudioContentSchema,
+  CardContentSchema,
+  FileContentSchema,
+  ImageContentSchema,
+  MarkdownContentSchema,
+  TextContentSchema,
+  VideoContentSchema,
+} from "../generated/shared/v1/message_pb.js";
+import { consoleLogger, type NexusLogger } from "../logger.js";
 import type { NexusClient } from "../nexus-api/client.js";
 import {
-  MessageType,
+  AnswerCardActionRequestSchema,
+  EditMessageRequestSchema,
   MediaPurpose,
   MessageBodySchema,
+  MessageType,
   SendMessageRequestSchema,
-  EditMessageRequestSchema,
-  AnswerCardActionRequestSchema,
-  UploadFileRequestSchema,
   toBid,
   toBidOpt,
+  UploadFileRequestSchema,
 } from "../nexus-api/index.js";
-import { TextContentSchema, MarkdownContentSchema, CardContentSchema, ImageContentSchema, AudioContentSchema, VideoContentSchema, FileContentSchema } from "../generated/shared/v1/message_pb.js";
-import type { OutboundTarget, SendOptions, MediaType } from "../types.js";
-import { isMarkdown } from "../utils/markdown-detect.js";
+import type { MediaType, OutboundTarget, SendOptions } from "../types.js";
 import { generateClientMessageId } from "../utils/id-gen.js";
+import { isMarkdown } from "../utils/markdown-detect.js";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -58,7 +66,7 @@ function resolveTextType(text: string, options?: SendOptions): MessageType {
 /**
  * Map a MediaType to the corresponding Nexus MessageType enum value.
  */
-function mediaTypeToMessageType(type: MediaType): MessageType {
+function _mediaTypeToMessageType(type: MediaType): MessageType {
   switch (type) {
     case "image":
       return MessageType.IMAGE;
@@ -121,7 +129,14 @@ function mediaTypeToContentType(type: MediaType): string {
 // ---------------------------------------------------------------------------
 
 export class NexusOutboundAdapter {
-  constructor(private readonly nexusClient: NexusClient) {}
+  private readonly log: NexusLogger;
+
+  constructor(
+    private readonly nexusClient: NexusClient,
+    logger?: NexusLogger,
+  ) {
+    this.log = logger ?? consoleLogger;
+  }
 
   // -----------------------------------------------------------------------
   // sendText
@@ -132,11 +147,7 @@ export class NexusOutboundAdapter {
    *
    * Markdown is auto-detected unless `forceMarkdown` is set.
    */
-  async sendText(
-    target: OutboundTarget,
-    text: string,
-    options?: SendOptions,
-  ): Promise<void> {
+  async sendText(target: OutboundTarget, text: string, options?: SendOptions): Promise<void> {
     const msgType = resolveTextType(text, options);
     const clientMessageId = generateClientMessageId();
 
@@ -168,10 +179,7 @@ export class NexusOutboundAdapter {
    * On upload failure (after 1 retry) falls back to a text message
    * containing the URL as a link.
    */
-  async sendMedia(
-    target: OutboundTarget,
-    media: { url: string; type: MediaType; fileName?: string },
-  ): Promise<void> {
+  async sendMedia(target: OutboundTarget, media: { url: string; type: MediaType; fileName?: string }): Promise<void> {
     const fileName = media.fileName ?? this.fileNameFromUrl(media.url);
     const contentType = mediaTypeToContentType(media.type);
 
@@ -181,9 +189,7 @@ export class NexusOutboundAdapter {
       fileId = await this.uploadWithRetry(fileName, contentType, data);
     } catch {
       // Upload failed — fall back to text link.
-      console.warn(
-        `[NexusOutbound] media upload failed for ${media.url}, falling back to text link`,
-      );
+      this.log.warn(`[NexusOutbound] media upload failed for ${media.url}, falling back to text link`);
     }
 
     if (fileId) {
@@ -211,10 +217,7 @@ export class NexusOutboundAdapter {
   /**
    * Send an Adaptive Card message.
    */
-  async sendCard(
-    target: OutboundTarget,
-    cardJson: string,
-  ): Promise<void> {
+  async sendCard(target: OutboundTarget, cardJson: string): Promise<void> {
     const clientMessageId = generateClientMessageId();
 
     await this.sendMessageWithRetry(
@@ -237,11 +240,7 @@ export class NexusOutboundAdapter {
   /**
    * Respond to a card action callback.
    */
-  async answerCardAction(
-    actionId: string,
-    text?: string,
-    showAlert?: boolean,
-  ): Promise<void> {
+  async answerCardAction(actionId: string, text?: string, showAlert?: boolean): Promise<void> {
     await this.nexusClient.answerCardAction(
       create(AnswerCardActionRequestSchema, {
         actionId,
@@ -258,11 +257,7 @@ export class NexusOutboundAdapter {
   /**
    * Update an existing card message with new JSON content.
    */
-  async editCard(
-    conversationId: number,
-    messageId: number,
-    cardJson: string,
-  ): Promise<void> {
+  async editCard(conversationId: number, messageId: number, cardJson: string): Promise<void> {
     await this.nexusClient.editMessage(
       create(EditMessageRequestSchema, {
         conversationId: toBid(conversationId),
@@ -301,15 +296,13 @@ export class NexusOutboundAdapter {
             throw err;
           }
           if (err.code === ConnectCode.NotFound) {
-            console.warn(
-              `[NexusOutbound] conversation not found, skipping: ${err.message}`,
-            );
+            this.log.warn(`[NexusOutbound] conversation not found, skipping: ${err.message}`);
             return;
           }
         }
 
         if (attempt < SEND_MAX_RETRIES) {
-          const delay = SEND_BACKOFF_BASE * Math.pow(2, attempt);
+          const delay = SEND_BACKOFF_BASE * 2 ** attempt;
           await sleep(delay);
         }
       }
@@ -322,11 +315,7 @@ export class NexusOutboundAdapter {
    * Upload a file with up to UPLOAD_MAX_RETRIES retries.
    * Returns the file_id on success.
    */
-  private async uploadWithRetry(
-    fileName: string,
-    contentType: string,
-    data: Uint8Array,
-  ): Promise<string> {
+  private async uploadWithRetry(fileName: string, contentType: string, data: Uint8Array): Promise<string> {
     let lastError: unknown;
 
     for (let attempt = 0; attempt <= UPLOAD_MAX_RETRIES; attempt++) {

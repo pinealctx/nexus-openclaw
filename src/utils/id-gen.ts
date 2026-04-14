@@ -16,6 +16,16 @@ export function generateClientMessageId(): bigint {
 
   if (now === lastTimestamp) {
     counter = (counter + 1n) & COUNTER_MASK;
+    if (counter === 0n) {
+      // Counter wrapped within the same millisecond — spin until next ms.
+      // This is extremely unlikely (~4M calls/ms) but prevents duplicate IDs.
+      let next = BigInt(Date.now());
+      while (next === lastTimestamp) {
+        next = BigInt(Date.now());
+      }
+      lastTimestamp = next;
+      return (next << COUNTER_BITS) | counter;
+    }
   } else {
     lastTimestamp = now;
     counter = 0n;

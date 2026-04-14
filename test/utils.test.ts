@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { buildSessionKey } from "../src/utils/session-key.js";
+import { describe, expect, it } from "vitest";
 import { computeSignature, verifySignature } from "../src/utils/hmac.js";
-import { isMarkdown } from "../src/utils/markdown-detect.js";
 import { generateClientMessageId } from "../src/utils/id-gen.js";
+import { isMarkdown } from "../src/utils/markdown-detect.js";
+import { buildSessionKey } from "../src/utils/session-key.js";
 
 // ---------------------------------------------------------------------------
 // 3.1 — buildSessionKey

@@ -4,9 +4,10 @@
  */
 
 import type { NexusAccountConfig } from "../config.js";
+import { consoleLogger, type NexusLogger } from "../logger.js";
 import { createNexusClient, type NexusClient } from "../nexus-api/client.js";
-import { WebSocketConnector } from "./ws-connector.js";
 import { WebhookServer } from "./webhook-server.js";
+import { WebSocketConnector } from "./ws-connector.js";
 
 // ---------------------------------------------------------------------------
 // Per-account state
@@ -33,10 +34,14 @@ export class GatewayManager {
   private readonly accounts = new Map<string, AccountEntry>();
   private readonly eventHandlers: GatewayEventHandler[] = [];
   private readonly authSuccessHandlers: AuthSuccessHandler[] = [];
+  private readonly log: NexusLogger;
 
   constructor(
     private readonly configResolver: (accountId: string) => NexusAccountConfig,
-  ) {}
+    logger?: NexusLogger,
+  ) {
+    this.log = logger ?? consoleLogger;
+  }
 
   /**
    * Register a handler that receives events tagged with the originating accountId.
@@ -64,7 +69,7 @@ export class GatewayManager {
     }
 
     const config = this.configResolver(accountId);
-    console.log("[nexus-gw] starting account:", accountId, "mode:", config.deliveryMode);
+    this.log.info(`[nexus-gw] starting account: ${accountId} mode: ${config.deliveryMode}`);
     const client = createNexusClient(config);
 
     const entry: AccountEntry = {
@@ -120,7 +125,7 @@ export class GatewayManager {
     client: NexusClient,
     entry: AccountEntry,
   ): Promise<void> {
-    const connector = new WebSocketConnector(config, client);
+    const connector = new WebSocketConnector(config, client, this.log);
 
     connector.onEvent((event) => {
       this.dispatch(accountId, event);
@@ -136,15 +141,9 @@ export class GatewayManager {
     await connector.connect();
   }
 
-  private async startWebhook(
-    accountId: string,
-    config: NexusAccountConfig,
-    entry: AccountEntry,
-  ): Promise<void> {
+  private async startWebhook(accountId: string, config: NexusAccountConfig, entry: AccountEntry): Promise<void> {
     if (!config.webhook) {
-      throw new Error(
-        `webhook configuration is required for account ${accountId}`,
-      );
+      throw new Error(`webhook configuration is required for account ${accountId}`);
     }
 
     const server = new WebhookServer(config.webhook);

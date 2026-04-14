@@ -82,9 +82,7 @@ function isPositiveInteger(value: unknown): value is number {
  * `{ valid: false, errors }` with descriptive errors identifying the
  * specific field and constraint violated.
  */
-export function validateConfig(
-  config: Partial<NexusAccountConfig>,
-): ConfigValidationResult {
+export function validateConfig(config: Partial<NexusAccountConfig>): ConfigValidationResult {
   const errors: ConfigError[] = [];
 
   // agentToken
@@ -124,10 +122,7 @@ export function validateConfig(
         message: "webhook configuration is required when deliveryMode is webhook",
       });
     } else {
-      if (
-        typeof config.webhook.secretKey !== "string" ||
-        config.webhook.secretKey.length === 0
-      ) {
+      if (typeof config.webhook.secretKey !== "string" || config.webhook.secretKey.length === 0) {
         errors.push({
           field: "webhook.secretKey",
           message: "webhook.secretKey is required when deliveryMode is webhook",

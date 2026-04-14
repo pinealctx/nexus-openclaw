@@ -5,9 +5,6 @@ import type { SessionKey } from "../types.js";
  *
  * Format: `agent:{agentUserId}:nexus:{conversationId}`
  */
-export function buildSessionKey(
-  agentUserId: number,
-  conversationId: number,
-): SessionKey {
+export function buildSessionKey(agentUserId: number, conversationId: number): SessionKey {
   return `agent:${agentUserId}:nexus:${conversationId}`;
 }

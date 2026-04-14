@@ -6,44 +6,31 @@
  */
 
 import { create } from "@bufbuild/protobuf";
-import { createClient, type Client, type Interceptor } from "@connectrpc/connect";
+import { type Client, createClient, type Interceptor } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 
 import type { NexusAccountConfig } from "../config.js";
-
+import { AgentService } from "../generated/api/v1/agent_service_pb.js";
 // Generated service descriptors and schemas
 import { AuthService, GetClientConfigRequestSchema } from "../generated/api/v1/auth_service_pb.js";
 import {
-  MessageService,
-  type SendMessageRequest,
-  type SendMessageResponse,
-  type EditMessageRequest,
-  type EditMessageResponse,
-  type PushStreamDeltaRequest,
-  type EndStreamRequest,
-  type ErrorStreamRequest,
-  type AnswerCardActionRequest,
-  SendMessageRequestSchema,
-  EditMessageRequestSchema,
-  PushStreamDeltaRequestSchema,
-  EndStreamRequestSchema,
-  ErrorStreamRequestSchema,
-  AnswerCardActionRequestSchema,
-} from "../generated/api/v1/message_service_pb.js";
-import {
+  type GetDownloadURLRequest,
+  type GetDownloadURLResponse,
   MediaService,
   type UploadFileRequest,
   type UploadFileResponse,
-  type GetDownloadURLRequest,
-  type GetDownloadURLResponse,
-  UploadFileRequestSchema,
-  GetDownloadURLRequestSchema,
 } from "../generated/api/v1/media_service_pb.js";
 import {
-  AgentService,
-} from "../generated/api/v1/agent_service_pb.js";
-import { MessageType, StreamPhase, MessageBodySchema, MessageEntityType } from "../generated/shared/v1/message_pb.js";
-import { MediaPurpose } from "../generated/shared/v1/media_pb.js";
+  type AnswerCardActionRequest,
+  type EditMessageRequest,
+  type EditMessageResponse,
+  type EndStreamRequest,
+  type ErrorStreamRequest,
+  MessageService,
+  type PushStreamDeltaRequest,
+  type SendMessageRequest,
+  type SendMessageResponse,
+} from "../generated/api/v1/message_service_pb.js";
 
 // ---------------------------------------------------------------------------
 // int64 boundary helpers
@@ -71,7 +58,7 @@ export function toBidOpt(v: number | undefined): bigint | undefined {
 
 function maskToken(token: string): string {
   if (token.length <= 8) return "***";
-  return token.slice(0, 4) + "***" + token.slice(-4);
+  return `${token.slice(0, 4)}***${token.slice(-4)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -89,10 +76,11 @@ export class NexusClient {
 
   private readonly messageClient: Client<typeof MessageService>;
   private readonly mediaClient: Client<typeof MediaService>;
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: reserved for agent management API
   private readonly agentClient: Client<typeof AgentService>;
   private readonly authClient: Client<typeof AuthService>;
 
-  constructor(private readonly config: NexusAccountConfig) {
+  constructor(readonly config: NexusAccountConfig) {
     this.serverUrl = config.serverUrl.replace(/\/+$/, "");
     this.agentToken = config.agentToken;
 
@@ -131,15 +119,11 @@ export class NexusClient {
    * users and agents on the same /ws endpoint.
    */
   async discoverGatewayUrl(): Promise<string> {
-    const res = await this.authClient.getClientConfig(
-      create(GetClientConfigRequestSchema, {}),
-    );
+    const res = await this.authClient.getClientConfig(create(GetClientConfigRequestSchema, {}));
 
     const wsUrl = res.gateway?.wsUrl;
     if (!wsUrl) {
-      throw new Error(
-        "GetClientConfig did not return a gateway ws_url",
-      );
+      throw new Error("GetClientConfig did not return a gateway ws_url");
     }
 
     return wsUrl;
@@ -212,8 +196,15 @@ export function createNexusClient(config: NexusAccountConfig): NexusClient {
   return new NexusClient(config);
 }
 
-// Re-export generated types for convenience
-export { MessageType, StreamPhase, MessageBodySchema, MessageEntityType } from "../generated/shared/v1/message_pb.js";
+export { GetDownloadURLRequestSchema, UploadFileRequestSchema } from "../generated/api/v1/media_service_pb.js";
+export {
+  AnswerCardActionRequestSchema,
+  EditMessageRequestSchema,
+  EndStreamRequestSchema,
+  ErrorStreamRequestSchema,
+  PushStreamDeltaRequestSchema,
+  SendMessageRequestSchema,
+} from "../generated/api/v1/message_service_pb.js";
 export { MediaPurpose } from "../generated/shared/v1/media_pb.js";
-export { SendMessageRequestSchema, EditMessageRequestSchema, PushStreamDeltaRequestSchema, EndStreamRequestSchema, ErrorStreamRequestSchema, AnswerCardActionRequestSchema } from "../generated/api/v1/message_service_pb.js";
-export { UploadFileRequestSchema, GetDownloadURLRequestSchema } from "../generated/api/v1/media_service_pb.js";
+// Re-export generated types for convenience
+export { MessageBodySchema, MessageEntityType, MessageType, StreamPhase } from "../generated/shared/v1/message_pb.js";

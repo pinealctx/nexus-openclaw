@@ -1,8 +1,5 @@
-import { describe, it, expect } from "vitest";
-import {
-  validateConfig,
-  type NexusAccountConfig,
-} from "../src/config.js";
+import { describe, expect, it } from "vitest";
+import { type NexusAccountConfig, validateConfig } from "../src/config.js";
 
 /** Helper to build a minimal valid websocket config. */
 function validWsConfig(): NexusAccountConfig {
@@ -61,11 +58,7 @@ describe("validateConfig", () => {
     const result = validateConfig(rest);
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ field: "agentToken" }),
-        ]),
-      );
+      expect(result.errors).toEqual(expect.arrayContaining([expect.objectContaining({ field: "agentToken" })]));
     }
   });
 
@@ -85,11 +78,7 @@ describe("validateConfig", () => {
     const result = validateConfig(rest);
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ field: "serverUrl" }),
-        ]),
-      );
+      expect(result.errors).toEqual(expect.arrayContaining([expect.objectContaining({ field: "serverUrl" })]));
     }
   });
 
@@ -118,11 +107,7 @@ describe("validateConfig", () => {
     });
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ field: "webhook" }),
-        ]),
-      );
+      expect(result.errors).toEqual(expect.arrayContaining([expect.objectContaining({ field: "webhook" })]));
     }
   });
 
@@ -134,11 +119,7 @@ describe("validateConfig", () => {
     });
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ field: "webhook.secretKey" }),
-        ]),
-      );
+      expect(result.errors).toEqual(expect.arrayContaining([expect.objectContaining({ field: "webhook.secretKey" })]));
     }
   });
 
@@ -150,11 +131,7 @@ describe("validateConfig", () => {
     });
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ field: "webhook.port" }),
-        ]),
-      );
+      expect(result.errors).toEqual(expect.arrayContaining([expect.objectContaining({ field: "webhook.port" })]));
     }
   });
 

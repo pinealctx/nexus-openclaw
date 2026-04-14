@@ -8,20 +8,21 @@
  * Frame protocol uses binary protobuf (ClientFrame / ServerFrame).
  */
 
+import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
 import WebSocket from "ws";
-import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
 
 import type { NexusAccountConfig } from "../config.js";
+import type { ClientFrame, ServerFrame } from "../generated/api/v1/gateway_frame_pb.js";
+import { consoleLogger, type NexusLogger } from "../logger.js";
 import type { NexusClient } from "../nexus-api/client.js";
 import {
-  ClientFrameSchema,
-  ServerFrameSchema,
   AuthRequestSchema,
-  HeartbeatPingSchema,
+  ClientFrameSchema,
   ClientFrameType,
+  HeartbeatPingSchema,
+  ServerFrameSchema,
   ServerFrameType,
 } from "../nexus-api/index.js";
-import type { ServerFrame, ClientFrame } from "../generated/api/v1/gateway_frame_pb.js";
 
 // ---------------------------------------------------------------------------
 // Defaults
@@ -42,11 +43,7 @@ const MAX_JITTER = 1_000; // 0-1000ms random jitter
  *
  * delay = min(baseDelay * 2^attempt, maxDelay) + random_jitter(0, MAX_JITTER)
  */
-export function computeReconnectDelay(
-  attempt: number,
-  baseDelay: number,
-  maxDelay: number,
-): number {
+export function computeReconnectDelay(attempt: number, baseDelay: number, maxDelay: number): number {
   const exponential = Math.min(baseDelay * 2 ** attempt, maxDelay);
   const jitter = Math.floor(Math.random() * (MAX_JITTER + 1));
   return exponential + jitter;
@@ -56,12 +53,7 @@ export function computeReconnectDelay(
 // Non-recoverable errorDetail.errorName values
 // ---------------------------------------------------------------------------
 
-const NON_RECOVERABLE_ERROR_NAMES = new Set([
-  "AUTH_FAILED",
-  "TOKEN_REVOKED",
-  "TOKEN_EXPIRED",
-  "UNAUTHENTICATED",
-]);
+const NON_RECOVERABLE_ERROR_NAMES = new Set(["AUTH_FAILED", "TOKEN_REVOKED", "TOKEN_EXPIRED", "UNAUTHENTICATED"]);
 
 // ---------------------------------------------------------------------------
 // WebSocketConnector
@@ -90,11 +82,14 @@ export class WebSocketConnector {
   private readonly reconnectBaseDelay: number;
   private readonly reconnectMaxDelay: number;
   private readonly maxReconnectAttempts: number;
+  private readonly log: NexusLogger;
 
   constructor(
     private readonly config: NexusAccountConfig,
     private readonly nexusClient: NexusClient,
+    logger?: NexusLogger,
   ) {
+    this.log = logger ?? consoleLogger;
     const ws = config.websocket;
     this.heartbeatInterval = ws?.heartbeatInterval ?? DEFAULT_HEARTBEAT_INTERVAL;
     this.heartbeatTimeout = this.heartbeatInterval * HEARTBEAT_TIMEOUT_MULTIPLIER;
@@ -109,11 +104,7 @@ export class WebSocketConnector {
 
   /** Whether the connection is authenticated and ready. */
   get connected(): boolean {
-    return (
-      this.ws !== null &&
-      this.ws.readyState === WebSocket.OPEN &&
-      this.authenticated
-    );
+    return this.ws !== null && this.ws.readyState === WebSocket.OPEN && this.authenticated;
   }
 
   /** Register a handler for incoming Update payloads. */
@@ -170,10 +161,7 @@ export class WebSocketConnector {
 
     if (this.ws) {
       this.ws.removeAllListeners();
-      if (
-        this.ws.readyState === WebSocket.OPEN ||
-        this.ws.readyState === WebSocket.CONNECTING
-      ) {
+      if (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING) {
         this.ws.close(1000, "client disconnect");
       }
       this.ws = null;
@@ -196,7 +184,7 @@ export class WebSocketConnector {
       let settled = false;
 
       ws.on("open", () => {
-        console.log("[nexus-ws] connected to", url);
+        this.log.info(`[nexus-ws] connected to ${url}`);
         this.sendAuthRequest();
       });
 
@@ -212,9 +200,10 @@ export class WebSocketConnector {
               if (frame.payload.case === "authResponse" && frame.payload.value.success) {
                 resolve();
               } else {
-                const errMsg = frame.payload.case === "authResponse"
-                  ? frame.payload.value.error?.errorName ?? "unknown error"
-                  : "unexpected frame payload";
+                const errMsg =
+                  frame.payload.case === "authResponse"
+                    ? (frame.payload.value.error?.errorName ?? "unknown error")
+                    : "unexpected frame payload";
                 reject(new Error(`Authentication failed: ${errMsg}`));
               }
             }
@@ -239,7 +228,7 @@ export class WebSocketConnector {
       });
 
       ws.on("error", (err: Error) => {
-        console.error("[nexus-ws] error:", err.message);
+        this.log.error(`[nexus-ws] error: ${err.message}`);
         if (!settled) {
           settled = true;
           reject(err);
@@ -249,7 +238,7 @@ export class WebSocketConnector {
 
       ws.on("close", (_code: number, reason: Buffer) => {
         const reasonStr = reason.toString() || "connection closed";
-        console.log("[nexus-ws] disconnected:", _code, reasonStr);
+        this.log.info(`[nexus-ws] disconnected: ${_code} ${reasonStr}`);
         this.authenticated = false;
         this.clearHeartbeat();
 
@@ -290,7 +279,7 @@ export class WebSocketConnector {
       this.authenticated = true;
       this.reconnectAttempt = 0;
       this.startHeartbeat();
-      console.log("[nexus-ws] authenticated, userId:", frame.payload.value.userId);
+      this.log.info(`[nexus-ws] authenticated, userId: ${frame.payload.value.userId}`);
       // Expose the authenticated agent user ID so callers don't need it in config.
       if (frame.payload.value.userId) {
         this.authSuccessHandler?.(frame.payload.value.userId);
@@ -298,10 +287,11 @@ export class WebSocketConnector {
     } else {
       // Auth failure is non-recoverable — stop reconnection.
       this.stopping = true;
-      const errMsg = frame.payload.case === "authResponse"
-        ? frame.payload.value.error?.errorName ?? "unknown"
-        : "unexpected payload";
-      console.error("[nexus-ws] auth failed:", errMsg);
+      const errMsg =
+        frame.payload.case === "authResponse"
+          ? (frame.payload.value.error?.errorName ?? "unknown")
+          : "unexpected payload";
+      this.log.error(`[nexus-ws] auth failed: ${errMsg}`);
       this.emitError(new Error(`Authentication failed: ${errMsg}`));
     }
   }
@@ -359,7 +349,7 @@ export class WebSocketConnector {
 
   private handleUpdate(frame: ServerFrame): void {
     if (frame.payload.case === "update") {
-      console.log("[nexus-ws] update received, type:", frame.type);
+      this.log.info(`[nexus-ws] update received, type: ${frame.type}`);
       this.eventHandler?.(frame.payload.value);
     }
   }
@@ -393,23 +383,12 @@ export class WebSocketConnector {
   private scheduleReconnect(): void {
     if (this.stopping) return;
 
-    if (
-      this.maxReconnectAttempts >= 0 &&
-      this.reconnectAttempt >= this.maxReconnectAttempts
-    ) {
-      this.emitError(
-        new Error(
-          `Max reconnect attempts (${this.maxReconnectAttempts}) reached`,
-        ),
-      );
+    if (this.maxReconnectAttempts >= 0 && this.reconnectAttempt >= this.maxReconnectAttempts) {
+      this.emitError(new Error(`Max reconnect attempts (${this.maxReconnectAttempts}) reached`));
       return;
     }
 
-    const delay = computeReconnectDelay(
-      this.reconnectAttempt,
-      this.reconnectBaseDelay,
-      this.reconnectMaxDelay,
-    );
+    const delay = computeReconnectDelay(this.reconnectAttempt, this.reconnectBaseDelay, this.reconnectMaxDelay);
     this.reconnectAttempt++;
 
     this.reconnectTimer = setTimeout(async () => {
@@ -438,9 +417,7 @@ export class WebSocketConnector {
 
   private parseFrame(data: WebSocket.Data): ServerFrame | null {
     try {
-      const buf = typeof data === "string"
-        ? new TextEncoder().encode(data)
-        : new Uint8Array(data as ArrayBuffer);
+      const buf = typeof data === "string" ? new TextEncoder().encode(data) : new Uint8Array(data as ArrayBuffer);
       return fromBinary(ServerFrameSchema, buf);
     } catch {
       return null;

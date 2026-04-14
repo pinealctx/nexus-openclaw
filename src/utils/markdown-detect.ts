@@ -19,7 +19,7 @@ export function isMarkdown(text: string): boolean {
   // Link: [text](url)
   if (/\[.+?\]\(.+?\)/.test(text)) return true;
   // Unordered list: line starting with - or * followed by a space
-  if (/^[\-\*]\s/m.test(text)) return true;
+  if (/^[-*]\s/m.test(text)) return true;
   // Ordered list: line starting with digits followed by . and space
   if (/^\d+\.\s/m.test(text)) return true;
   // Horizontal rule: line with only --- (3+ dashes)

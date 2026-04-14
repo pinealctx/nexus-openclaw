@@ -7,20 +7,20 @@
  */
 
 import { create } from "@bufbuild/protobuf";
-
+import { StreamContentSchema } from "../generated/shared/v1/message_pb.js";
+import { consoleLogger, type NexusLogger } from "../logger.js";
 import type { NexusClient } from "../nexus-api/client.js";
 import {
-  MessageType,
-  StreamPhase,
-  MessageBodySchema,
-  SendMessageRequestSchema,
-  PushStreamDeltaRequestSchema,
   EndStreamRequestSchema,
   ErrorStreamRequestSchema,
+  MessageBodySchema,
+  MessageType,
+  PushStreamDeltaRequestSchema,
+  SendMessageRequestSchema,
+  StreamPhase,
   toBid,
   toNum,
 } from "../nexus-api/index.js";
-import { StreamContentSchema } from "../generated/shared/v1/message_pb.js";
 import type { OutboundTarget, StreamSession } from "../types.js";
 import { generateClientMessageId } from "../utils/id-gen.js";
 
@@ -50,8 +50,14 @@ function sleep(ms: number): Promise<void> {
 export class NexusStreamAdapter {
   /** Track consecutive pushDelta failures per session. */
   private consecutiveFailures = new Map<string, number>();
+  private readonly log: NexusLogger;
 
-  constructor(private readonly nexusClient: NexusClient) {}
+  constructor(
+    private readonly nexusClient: NexusClient,
+    logger?: NexusLogger,
+  ) {
+    this.log = logger ?? consoleLogger;
+  }
 
   // -----------------------------------------------------------------------
   // startStream
@@ -74,9 +80,7 @@ export class NexusStreamAdapter {
             value: create(StreamContentSchema, { phase: StreamPhase.START }),
           },
         }),
-        replyToMessageId: target.replyToMessageId !== undefined
-          ? toBid(target.replyToMessageId)
-          : undefined,
+        replyToMessageId: target.replyToMessageId !== undefined ? toBid(target.replyToMessageId) : undefined,
       }),
     );
 
@@ -99,6 +103,9 @@ export class NexusStreamAdapter {
    *
    * Increments seq, retries with the same seq on failure (idempotent).
    * If consecutive failures exceed the threshold, calls errorStream.
+   *
+   * NOTE: This method mutates `session.seq` in place. The caller must
+   * treat the session object as owned by the adapter after startStream.
    */
   async pushDelta(session: StreamSession, delta: string): Promise<void> {
     session.seq += 1;
@@ -118,23 +125,18 @@ export class NexusStreamAdapter {
         // Reset consecutive failure counter on success.
         this.consecutiveFailures.set(key, 0);
         return;
-      } catch (err: unknown) {
+      } catch (_err: unknown) {
         const failures = (this.consecutiveFailures.get(key) ?? 0) + 1;
         this.consecutiveFailures.set(key, failures);
 
         if (failures >= CONSECUTIVE_FAILURE_THRESHOLD) {
-          console.error(
-            `[NexusStream] consecutive failures (${failures}) exceeded threshold, terminating stream`,
-          );
-          await this.errorStream(
-            session,
-            "Stream terminated due to consecutive push failures",
-          );
+          this.log.error(`[NexusStream] consecutive failures (${failures}) exceeded threshold, terminating stream`);
+          await this.errorStream(session, "Stream terminated due to consecutive push failures");
           return;
         }
 
         if (attempt < DELTA_MAX_RETRIES - 1) {
-          await sleep(DELTA_BACKOFF_BASE * Math.pow(2, attempt));
+          await sleep(DELTA_BACKOFF_BASE * 2 ** attempt);
         }
       }
     }

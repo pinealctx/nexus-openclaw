@@ -4,15 +4,10 @@
  */
 
 import { create } from "@bufbuild/protobuf";
-
-import type { NexusClient } from "../nexus-api/client.js";
-import {
-  MessageType,
-  MessageEntityType,
-  GetDownloadURLRequestSchema,
-} from "../nexus-api/index.js";
 import type { Update } from "../generated/api/v1/gateway_frame_pb.js";
-import type { MessageEnvelope, MessageEntity } from "../generated/shared/v1/message_pb.js";
+import type { MessageEntity, MessageEnvelope } from "../generated/shared/v1/message_pb.js";
+import type { NexusClient } from "../nexus-api/client.js";
+import { GetDownloadURLRequestSchema, MessageEntityType, MessageType } from "../nexus-api/index.js";
 import type { MediaType, NexusMsgContext } from "../types.js";
 import { buildSessionKey } from "../utils/session-key.js";
 
@@ -35,16 +30,10 @@ const MEDIA_TYPE_MAP: Partial<Record<MessageType, MediaType>> = {
 /**
  * Check if any mention entity references the given agentUserId.
  */
-function hasSelfMention(
-  entities: readonly MessageEntity[] | undefined,
-  agentUserId: number,
-): boolean {
+function hasSelfMention(entities: readonly MessageEntity[] | undefined, agentUserId: number): boolean {
   if (!entities) return false;
   return entities.some(
-    (e) =>
-      e.type === MessageEntityType.MENTION &&
-      e.data.case === "mention" &&
-      e.data.value.userId === agentUserId,
+    (e) => e.type === MessageEntityType.MENTION && e.data.case === "mention" && e.data.value.userId === agentUserId,
   );
 }
 
@@ -60,12 +49,9 @@ export class MessageNormalizer {
    * The event is an Update object emitted by ws-connector (already deserialized).
    * Returns null for updates that should be discarded (e.g. RECALLED).
    */
-  async normalize(
-    event: unknown,
-    agentUserId: number,
-  ): Promise<NexusMsgContext | null> {
+  async normalize(event: unknown, agentUserId: number): Promise<NexusMsgContext | null> {
     const update = event as Update;
-    if (!update || !update.update) {
+    if (!update?.update) {
       return null;
     }
 
@@ -103,12 +89,11 @@ export class MessageNormalizer {
   // MESSAGE event (SnUpdate.messageEnvelope)
   // -------------------------------------------------------------------------
 
-  private async normalizeMessage(
-    update: Update,
-    agentUserId: number,
-  ): Promise<NexusMsgContext | null> {
+  private async normalizeMessage(update: Update, agentUserId: number): Promise<NexusMsgContext | null> {
     if (update.update.case !== "snUpdate") return null;
-    const msg = update.update.value.update.value as MessageEnvelope;
+    const sn = update.update.value;
+    if (sn.update.case !== "messageEnvelope") return null;
+    const msg = sn.update.value;
     if (!msg?.body) return null;
 
     const bodyType = msg.body.type;
@@ -184,9 +169,7 @@ export class MessageNormalizer {
         if (fileId) {
           const mediaType = MEDIA_TYPE_MAP[bodyType as MessageType];
           if (mediaType) {
-            const { url } = await this.nexusClient.getDownloadUrl(
-              create(GetDownloadURLRequestSchema, { fileId }),
-            );
+            const { url } = await this.nexusClient.getDownloadUrl(create(GetDownloadURLRequestSchema, { fileId }));
             ctx.media = [{ type: mediaType, url }];
           }
         }
@@ -205,10 +188,7 @@ export class MessageNormalizer {
   // CARD_ACTION event (NonSnUpdate.cardAction)
   // -------------------------------------------------------------------------
 
-  private normalizeCardAction(
-    update: Update,
-    agentUserId: number,
-  ): NexusMsgContext | null {
+  private normalizeCardAction(update: Update, agentUserId: number): NexusMsgContext | null {
     if (update.update.case !== "nonSnUpdate") return null;
     const nonSn = update.update.value;
     if (nonSn.update.case !== "cardAction") return null;
@@ -241,10 +221,7 @@ export class MessageNormalizer {
   // CONTACT_ADDED event (SnUpdate.contactAdded)
   // -------------------------------------------------------------------------
 
-  private normalizeContactAdded(
-    update: Update,
-    agentUserId: number,
-  ): NexusMsgContext | null {
+  private normalizeContactAdded(update: Update, agentUserId: number): NexusMsgContext | null {
     if (update.update.case !== "snUpdate") return null;
     const sn = update.update.value;
     if (sn.update.case !== "contactAdded") return null;
@@ -271,10 +248,7 @@ export class MessageNormalizer {
   // REMOVED_FROM_GROUP event (SnUpdate.removedFromGroup)
   // -------------------------------------------------------------------------
 
-  private normalizeRemovedFromGroup(
-    update: Update,
-    agentUserId: number,
-  ): NexusMsgContext | null {
+  private normalizeRemovedFromGroup(update: Update, agentUserId: number): NexusMsgContext | null {
     if (update.update.case !== "snUpdate") return null;
     const sn = update.update.value;
     if (sn.update.case !== "removedFromGroup") return null;
@@ -307,10 +281,7 @@ export class MessageNormalizer {
   // GROUP_DISSOLVED event (SnUpdate.groupDissolved)
   // -------------------------------------------------------------------------
 
-  private normalizeGroupDissolved(
-    update: Update,
-    agentUserId: number,
-  ): NexusMsgContext | null {
+  private normalizeGroupDissolved(update: Update, agentUserId: number): NexusMsgContext | null {
     if (update.update.case !== "snUpdate") return null;
     const sn = update.update.value;
     if (sn.update.case !== "groupDissolved") return null;
@@ -343,13 +314,26 @@ export class MessageNormalizer {
   // Shared helpers
   // -------------------------------------------------------------------------
 
-  private resolveChatType(
-    msg: MessageEnvelope,
-    update: Update,
-  ): "dm" | "group" {
+  /**
+   * Determine whether a message is from a group or DM conversation.
+   *
+   * Primary signal: the Update.groups array contains a GroupInfo whose
+   * groupId matches the conversation. This is populated by the server
+   * for all group-originated updates.
+   *
+   * Fallback: if sender_id is 0 (system/group event messages), treat
+   * as group since DMs always have a real sender.
+   */
+  private resolveChatType(msg: MessageEnvelope, update: Update): "dm" | "group" {
     const conversationId = Number(msg.conversationId);
-    const isGroup = update.groups.some((g) => g.groupId === conversationId);
-    return isGroup ? "group" : "dm";
+    if (update.groups.some((g) => g.groupId === conversationId)) {
+      return "group";
+    }
+    // sender_id 0 is used for group system messages (member join/leave, etc.)
+    if (msg.senderId === 0) {
+      return "group";
+    }
+    return "dm";
   }
 
   private populateGroup(
