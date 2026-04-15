@@ -14,12 +14,14 @@ pnpm generate        # Generate TypeScript from protobuf (buf + protoc-gen-es)
 pnpm test            # Run tests once (vitest --run)
 pnpm test:watch      # Run tests in watch mode
 pnpm build           # Compile TypeScript (tsc)
-pnpm lint            # Type-check without emitting (tsc --noEmit)
+pnpm lint            # biome check + tsc --noEmit
+pnpm lint:fix        # biome check --write
+pnpm format          # biome format --write
 ```
 
 **Prerequisites for `pnpm generate`**: `buf` CLI and `protoc-gen-es` must be installed. Proto definitions are in `nexus-proto/proto/`.
 
-No ESLint, Prettier, or CI/CD configuration. Linting is via `tsc --noEmit` only.
+Linting via Biome (`@biomejs/biome`) + `tsc --noEmit`.
 
 ## Architecture
 
@@ -84,12 +86,16 @@ Each configured account gets its own: NexusAccountConfig, NexusClient, MessageNo
 ```
 src/
   index.ts            Public API re-exports
-  plugin.ts           Core plugin: register(), nexusPlugin object
+  channel.ts          OpenClaw Channel implementation for Nexus
+  runtime.ts          Plugin runtime lifecycle
   dock.ts             Lightweight metadata export
   config.ts           NexusAccountConfig interface + validateConfig()
+  config-accessor.ts  Config accessor utilities
+  const.ts            Constants
+  logger.ts           Logging utilities
   types.ts            Core types (SessionKey, NexusMsgContext, StreamSession, etc.)
   generated/          Generated protobuf code (committed to repo)
-    buf/validate/     Copied from nexus-desktop for buf.validate annotations
+    buf/validate/     buf.validate annotations
     api/v1/           Service descriptors, request/response types
     shared/v1/        Enums, message types, webhook events, gateway frames
   gateway/
@@ -99,8 +105,8 @@ src/
   inbound/
     normalizer.ts     MessageNormalizer: WebhookEvent → NexusMsgContext (fromJson + oneof dispatch)
   outbound/
-    adapter.ts        NexusOutboundAdapter: send text/markdown/media/card with retry (create + schemas)
-    stream.ts         NexusStreamAdapter: streaming message lifecycle (create + schemas)
+    adapter.ts        NexusOutboundAdapter: send text/markdown/media/card with retry
+    stream.ts         NexusStreamAdapter: streaming message lifecycle
   nexus-api/
     client.ts         NexusClient: Connect RPC typed clients + int64 boundary helpers
     index.ts          Barrel re-exports of generated types, schemas, enums
@@ -112,7 +118,11 @@ src/
 test/
   config.test.ts      Config validation tests
   utils.test.ts       Session key, HMAC, markdown, ID generator tests
-  nexus-client.test.ts NexusClient tests with fetch mocking (Connect RPC wire format)
+  nexus-client.test.ts NexusClient tests with fetch mocking
+  normalizer.test.ts  MessageNormalizer tests
+  outbound-adapter.test.ts Outbound adapter tests
+  stream-adapter.test.ts Stream adapter tests
+  webhook-server.test.ts Webhook server tests
 ```
 
 ## Key Design Decisions

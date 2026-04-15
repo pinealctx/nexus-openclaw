@@ -75,9 +75,9 @@ Restart the OpenClaw gateway. The plugin auto-discovers the Nexus Gateway WebSoc
 ```bash
 git clone https://github.com/pinealctx/nexus-openclaw.git
 cd nexus-openclaw
-npm install
-npm test
-npm run build
+pnpm install
+pnpm test
+pnpm build
 ```
 
 ## License
