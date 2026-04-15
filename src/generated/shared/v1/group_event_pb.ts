@@ -18,7 +18,7 @@ export const file_shared_v1_group_event: GenFile = /*@__PURE__*/
  * GroupContent carries structured group event data as the body of a
  * system message (MessageType = GROUP) delivered to a GROUP conversation.
  * Each event type has its own strongly-typed payload.
- *
+ * 
  * The oneof field implicitly identifies the event type, so no separate
  * enum is needed. Clients and agents switch on the oneof case to handle
  * the appropriate in-chat system notification.
@@ -137,7 +137,7 @@ export const MemberLeftEventSchema: GenMessage<MemberLeftEvent> = /*@__PURE__*/
 /**
  * MemberRemovedEvent is produced when a member (user or agent) is removed
  * by the group owner.
- *
+ * 
  * Delivery:
  *   - GROUP conversation: visible to all remaining members.
  *   - Removed member: receives a RemovedFromGroupEvent SnUpdate.

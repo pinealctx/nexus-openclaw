@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file api/v1/message_service.proto.
  */
 export const file_api_v1_message_service: GenFile = /*@__PURE__*/
-  fileDesc("ChxhcGkvdjEvbWVzc2FnZV9zZXJ2aWNlLnByb3RvEgZhcGkudjEiwgEKElNlbmRNZXNzYWdlUmVxdWVzdBIiChFjbGllbnRfbWVzc2FnZV9pZBgBIAEoA0IHukgEIgIgABIgCg9jb252ZXJzYXRpb25faWQYAiABKANCB7pIBCICIAASLAoEYm9keRgDIAEoCzIWLnNoYXJlZC52MS5NZXNzYWdlQm9keUIGukgDyAEBEiAKE3JlcGx5X3RvX21lc3NhZ2VfaWQYBCABKANIAIgBAUIWChRfcmVwbHlfdG9fbWVzc2FnZV9pZCI9ChNTZW5kTWVzc2FnZVJlc3BvbnNlEhIKCm1lc3NhZ2VfaWQYASABKAMSEgoKY3JlYXRlZF9hdBgCIAEoAyKFAQoSRWRpdE1lc3NhZ2VSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAEjAKCG5ld19ib2R5GAMgASgLMhYuc2hhcmVkLnYxLk1lc3NhZ2VCb2R5Qga6SAPIAQEiKQoTRWRpdE1lc3NhZ2VSZXNwb25zZRISCgp1cGRhdGVkX2F0GAEgASgDIlsKFURlbGV0ZU1lc3NhZ2VzUmVxdWVzdBIgCg9jb252ZXJzYXRpb25faWQYASABKANCB7pIBCICIAASIAoLbWVzc2FnZV9pZHMYAiADKANCC7pICJIBBQgBEMgBIi8KFkRlbGV0ZU1lc3NhZ2VzUmVzcG9uc2USFQoNZGVsZXRlZF9jb3VudBgBIAEoBSJbChREZWxldGVIaXN0b3J5UmVxdWVzdBIgCg9jb252ZXJzYXRpb25faWQYASABKANCB7pIBCICIAASIQoQdXBfdG9fbWVzc2FnZV9pZBgCIAEoA0IHukgEIgIgACIXChVEZWxldGVIaXN0b3J5UmVzcG9uc2UiVQoUUmVjYWxsTWVzc2FnZVJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEhsKCm1lc3NhZ2VfaWQYAiABKANCB7pIBCICIAAiFwoVUmVjYWxsTWVzc2FnZVJlc3BvbnNlIlIKEUdldE1lc3NhZ2VSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAIkEKEkdldE1lc3NhZ2VSZXNwb25zZRIrCgdtZXNzYWdlGAEgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZSLBAQoYR2V0TWVzc2FnZUhpc3RvcnlSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIeChFiZWZvcmVfbWVzc2FnZV9pZBgCIAEoA0gAiAEBEh0KEGFmdGVyX21lc3NhZ2VfaWQYAyABKANIAYgBARIZCgVsaW1pdBgEIAEoBUIKukgHGgUYyAEoAEIUChJfYmVmb3JlX21lc3NhZ2VfaWRCEwoRX2FmdGVyX21lc3NhZ2VfaWQihwEKGUdldE1lc3NhZ2VIaXN0b3J5UmVzcG9uc2USLAoIbWVzc2FnZXMYASADKAsyGi5zaGFyZWQudjEuTWVzc2FnZUVudmVsb3BlEhAKCGhhc19tb3JlGAIgASgIEioKDXJlbGF0ZWRfdXNlcnMYAyADKAsyEy5zaGFyZWQudjEuVXNlckluZm8ikQEKF1N1Ym1pdENhcmRBY3Rpb25SZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAEh8KC2FjdGlvbl9kYXRhGAMgASgJQgq6SAdyBRABGIAgEhYKBHZlcmIYBCABKAlCCLpIBXIDGIABIi0KGFN1Ym1pdENhcmRBY3Rpb25SZXNwb25zZRIRCglhY3Rpb25faWQYASABKAkihQEKFlB1c2hTdHJlYW1EZWx0YVJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEhsKCm1lc3NhZ2VfaWQYAiABKANCB7pIBCICIAASFAoDc2VxGAMgASgFQge6SAQaAiAAEhYKBWRlbHRhGAQgASgJQge6SARyAhABIhkKF1B1c2hTdHJlYW1EZWx0YVJlc3BvbnNlIpcBChBFbmRTdHJlYW1SZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAEhgKEGFjY3VtdWxhdGVkX3RleHQYAyABKAkSKgoIZW50aXRpZXMYBCADKAsyGC5zaGFyZWQudjEuTWVzc2FnZUVudGl0eSITChFFbmRTdHJlYW1SZXNwb25zZSJ2ChJFcnJvclN0cmVhbVJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEhsKCm1lc3NhZ2VfaWQYAiABKANCB7pIBCICIAASIQoNZXJyb3JfbWVzc2FnZRgDIAEoCUIKukgHcgUQARjoByIVChNFcnJvclN0cmVhbVJlc3BvbnNlIm8KF0Fuc3dlckNhcmRBY3Rpb25SZXF1ZXN0EhoKCWFjdGlvbl9pZBgBIAEoCUIHukgEcgIQARIbCgR0ZXh0GAIgASgJQgi6SAVyAxjIAUgAiAEBEhIKCnNob3dfYWxlcnQYAyABKAhCBwoFX3RleHQiGgoYQW5zd2VyQ2FyZEFjdGlvblJlc3BvbnNlMtAHCg5NZXNzYWdlU2VydmljZRJGCgtTZW5kTWVzc2FnZRIaLmFwaS52MS5TZW5kTWVzc2FnZVJlcXVlc3QaGy5hcGkudjEuU2VuZE1lc3NhZ2VSZXNwb25zZRJGCgtFZGl0TWVzc2FnZRIaLmFwaS52MS5FZGl0TWVzc2FnZVJlcXVlc3QaGy5hcGkudjEuRWRpdE1lc3NhZ2VSZXNwb25zZRJPCg5EZWxldGVNZXNzYWdlcxIdLmFwaS52MS5EZWxldGVNZXNzYWdlc1JlcXVlc3QaHi5hcGkudjEuRGVsZXRlTWVzc2FnZXNSZXNwb25zZRJMCg1EZWxldGVIaXN0b3J5EhwuYXBpLnYxLkRlbGV0ZUhpc3RvcnlSZXF1ZXN0Gh0uYXBpLnYxLkRlbGV0ZUhpc3RvcnlSZXNwb25zZRJMCg1SZWNhbGxNZXNzYWdlEhwuYXBpLnYxLlJlY2FsbE1lc3NhZ2VSZXF1ZXN0Gh0uYXBpLnYxLlJlY2FsbE1lc3NhZ2VSZXNwb25zZRJDCgpHZXRNZXNzYWdlEhkuYXBpLnYxLkdldE1lc3NhZ2VSZXF1ZXN0GhouYXBpLnYxLkdldE1lc3NhZ2VSZXNwb25zZRJYChFHZXRNZXNzYWdlSGlzdG9yeRIgLmFwaS52MS5HZXRNZXNzYWdlSGlzdG9yeVJlcXVlc3QaIS5hcGkudjEuR2V0TWVzc2FnZUhpc3RvcnlSZXNwb25zZRJVChBTdWJtaXRDYXJkQWN0aW9uEh8uYXBpLnYxLlN1Ym1pdENhcmRBY3Rpb25SZXF1ZXN0GiAuYXBpLnYxLlN1Ym1pdENhcmRBY3Rpb25SZXNwb25zZRJYCg9QdXNoU3RyZWFtRGVsdGESHi5hcGkudjEuUHVzaFN0cmVhbURlbHRhUmVxdWVzdBofLmFwaS52MS5QdXNoU3RyZWFtRGVsdGFSZXNwb25zZSIEmLUYARJGCglFbmRTdHJlYW0SGC5hcGkudjEuRW5kU3RyZWFtUmVxdWVzdBoZLmFwaS52MS5FbmRTdHJlYW1SZXNwb25zZSIEmLUYARJMCgtFcnJvclN0cmVhbRIaLmFwaS52MS5FcnJvclN0cmVhbVJlcXVlc3QaGy5hcGkudjEuRXJyb3JTdHJlYW1SZXNwb25zZSIEmLUYARJbChBBbnN3ZXJDYXJkQWN0aW9uEh8uYXBpLnYxLkFuc3dlckNhcmRBY3Rpb25SZXF1ZXN0GiAuYXBpLnYxLkFuc3dlckNhcmRBY3Rpb25SZXNwb25zZSIEmLUYAUKQAQoKY29tLmFwaS52MUITTWVzc2FnZVNlcnZpY2VQcm90b1ABWjRnaXRodWIuY29tL3BpbmVhbGN0eC9uZXh1cy1wcm90by9nZW4vZ28vYXBpL3YxO2FwaXYxogIDQVhYqgIGQXBpLlYxygIGQXBpXFYx4gISQXBpXFYxXEdQQk1ldGFkYXRh6gIHQXBpOjpWMWIGcHJvdG8z", [file_buf_validate_validate, file_shared_v1_message, file_shared_v1_options, file_shared_v1_user]);
+  fileDesc("ChxhcGkvdjEvbWVzc2FnZV9zZXJ2aWNlLnByb3RvEgZhcGkudjEiwgEKElNlbmRNZXNzYWdlUmVxdWVzdBIiChFjbGllbnRfbWVzc2FnZV9pZBgBIAEoA0IHukgEIgIgABIgCg9jb252ZXJzYXRpb25faWQYAiABKANCB7pIBCICIAASLAoEYm9keRgDIAEoCzIWLnNoYXJlZC52MS5NZXNzYWdlQm9keUIGukgDyAEBEiAKE3JlcGx5X3RvX21lc3NhZ2VfaWQYBCABKANIAIgBAUIWChRfcmVwbHlfdG9fbWVzc2FnZV9pZCI9ChNTZW5kTWVzc2FnZVJlc3BvbnNlEhIKCm1lc3NhZ2VfaWQYASABKAMSEgoKY3JlYXRlZF9hdBgCIAEoAyKFAQoSRWRpdE1lc3NhZ2VSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAEjAKCG5ld19ib2R5GAMgASgLMhYuc2hhcmVkLnYxLk1lc3NhZ2VCb2R5Qga6SAPIAQEiKQoTRWRpdE1lc3NhZ2VSZXNwb25zZRISCgp1cGRhdGVkX2F0GAEgASgDIlsKFURlbGV0ZU1lc3NhZ2VzUmVxdWVzdBIgCg9jb252ZXJzYXRpb25faWQYASABKANCB7pIBCICIAASIAoLbWVzc2FnZV9pZHMYAiADKANCC7pICJIBBQgBEMgBIi8KFkRlbGV0ZU1lc3NhZ2VzUmVzcG9uc2USFQoNZGVsZXRlZF9jb3VudBgBIAEoBSJbChREZWxldGVIaXN0b3J5UmVxdWVzdBIgCg9jb252ZXJzYXRpb25faWQYASABKANCB7pIBCICIAASIQoQdXBfdG9fbWVzc2FnZV9pZBgCIAEoA0IHukgEIgIgACIXChVEZWxldGVIaXN0b3J5UmVzcG9uc2UiVQoUUmVjYWxsTWVzc2FnZVJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEhsKCm1lc3NhZ2VfaWQYAiABKANCB7pIBCICIAAiFwoVUmVjYWxsTWVzc2FnZVJlc3BvbnNlIlIKEUdldE1lc3NhZ2VSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAIkEKEkdldE1lc3NhZ2VSZXNwb25zZRIrCgdtZXNzYWdlGAEgASgLMhouc2hhcmVkLnYxLk1lc3NhZ2VFbnZlbG9wZSLBAQoYR2V0TWVzc2FnZUhpc3RvcnlSZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIeChFiZWZvcmVfbWVzc2FnZV9pZBgCIAEoA0gAiAEBEh0KEGFmdGVyX21lc3NhZ2VfaWQYAyABKANIAYgBARIZCgVsaW1pdBgEIAEoBUIKukgHGgUYyAEoAEIUChJfYmVmb3JlX21lc3NhZ2VfaWRCEwoRX2FmdGVyX21lc3NhZ2VfaWQihwEKGUdldE1lc3NhZ2VIaXN0b3J5UmVzcG9uc2USLAoIbWVzc2FnZXMYASADKAsyGi5zaGFyZWQudjEuTWVzc2FnZUVudmVsb3BlEhAKCGhhc19tb3JlGAIgASgIEioKDXJlbGF0ZWRfdXNlcnMYAyADKAsyEy5zaGFyZWQudjEuVXNlckluZm8ikQEKF1N1Ym1pdENhcmRBY3Rpb25SZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAEh8KC2FjdGlvbl9kYXRhGAMgASgJQgq6SAdyBRABGIAgEhYKBHZlcmIYBCABKAlCCLpIBXIDGIABIi0KGFN1Ym1pdENhcmRBY3Rpb25SZXNwb25zZRIRCglhY3Rpb25faWQYASABKAkihQEKFlB1c2hTdHJlYW1EZWx0YVJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEhsKCm1lc3NhZ2VfaWQYAiABKANCB7pIBCICIAASFAoDc2VxGAMgASgFQge6SAQaAiAAEhYKBWRlbHRhGAQgASgJQge6SARyAhABIhkKF1B1c2hTdHJlYW1EZWx0YVJlc3BvbnNlIpcBChBFbmRTdHJlYW1SZXF1ZXN0EiAKD2NvbnZlcnNhdGlvbl9pZBgBIAEoA0IHukgEIgIgABIbCgptZXNzYWdlX2lkGAIgASgDQge6SAQiAiAAEhgKEGFjY3VtdWxhdGVkX3RleHQYAyABKAkSKgoIZW50aXRpZXMYBCADKAsyGC5zaGFyZWQudjEuTWVzc2FnZUVudGl0eSITChFFbmRTdHJlYW1SZXNwb25zZSJ2ChJFcnJvclN0cmVhbVJlcXVlc3QSIAoPY29udmVyc2F0aW9uX2lkGAEgASgDQge6SAQiAiAAEhsKCm1lc3NhZ2VfaWQYAiABKANCB7pIBCICIAASIQoNZXJyb3JfbWVzc2FnZRgDIAEoCUIKukgHcgUQARjoByIVChNFcnJvclN0cmVhbVJlc3BvbnNlIq4BChdBbnN3ZXJDYXJkQWN0aW9uUmVxdWVzdBIgCg9jb252ZXJzYXRpb25faWQYASABKANCB7pIBCICIAASGwoKbWVzc2FnZV9pZBgCIAEoA0IHukgEIgIgABIaCglhY3Rpb25faWQYAyABKAlCB7pIBHICEAESGwoEdGV4dBgEIAEoCUIIukgFcgMYyAFIAIgBARISCgpzaG93X2FsZXJ0GAUgASgIQgcKBV90ZXh0IhoKGEFuc3dlckNhcmRBY3Rpb25SZXNwb25zZTLQBwoOTWVzc2FnZVNlcnZpY2USRgoLU2VuZE1lc3NhZ2USGi5hcGkudjEuU2VuZE1lc3NhZ2VSZXF1ZXN0GhsuYXBpLnYxLlNlbmRNZXNzYWdlUmVzcG9uc2USRgoLRWRpdE1lc3NhZ2USGi5hcGkudjEuRWRpdE1lc3NhZ2VSZXF1ZXN0GhsuYXBpLnYxLkVkaXRNZXNzYWdlUmVzcG9uc2USTwoORGVsZXRlTWVzc2FnZXMSHS5hcGkudjEuRGVsZXRlTWVzc2FnZXNSZXF1ZXN0Gh4uYXBpLnYxLkRlbGV0ZU1lc3NhZ2VzUmVzcG9uc2USTAoNRGVsZXRlSGlzdG9yeRIcLmFwaS52MS5EZWxldGVIaXN0b3J5UmVxdWVzdBodLmFwaS52MS5EZWxldGVIaXN0b3J5UmVzcG9uc2USTAoNUmVjYWxsTWVzc2FnZRIcLmFwaS52MS5SZWNhbGxNZXNzYWdlUmVxdWVzdBodLmFwaS52MS5SZWNhbGxNZXNzYWdlUmVzcG9uc2USQwoKR2V0TWVzc2FnZRIZLmFwaS52MS5HZXRNZXNzYWdlUmVxdWVzdBoaLmFwaS52MS5HZXRNZXNzYWdlUmVzcG9uc2USWAoRR2V0TWVzc2FnZUhpc3RvcnkSIC5hcGkudjEuR2V0TWVzc2FnZUhpc3RvcnlSZXF1ZXN0GiEuYXBpLnYxLkdldE1lc3NhZ2VIaXN0b3J5UmVzcG9uc2USVQoQU3VibWl0Q2FyZEFjdGlvbhIfLmFwaS52MS5TdWJtaXRDYXJkQWN0aW9uUmVxdWVzdBogLmFwaS52MS5TdWJtaXRDYXJkQWN0aW9uUmVzcG9uc2USWAoPUHVzaFN0cmVhbURlbHRhEh4uYXBpLnYxLlB1c2hTdHJlYW1EZWx0YVJlcXVlc3QaHy5hcGkudjEuUHVzaFN0cmVhbURlbHRhUmVzcG9uc2UiBJi1GAESRgoJRW5kU3RyZWFtEhguYXBpLnYxLkVuZFN0cmVhbVJlcXVlc3QaGS5hcGkudjEuRW5kU3RyZWFtUmVzcG9uc2UiBJi1GAESTAoLRXJyb3JTdHJlYW0SGi5hcGkudjEuRXJyb3JTdHJlYW1SZXF1ZXN0GhsuYXBpLnYxLkVycm9yU3RyZWFtUmVzcG9uc2UiBJi1GAESWwoQQW5zd2VyQ2FyZEFjdGlvbhIfLmFwaS52MS5BbnN3ZXJDYXJkQWN0aW9uUmVxdWVzdBogLmFwaS52MS5BbnN3ZXJDYXJkQWN0aW9uUmVzcG9uc2UiBJi1GAFCkAEKCmNvbS5hcGkudjFCE01lc3NhZ2VTZXJ2aWNlUHJvdG9QAVo0Z2l0aHViLmNvbS9waW5lYWxjdHgvbmV4dXMtcHJvdG8vZ2VuL2dvL2FwaS92MTthcGl2MaICA0FYWKoCBkFwaS5WMcoCBkFwaVxWMeICEkFwaVxWMVxHUEJNZXRhZGF0YeoCB0FwaTo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_shared_v1_message, file_shared_v1_options, file_shared_v1_user]);
 
 /**
  * SendMessageRequest sends a message to a conversation.
@@ -652,23 +652,37 @@ export const ErrorStreamResponseSchema: GenMessage<ErrorStreamResponse> = /*@__P
  */
 export type AnswerCardActionRequest = Message<"api.v1.AnswerCardActionRequest"> & {
   /**
-   * Action ID from the webhook event.
+   * Conversation ID where the card action was submitted.
    *
-   * @generated from field: string action_id = 1;
+   * @generated from field: int64 conversation_id = 1;
+   */
+  conversationId: bigint;
+
+  /**
+   * Card message ID that the action belongs to.
+   *
+   * @generated from field: int64 message_id = 2;
+   */
+  messageId: bigint;
+
+  /**
+   * Action ID from the webhook event (unique within conversation).
+   *
+   * @generated from field: string action_id = 3;
    */
   actionId: string;
 
   /**
    * Response text to display.
    *
-   * @generated from field: optional string text = 2;
+   * @generated from field: optional string text = 4;
    */
   text?: string;
 
   /**
    * Whether to show as alert dialog (otherwise toast).
    *
-   * @generated from field: bool show_alert = 3;
+   * @generated from field: bool show_alert = 5;
    */
   showAlert: boolean;
 };
@@ -698,7 +712,7 @@ export const AnswerCardActionResponseSchema: GenMessage<AnswerCardActionResponse
 /**
  * MessageService handles message sending, editing, deletion, recall,
  * forwarding, and history retrieval. Authenticated via Access Token.
- *
+ * 
  * All message operations are performed via Connect RPC (HTTP).
  * The long connection (WebSocket) is used exclusively for server-side
  * push delivery (new messages, status updates, etc.).
@@ -708,14 +722,14 @@ export const AnswerCardActionResponseSchema: GenMessage<AnswerCardActionResponse
 export const MessageService: GenService<{
   /**
    * SendMessage sends a message to a conversation.
-   *
+   * 
    * Side effects:
    *   - Persists the message and assigns a server message_id.
    *   - Pushes an Update to all online conversation participants
    *     via their long connections.
    *   - Triggers offline push notifications for offline participants.
    *   - Updates the conversation's last_message_time and last_message_id.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation,
@@ -732,13 +746,13 @@ export const MessageService: GenService<{
   },
   /**
    * EditMessage edits a previously sent message.
-   *
+   * 
    * Side effects:
    *   - Updates the message content and sets updated_at timestamp.
    *   - Pushes an Update with the edited message to all online
    *     conversation participants.
    *   - Triggers webhook delivery for agent members.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist.
    *   - PERMISSION_DENIED: User is not the message sender.
@@ -757,14 +771,14 @@ export const MessageService: GenService<{
   /**
    * DeleteMessages deletes messages by ID list for the current user only
    * (local delete). Other participants are not affected.
-   *
+   * 
    * Side effects:
    *   - Marks the specified messages as deleted for the current user.
    *   - Deleted messages are excluded from future GetMessageHistory
    *     responses for this user.
    *   - Delivers a MessageDeletedEvent to the caller's own update stream
    *     (multi-device sync).
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -779,13 +793,13 @@ export const MessageService: GenService<{
   /**
    * DeleteHistory deletes all messages up to a given message ID for the
    * current user only (local delete).
-   *
+   * 
    * Side effects:
    *   - Marks all messages with message_id <= up_to_message_id as deleted
    *     for the current user.
    *   - Delivers a MessageDeletedEvent to the caller's own update stream
    *     (multi-device sync).
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -801,14 +815,14 @@ export const MessageService: GenService<{
    * RecallMessage recalls a sent message (visible to all participants).
    * The original message content is replaced with a MessageRecalledContent
    * message in the conversation timeline.
-   *
+   * 
    * Side effects:
    *   - Replaces the message body with RecalledContent (body.type
    *     becomes MESSAGE_TYPE_RECALLED).
    *   - Pushes an Update with the recalled message to all online
    *     conversation participants.
    *   - Triggers webhook delivery for agent members.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist.
    *   - PERMISSION_DENIED: User is not the message sender.
@@ -824,7 +838,7 @@ export const MessageService: GenService<{
   },
   /**
    * GetMessage returns a single message by ID.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist or has been deleted by this user.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -840,7 +854,7 @@ export const MessageService: GenService<{
    * GetMessageHistory returns message history with ID-based cursor
    * pagination. Supports both backward (older) and forward (newer)
    * pagination directions.
-   *
+   * 
    * Pagination:
    *   - Backward (load older): set before_message_id. Returns messages
    *     with message_id < before_message_id, ordered descending.
@@ -852,7 +866,7 @@ export const MessageService: GenService<{
    *     as the next after_message_id.
    *   - Omit both for the latest messages (equivalent to backward from
    *     the conversation's last_message_id).
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Conversation does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -868,12 +882,12 @@ export const MessageService: GenService<{
    * SubmitCardAction reports an Adaptive Card Action.Submit to the
    * server. The server forwards the action data to the agent that sent
    * the card message.
-   *
+   * 
    * Side effects:
    *   - Delivers a CardActionPayload event to the agent via webhook.
    *   - The agent may respond via AnswerCardAction (toast/alert) and
    *     optionally update the card via EditMessage.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Message does not exist.
    *   - PERMISSION_DENIED: User is not a member of the conversation.
@@ -888,7 +902,7 @@ export const MessageService: GenService<{
   },
   /**
    * PushStreamDelta pushes an incremental delta to a streaming message.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Streaming message does not exist.
    *   - FAILED_PRECONDITION: Stream has already ended or errored.
@@ -902,11 +916,11 @@ export const MessageService: GenService<{
   },
   /**
    * EndStream finalizes a streaming message with the accumulated content.
-   *
+   * 
    * Side effects:
    *   - Persists the final accumulated text as the message content.
    *   - Pushes StreamContent(phase=END) to online participants.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Streaming message does not exist.
    *   - FAILED_PRECONDITION: Stream has already ended or errored.
@@ -920,11 +934,11 @@ export const MessageService: GenService<{
   },
   /**
    * ErrorStream terminates a streaming message with an error.
-   *
+   * 
    * Side effects:
    *   - Persists the error state and partial content.
    *   - Pushes StreamContent(phase=ERROR) to online participants.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Streaming message does not exist.
    *   - FAILED_PRECONDITION: Stream has already ended or errored.
@@ -938,7 +952,7 @@ export const MessageService: GenService<{
   },
   /**
    * AnswerCardAction responds to a card action submission.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Card action does not exist or has expired.
    *

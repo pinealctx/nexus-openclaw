@@ -578,14 +578,14 @@ export const SetAgentMiniAppResponseSchema: GenMessage<SetAgentMiniAppResponse> 
 /**
  * AgentService handles agent discovery, Mini App launch, and developer
  * management of agents.
- *
+ * 
  * Discovery (any authenticated identity):
  *   - Users browse featured agents via ListFeaturedAgents.
  *   - Users view agent public profile via GetAgentInfo.
- *
+ * 
  * Mini App launch (user_only):
  *   - Users obtain signed initData to launch a Mini App via GetMiniAppLaunchData.
- *
+ * 
  * Developer management (user_only):
  *   - Developers create agents via CreateAgent.
  *   - Developers list their agents via ListMyAgents.
@@ -595,7 +595,7 @@ export const SetAgentMiniAppResponseSchema: GenMessage<SetAgentMiniAppResponse> 
  *   - Developers regenerate agent token via RegenerateAgentToken.
  *   - Developers regenerate agent secret key via RegenerateAgentSecretKey.
  *   - Developers configure Mini App via SetAgentMiniApp.
- *
+ * 
  * Relationship to other services:
  *   - Adding an agent creates a conversation (type = AGENT) visible
  *     in ConversationService.ListConversations.
@@ -619,7 +619,7 @@ export const AgentService: GenService<{
   },
   /**
    * GetAgentInfo returns public profile info for a specific agent.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist or has been deleted.
    *
@@ -632,7 +632,7 @@ export const AgentService: GenService<{
   },
   /**
    * GetMiniAppLaunchData generates signed initData for launching a Mini App.
-   *
+   * 
    * Error conditions:
    *   - FAILED_PRECONDITION: Agent has not enabled Mini App.
    *   - PERMISSION_DENIED: User has no access to this agent or conversation_id mismatch.
@@ -646,11 +646,11 @@ export const AgentService: GenService<{
   },
   /**
    * CreateAgent creates a new agent on behalf of the authenticated user.
-   *
+   * 
    * Side effects:
    *   - Establishes bidirectional contact relationship between developer and agent.
    *   - Auto-generates Agent Token and secret_key.
-   *
+   * 
    * Error conditions:
    *   - ALREADY_EXISTS: Username is taken.
    *   - INVALID_ARGUMENT: Invalid username or name.
@@ -674,7 +674,7 @@ export const AgentService: GenService<{
   },
   /**
    * GetMyAgent returns the full profile of an agent owned by the authenticated user.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist.
    *   - PERMISSION_DENIED: Caller is not the agent creator.
@@ -690,7 +690,7 @@ export const AgentService: GenService<{
    * SetAgentConfig updates configuration fields of an agent.
    * Only provided fields are updated; omitted fields remain unchanged.
    * When delivery_mode is set to WEBHOOK, webhook_url must also be provided.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist.
    *   - PERMISSION_DENIED: Caller is not the agent creator.
@@ -705,12 +705,12 @@ export const AgentService: GenService<{
   },
   /**
    * DeleteMyAgent permanently deletes an agent owned by the authenticated user.
-   *
+   * 
    * Side effects:
    *   - Sets agent status to DELETED.
    *   - Removes the agent from all group memberships.
    *   - Existing conversations become read-only.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist.
    *   - PERMISSION_DENIED: Caller is not the agent creator.
@@ -725,7 +725,7 @@ export const AgentService: GenService<{
   /**
    * RegenerateAgentToken regenerates the API token for an agent.
    * The old token becomes invalid immediately.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist.
    *   - PERMISSION_DENIED: Caller is not the agent creator.
@@ -740,7 +740,7 @@ export const AgentService: GenService<{
   /**
    * RegenerateAgentSecretKey regenerates the HMAC secret key for an agent.
    * The old key becomes invalid immediately.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist.
    *   - PERMISSION_DENIED: Caller is not the agent creator.
@@ -754,7 +754,7 @@ export const AgentService: GenService<{
   },
   /**
    * SetAgentMiniApp configures the Mini App for an agent.
-   *
+   * 
    * Error conditions:
    *   - NOT_FOUND: Agent does not exist.
    *   - PERMISSION_DENIED: Caller is not the agent creator.

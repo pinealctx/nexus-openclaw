@@ -568,11 +568,11 @@ export const MarkdownContentSchema: GenMessage<MarkdownContent> = /*@__PURE__*/
  * CardContent carries an Adaptive Card message payload.
  * The card_json field contains a valid Adaptive Card JSON conforming to
  * https://adaptivecards.io/schemas/adaptive-card.json
- *
+ * 
  * Server validates JSON syntax and enforces a 50 KB size limit, but does
  * NOT validate against the Adaptive Card schema. Rendering is entirely
  * the client's responsibility.
- *
+ * 
  * Interaction:
  *   - Action.OpenUrl: handled client-side (open browser/webview).
  *   - Action.Submit: client sends SubmitCardAction RPC with the
@@ -608,11 +608,11 @@ export const CardContentSchema: GenMessage<CardContent> = /*@__PURE__*/
 /**
  * StreamContent carries streaming message data (e.g. agent real-time
  * generation). Delivered via Update push on the long connection.
- *
+ * 
  * The stream is uniquely identified by message_id (assigned when the
  * agent calls SendMessage with type=STREAM). Each delta carries a seq
  * number for dedup and ordering.
- *
+ * 
  * Lifecycle:
  *   1. START: A new streaming message is created (message_id assigned),
  *      StreamContent with phase=START is pushed. No text content yet.
@@ -621,7 +621,7 @@ export const CardContentSchema: GenMessage<CardContent> = /*@__PURE__*/
  *   3. END: The final accumulated text is committed and phase=END
  *      is pushed with the complete content.
  *   4. ERROR: Generation failed; the error state is committed.
- *
+ * 
  * Recovery after disconnect / app restart:
  *   Clients must track locally which stream messages have not reached
  *   a terminal phase (END or ERROR). On reconnect, call

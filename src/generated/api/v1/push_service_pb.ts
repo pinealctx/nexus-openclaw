@@ -148,12 +148,12 @@ export const ClearBadgeResponseSchema: GenMessage<ClearBadgeResponse> = /*@__PUR
 export const PushService: GenService<{
   /**
    * RegisterToken registers a push notification token for the current device.
-   *
+   * 
    * Side effects:
    *   - Stores the push token associated with the device and user.
    *   - If a token already exists for this device, it is replaced.
    *   - The device becomes eligible for push notifications.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - INVALID_ARGUMENT: Token is empty or platform is UNSPECIFIED.
@@ -167,11 +167,11 @@ export const PushService: GenService<{
   },
   /**
    * UnregisterToken removes the push token for a device.
-   *
+   * 
    * Side effects:
    *   - Deletes the push token for the specified device.
    *   - The device stops receiving push notifications.
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *   - NOT_FOUND: No push token registered for this device.
@@ -185,11 +185,11 @@ export const PushService: GenService<{
   },
   /**
    * ClearBadge clears the push notification badge count for the user.
-   *
+   * 
    * Side effects:
    *   - iOS: Sends a silent push with badge=0 to clear the app icon badge.
    *   - Android: No server-side action needed (client clears locally).
-   *
+   * 
    * Error conditions:
    *   - UNAUTHENTICATED: Invalid or expired access token.
    *

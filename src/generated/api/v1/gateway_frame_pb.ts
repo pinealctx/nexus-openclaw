@@ -83,7 +83,7 @@ export const ClientFrameSchema: GenMessage<ClientFrame> = /*@__PURE__*/
  * ServerFrame is the transport-agnostic downstream envelope used by both
  * users and agents. Every message sent by the server on the long
  * connection is wrapped in a ServerFrame.
- *
+ * 
  * For response frames (auth_response, heartbeat_pong), the request_id
  * matches the originating ClientFrame.request_id.
  * For push frames (update, error), the server generates a unique
